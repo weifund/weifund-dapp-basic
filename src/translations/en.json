@@ -1,0 +1,11 @@
+{
+  "app": {
+    "nav": {
+      "weifund": "WeiFund",
+      "campaigns": "Campaigns",
+      "start": "Start",
+      "register": "Register",
+      "account": "My Account"
+    }
+  }
+}

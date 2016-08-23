@@ -1,0 +1,37 @@
+{
+  "campaignSchema": {
+    "@context": "http://weifund.io",
+    "@type": "CampaignContract",
+    "version": "0.1.0",
+    "address": "",
+    "compiler": "",
+    "compilerFlags": "",
+    "compilerVersion": "",
+    "bytecode": "",
+    "source": "",
+    "abi": [],
+    "url": "",
+    "location": {
+      "address": {
+        "addressCountry": "",
+        "addressLocality": "",
+        "addressRegion": "",
+        "postalCode": "",
+        "streetAddress": ""
+      }
+    },
+    "category": "",
+    "image": "",
+    "mainEntity": "",
+    "i18n": {
+      "en": {
+        "name": "",
+        "alternateName": "",
+        "description": "",
+        "disambiguatedDescription": "",
+        "about": "",
+      }
+    },
+    "relatedContracts": []
+  }
+}
