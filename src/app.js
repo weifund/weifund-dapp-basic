@@ -2,6 +2,7 @@
 const views = require('./views');
 const closeAllViews = views.closeAllViews;
 const openView = views.openView;
+const openSubView = views.openSubView;
 
 // environment
 const environment = require('./environment');
@@ -36,14 +37,11 @@ const t = require('./i18n').t;
 
 // handlers draw
 const handlers = require('./handlers');
-const drawNav = handlers.drawNav;
-const drawDetails = handlers.drawDetails;
-const drawSelectedAccount = handlers.drawSelectedAccount;
-const drawLocale = handlers.drawLocale
-const drawStaffPicksAddress = handlers.drawStaffPicksAddress;
+const drawNavBar = handlers.drawNavBar;
+const drawFooter = handlers.drawFooter;
 
-const loadAndDrawCampaign = handlers.loadAndDrawCampaign;
 const drawCampaigns = handlers.drawCampaigns;
+const loadAndDrawCampaign = handlers.loadAndDrawCampaign;
 
 const handleNewCampaign = handlers.handleNewCampaign;
 const handleRegisterCampaign = handlers.handleRegisterCampaign;
@@ -52,12 +50,10 @@ const handleCampaignRefund = handlers.handleCampaignRefund;
 const handleCampaignPayout = handlers.handleCampaignPayout;
 const handleRegisterCampaignData = handlers.handleCampaignPayout;
 const loadAndDrawCampaignsList = handlers.loadAndDrawCampaignsList;
+const loadAndDrawCampaignContribute = handlers.loadAndDrawCampaignContribute;
 
-// draw the nav
-drawNav();
-
-// close all first
-closeAllViews();
+// draw navbar
+drawNavBar();
 
 // load application
 const loadApp = function() {
@@ -65,32 +61,28 @@ const loadApp = function() {
   setupWeb3Provider();
   setupIPFSProvider();
 
-  require('./lib/getCampaign')(5, function(err, result){
-    console.log(err, result);
-  });
-
   // setup the router
   setupRouter({
     openView: openView,
+    openSubView: openSubView,
+    loadAndDrawCampaignContribute: loadAndDrawCampaignContribute,
     loadAndDrawCampaignsList: loadAndDrawCampaignsList,
-    loadAndDrawCampaign: loadAndDrawCampaign
+    loadAndDrawCampaign: loadAndDrawCampaign,
   });
 
   // set initial route from params
   getRouter()(window.location.pathname);
 
-  // draw picks address
-  drawStaffPicksAddress(staffPicks.address);
-  drawDetails(campaignRegistry, campaignDataRegistry);
-  drawLocale();
-
   // select default account
   web3.eth.getAccounts(function(accountsError, accounts){
     if (!accountsError && accounts.length) {
       setDefaultAccount(accounts[0]);
-      drawSelectedAccount();
+      //drawSelectedAccount();
     }
   });
+
+  // draw footer later
+  drawFooter();
 
   // new campaign
   document.querySelector('#newCampaign').addEventListener('click', handleNewCampaign);
@@ -99,13 +91,13 @@ const loadApp = function() {
   document.querySelector('#payout').addEventListener('click', handleCampaignPayout);
 
   // add contribute event listener
-  document.querySelector('#contribute').addEventListener('click', handleCampaignContribution);
+  //document.querySelector('#contribute').addEventListener('click', handleCampaignContribution);
 
   // register campaign button
-  document.querySelector('#registerCampaign').addEventListener('click', handleRegisterCampaign);
+  //document.querySelector('#registerCampaign').addEventListener('click', handleRegisterCampaign);
 
   // ipfs register
-  document.querySelector('#registerCampaignData').addEventListener('click', handleRegisterCampaignData);
+  //document.querySelector('#registerCampaignData').addEventListener('click', handleRegisterCampaignData);
 };
 
 // setup provider

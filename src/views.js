@@ -16,6 +16,36 @@ const views = [
   'view-404',
 ];
 
+// app subviews
+const subViews = [
+  'view-campaign-info',
+  'view-campaign-details',
+  'view-campaign-contracts',
+  'view-campaign-qr',
+
+  'view-campaign-contribute-method',
+  'view-campaign-contribute-wallet',
+  'view-campaign-contribute-exchange',
+  'view-campaign-contribute-ether-method',
+  'view-campaign-contribute-cryptocurrency-method',
+  'view-campaign-contribute-ether-qrcode',
+  'view-campaign-contribute-form',
+  'view-campaign-contribute-receipt',
+  'view-campaign-contribute-review',
+];
+
+// close all views
+const closeAllSubViews = function() {
+  // set all views to hidden
+  subViews.forEach(function(viewId) {
+    if (document.querySelector(`#${viewId}`) === null) {
+      return;
+    }
+
+    document.querySelector(`#${viewId}`).style.display = 'none';
+  });
+};
+
 // close all views
 const closeAllViews = function() {
   // set all views to hidden
@@ -26,8 +56,23 @@ const closeAllViews = function() {
 
 // open view
 const openView = function(openViewId) {
+  window.scrollTo(0, 0);
+  document.querySelector(`#footer-wrapper`).style.display = 'none';
+
   // clsoe all views
   closeAllViews();
+
+  // open selected view
+  document.querySelector(`#${openViewId}`).style.display = '';
+  document.querySelector(`#footer-wrapper`).style.display = '';
+};
+
+// open view
+const openSubView = function(openViewId) {
+  // clsoe all views
+  closeAllSubViews();
+
+  console.log(openViewId, document.querySelector(`#${openViewId}`));
 
   // open selected view
   document.querySelector(`#${openViewId}`).style.display = '';
@@ -38,4 +83,6 @@ module.exports = {
   views: views,
   openView: openView,
   closeAllViews: closeAllViews,
+  closeAllSubViews: closeAllSubViews,
+  openSubView: openSubView,
 };

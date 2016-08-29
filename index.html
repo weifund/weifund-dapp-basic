@@ -1,20 +1,17 @@
 <html>
   <head>
+    <link rel="stylesheet" type="text/css" href="/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/index.css">
+    <link rel="stylesheet" type="text/css" href="/loader.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WeiFund Basic</title>
   </head>
 
   <body>
 
-    <div id="nav"></div>
+    <div id="nav-wrapper"></div>
 
     <div>
-      Account Selected: <span id="details_selectedAccount"></span>
-      Campaign Registry Addr: <span id="details_campaignRegistryAddr"></span>
-      Campaign Data Registry Addr: <span id="details_campaignDataRegistryAddr"></span>
-      Staff Picks Addr: <span id="details_staffPicksAddr"></span>
-      Total Campaigns: <span id="details_totalCampaigns"></span>
-      Locale: <span id="details_locale">--</span>
-      AntiXSS: On
     </div>
 
     <div id="export">
@@ -112,16 +109,16 @@
       <h2>My Account</h2>
     </div>
 
-    <div id="view-list" style="display: none;">
-      <h2>Staff Picks</h2>
-      <div id="staffpicks_list">No campaigns loaded...</div>
-
-      <div style="height: 1px; clear: both;"></div>
-
-      <h2>Campaigns List</h2>
-      <div id="campaigns_list">No campaigns loaded...</div>
+    <div id="view-list" class="campaigns-list" style="display: none;">
     </div>
 
+    <div id="view-focus" style="display: none;">
+    </div>
+
+    <div id="view-campaign-contribute" style="display: none;">
+    </div>
+
+    <!--
     <div id="view-focus" style="display: none;">
       <h2 id="campaign_name">Campaign Name</h2>
       <input type="hidden" id="campaign_id" />
@@ -136,7 +133,6 @@
 
       <br />
 
-      <!-- Begin MailChimp Signup Form -->
       <div id="mc_embed_signup">
         <form action="" method="post" style="display: none;" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
           <div id="mc_embed_signup_scroll">
@@ -149,7 +145,7 @@
         	<div id="mce-responses" class="clear">
         		<div class="response" id="mce-error-response" style="display:none"></div>
         		<div class="response" id="mce-success-response" style="display:none"></div>
-        	</div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+        	</div>
           <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_19406abd2b46ce9447a91562e_f5c4326349" tabindex="-1" value=""></div>
           <div class="clear">
             <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button">
@@ -158,7 +154,6 @@
         </form>
       </div>
 
-      <!--End mc_embed_signup-->
 
       <hr />
 
@@ -184,9 +179,9 @@
       <br />
       IPFS Data: <span id="campaign_ipfsData">--</span> <br />
       Has IPFS Data: <span id="campaign_hasIPFSData">--</span>
-    </div>
+    </div> -->
 
-    <div id="view-campaign-contribute" style="display: none;">
+    <!--<div id="view-campaign-contribute" style="display: none;">
       <h3>Contribute to <span class="selectedCampaign_name"></span></h3>
 
       <div id="campaignContribution_inputs">
@@ -212,7 +207,7 @@
       <div id="contribute_response"></div>
       <hr />
       <a href="" class="selectedCampaign_link">Back To Campaign</a>
-    </div>
+    </div>-->
 
 
     <div id="view-campaign-payout" style="display: none;">
@@ -263,6 +258,8 @@
       <hr />
       <a href="" class="selectedCampaign_link">Back To Campaign</a>
     </div>
+
+    <div id="footer-wrapper"></div>
 
     <script src="/bundle.js"></script>
   </body>

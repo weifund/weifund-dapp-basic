@@ -26,6 +26,7 @@
     "bignumber.js": "^2.4.0",
     "ethereumjs-abi": "^0.6.3",
     "ipfs-js": "0.0.11",
+    "markdown": "^0.5.0",
     "node-polyglot": "^2.0.0",
     "polyglot": "^0.5.0",
     "qrious": "^2.0.2",

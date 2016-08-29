@@ -18,6 +18,7 @@ const owned = contracts.ownedContractFactory;
 // get additional campaign properties
 const getCampaignContractData = function(campaignAddress, callback){
   var campaignObject = {
+    id: null,
     addr: campaignAddress,
     interface: '0x',
     owner: '0x',
@@ -34,66 +35,77 @@ const getCampaignContractData = function(campaignAddress, callback){
       return callback(interfaceError, null);
     }
 
-    // handle interface address
-    if (interfaceAddress === '0x') {
-      campaignObject.interface = campaignAddress;
-    } else {
-      campaignObject.interface = interfaceAddress;
-    }
-
-    // get campaign owner
-    owned.at(campaignAddress).owner(function(ownerError, ownerAddress){
+    // get the campaign ID
+    campaignRegistry.idOf(campaignAddress, function(idError, campaignId){
       // handle owner error
-      if (ownerError) {
-        return callback(ownerError, null);
+      if (idError) {
+        return callback(idError, null);
       }
 
-      // set owner property
-      campaignObject.owner = ownerAddress;
+      // id
+      campaignObject.id = campaignId.toString(10);
 
-      // get campaign balanace
-      web3.eth.getBalance(campaignAddress, function(balanceError, balanceResult) {
+      // handle interface address
+      if (interfaceAddress === '0x') {
+        campaignObject.interface = campaignAddress;
+      } else {
+        campaignObject.interface = interfaceAddress;
+      }
+
+      // get campaign owner
+      owned.at(campaignAddress).owner(function(ownerError, ownerAddress){
         // handle owner error
-        if (balanceError) {
-          return callback(balanceError, null);
+        if (ownerError) {
+          return callback(ownerError, null);
         }
 
-        // set balance properties
-        campaignObject.balance = balanceResult;
+        // set owner property
+        campaignObject.owner = ownerAddress;
 
-        // staffPicks
-        staffPicks.activePicks(campaignAddress, function(staffPicksError, staffPickResult){
+        // get campaign balanace
+        web3.eth.getBalance(campaignAddress, function(balanceError, balanceResult) {
           // handle owner error
-          if (staffPicksError) {
-            return callback(staffPicksError, null);
+          if (balanceError) {
+            return callback(balanceError, null);
           }
 
-          // campaign object is staff pick
-          campaignObject.staffPick = staffPickResult;
+          // set balance properties
+          campaignObject.balance = balanceResult;
 
-          // get contract code
-          web3.eth.getCode(campaignAddress, function(campaignContractCodeError, campaignContractCode){
+          // staffPicks
+          staffPicks.activePicks(campaignAddress, function(staffPicksError, staffPickResult){
             // handle owner error
-            if (campaignContractCodeError) {
-              return callback(campaignContractCodeError, null);
+            if (staffPicksError) {
+              return callback(staffPicksError, null);
             }
 
-            // handle campaign contract code error
-            // set campaign code
-            campaignObject.campaignContractCode = campaignContractCode;
+            // campaign object is staff pick
+            campaignObject.staffPick = staffPickResult;
 
-            // get ipfs data
-            campaignDataRegistry.storedData(campaignAddress, function(dataRegistryError, dataRegistryResult){
+            // get contract code
+            web3.eth.getCode(campaignAddress, function(campaignContractCodeError, campaignContractCode){
               // handle owner error
-              if (dataRegistryError) {
-                return callback(dataRegistryError, null);
+              if (campaignContractCodeError) {
+                return callback(campaignContractCodeError, null);
               }
 
-              // registered data property
-              campaignObject.registeredData = dataRegistryResult;
+              // handle campaign contract code error
+              // set campaign code
+              campaignObject.campaignContractCode = campaignContractCode;
 
-              // fire callback
-              callback(null, campaignObject);
+              // get ipfs data
+              campaignDataRegistry.storedData(campaignAddress, function(dataRegistryError, dataRegistryResult){
+                // handle owner error
+                if (dataRegistryError) {
+                  return callback(dataRegistryError, null);
+                }
+
+                // registered data property
+                campaignObject.registeredData = dataRegistryResult;
+
+                // fire callback
+                callback(null, campaignObject);
+              });
             });
           });
         });

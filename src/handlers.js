@@ -13,6 +13,9 @@ const parseSolidityMethodInterface = utils.parseSolidityMethodInterface;
 const oneDay = utils.oneDay;
 const filterXSSObject = utils.filterXSSObject;
 
+// require components
+const components = require('./components');
+
 // view handling
 const views = require('./views');
 const closeAllViews = views.closeAllViews;
@@ -61,16 +64,48 @@ const refreshPageButtons = router.refreshPageButtons;
 // require i18n
 const t = require('./i18n').t;
 
-// the draw nav function
-const drawNav = function() {
-  document.querySelector('#nav').innerHTML += `
-    <!-- <a href="/">${t("app.nav.weifund")}</a> -->
-    <a href="/">${t("app.nav.campaigns")}</a>
-    <!-- <a href="/start">${t("app.nav.start")}</a>
-    <a href="/register">${t("app.nav.register")}</a>
-    <a href="/account">${t("app.nav.account")}</a> -->
-  `;
+const outerElHeight = function(el) {
+  var height = el.offsetHeight;
+  var style = getComputedStyle(el);
+
+  height += parseInt(style.marginTop) + parseInt(style.marginBottom);
+  return height;
 };
+
+// buidl all nav togglesbuildAllNavToggles
+const buildAllNavToggles = function() {
+  [].slice.call(document.querySelectorAll('.navbar-toggle')).forEach(function(navBarToggle){
+    navBarToggle.addEventListener('click', function(event){
+
+      var toggleState = false;
+      const toggleTarget = document.querySelector(`#${navBarToggle.dataset.targetId}`);
+
+      const getToggleState = function() {
+        return toggleState();
+      };
+
+      if (toggleTarget !== null && toggleTarget.length !== 0) {
+        const toggleTargetOuterHeight = outerElHeight(toggleTarget);
+        const toggleTargetFirsChildOuterHeight = outerElHeight(toggleTarget.children[0]);
+
+        if (toggleTargetOuterHeight === 0) {
+          toggleTarget.style.height = `${toggleTargetFirsChildOuterHeight}px`;
+        } else {
+          toggleTarget.style.height = `0px`;
+        }
+      }
+    });
+  });
+};
+
+const drawFooter = function() {
+  document.body.querySelector('#footer-wrapper').innerHTML = components.footer();
+}
+
+const drawNavBar = function() {
+  document.body.querySelector('#nav-wrapper').innerHTML = components.navBar();
+  buildAllNavToggles();
+}
 
 // handle new campaign creation
 const handleNewCampaign = function(){
@@ -314,29 +349,172 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
   }
 };
 
-// draw campaign
-const loadAndDrawCampaign = function(campaignID) {
+const outerElWidth = function(el) {
+  var width = el.offsetWidth;
+  var style = getComputedStyle(el);
+
+  width += parseInt(style.marginLeft) + parseInt(style.marginRight);
+  return width;
+};
+
+// build all input sliders
+const buildAllInputSliders = function() {
+  [].slice.call(document.querySelectorAll('.input-slider')).forEach(function(inputSliderElement){
+    // setup rail and bar
+    const inputSliderRailHighlight = inputSliderElement.querySelector('.input-slider-rail-highlight');
+    const inputSliderRail = inputSliderElement.querySelector('.input-slider-rail');
+    const inputSliderBar = inputSliderElement.querySelector('.input-slider-bar');
+    var inputSliderDraggable = false;
+
+    // setup slider state getter
+    const getSliderState = function() {
+      return inputSliderDraggable;
+    };
+
+    // setup slider mouseup handler
+    const handleInputSliderMouseUp = function(event) {
+      inputSliderDraggable = false;
+    };
+
+    // setup slider mouse down handler
+    const handleInputSliderMouseDown = function(event) {
+      inputSliderDraggable = true;
+      handleInputSliderMouseMove(event);
+      event.preventDefault();
+    };
+
+    // setup slider mouse move handler
+    const handleInputSliderMouseMove = function(event){
+      if (!getSliderState()) {
+        return;
+      }
+
+      // slider width, offset position, baroffsetleft, mouse position
+      // calculare shim, mouse fix and bar position
+      const sliderWidth = outerElWidth(inputSliderElement);
+      const sliderOffsetLeft = inputSliderElement.getBoundingClientRect().left;
+      const sliderBarOffsetLeft = inputSliderBar.getBoundingClientRect().left;
+      const clientX = event.clientX;
+      var barLeftPositionShim = (parseFloat(((clientX - sliderOffsetLeft) / sliderWidth) - 1).toFixed(2) * 17) * -1;
+      var barLeftPositionPercentage = ((clientX - barLeftPositionShim - sliderOffsetLeft) / sliderWidth) * 100;
+
+      // fix invarience
+      if (barLeftPositionPercentage > 100 || clientX > sliderOffsetLeft + sliderWidth) {
+        barLeftPositionPercentage = 100;
+      }
+
+      // fix invarience
+      if (barLeftPositionPercentage < 0 || clientX < sliderOffsetLeft) {
+        barLeftPositionPercentage = 0;
+      }
+
+      // handle input id
+      if (typeof inputSliderElement.dataset.inputId === 'string') {
+        const dataInputElement = document.querySelector(`#${inputSliderElement.dataset.inputId}`);
+
+        // if element exists
+        if (dataInputElement !== null && dataInputElement.length !== 0) {
+          dataInputElement.value = parseFloat(barLeftPositionPercentage).toFixed(2);
+        }
+      }
+
+      // set input slider bar left position
+      inputSliderBar.style.left = `${barLeftPositionPercentage}%`;
+      inputSliderRailHighlight.style.width = `${barLeftPositionPercentage}%`;
+    };
+
+    // mouse move listener
+    document.body.addEventListener('mousemove', handleInputSliderMouseMove, false);
+
+    // mouse down lisener
+    inputSliderElement.addEventListener('mousedown', handleInputSliderMouseDown, false);
+
+    // mouse up listeners
+    inputSliderRail.addEventListener('mouseup', handleInputSliderMouseUp, false);
+    inputSliderBar.addEventListener('mouseup', handleInputSliderMouseUp, false);
+    document.body.addEventListener('mouseup', handleInputSliderMouseUp, false);
+
+  });
+};
+
+const loadAndDrawCampaignContribute = function(campaignID, callback) {
+  // handle empty callback
+  if (typeof callback !== 'function') {
+    callback = function(e, r) {};
+  }
+
+  // draw loader
+  document.querySelector('#view-campaign-contribute').innerHTML = components.viewLoader();
+
   // load campaign fresh to draw
   getCampaignData(campaignID, function(campaignLoadError, campaignData){
     if (campaignLoadError) {
       log('Campaign load while drawing...', campaignLoadError);
+      callback(campaignLoadError, null);
       return;
     }
 
     // save in campaigns
     setCampaign(campaignID, campaignData);
 
-    // draw campaign QR contributeInputIndex
+    // draw campaign focus
+    document.querySelector('#view-campaign-contribute').innerHTML = components.campaignContributeView({campaignObject: campaignData, getLocale: getLocale});
+
+    // draw qr code
     const qr = new QRious({
-      element: document.querySelector('#campaign_qrcode'),
+      element: document.querySelector('#campaign-contribute-qrcode'),
+      size: 250,
       value: campaignData.addr,
     });
 
-    // set selected camapign ID
-    document.querySelector('#campaign_id').value = campaignID;
+    // refresh all page buttons after redraw
+    refreshPageButtons();
 
-    // draw campaign data
-    document.querySelector('#campaign_name').innerHTML = campaignData.name || 'Campaign Name';
+    // build all sliders
+    buildAllInputSliders();
+
+    // callback
+    callback(null, true);
+  });
+};
+
+// draw campaign
+const loadAndDrawCampaign = function(campaignID, callback) {
+  // draw loader
+  document.querySelector('#view-focus').innerHTML = components.viewLoader();
+
+  // load campaign fresh to draw
+  getCampaignData(campaignID, function(campaignLoadError, campaignData){
+    if (campaignLoadError) {
+      log('Campaign load while drawing...', campaignLoadError);
+      callback(campaignLoadError, null);
+      return;
+    }
+
+    // save in campaigns
+    setCampaign(campaignID, campaignData);
+
+    // draw campaign focus
+    document.querySelector('#view-focus').innerHTML = components.campaignFocusView(campaignData);
+
+    // draw qr code
+    const qr = new QRious({
+      element: document.querySelector('#campaign_qrcode'),
+      size: 250,
+      value: campaignData.addr,
+    });
+
+    // refresh all page buttons after redraw
+    refreshPageButtons();
+
+    // callback
+    callback(null, true);
+
+    // draw campaign QR contributeInputIndex
+    /* const qr = new QRious({
+      element: document.querySelector('#campaign_qrcode'),
+      value: campaignData.addr,
+    });
 
     document.querySelector('#campaign_details').innerHTML = `
     Addr. ${campaignData.addr || '0x'} <a href="${etherScanAddressUrl(campaignData.addr, getNetwork())}" target="_blank">etherscan</a> <br />
@@ -380,28 +558,6 @@ const loadAndDrawCampaign = function(campaignID) {
     <br />
     Contract ABI: ${JSON.stringify(campaignData.abi)} <br />
     `;
-
-    // IPFS Related data
-    document.querySelector('#campaign_ipfsHash').innerHTML = campaignData.ipfsHash || '0x';
-    document.querySelector('#campaign_ipfsData').innerHTML = JSON.stringify(campaignData.data, null, 2) || '{}';
-    document.querySelector('#campaign_hasIPFSData').innerHTML = campaignData.hasIPFSData && 'true' || 'false';
-    document.querySelector('#campaign_hasIPFSHash').innerHTML = campaignData.hasIPFSHash && 'true' || 'false';
-
-    // campaign name in multiple pages
-    [].slice.call(document.querySelectorAll('.selectedCampaign_name')).forEach(function(campaignNameElement){
-      campaignNameElement.innerHTML = `${campaignData.name}`;
-    });
-
-    // draw campaign links
-    [].slice.call(document.querySelectorAll('.selectedCampaign_link')).forEach(function(campaignLinkElement){
-      campaignLinkElement.href = `/campaign/${campaignData.id}`;
-    });
-
-    // if no account present
-    if (txObject().from === '' || txObject().from === '0x') {
-      // awaiting tx approval message
-      document.querySelector('#contribute_response').innerHTML = `No account is present, please connect this client to a wallet like Mist/MetaMask or others in order to contribute.`;
-    }
 
     // draw campaign contribute page
     // make contribute button link work
@@ -456,7 +612,7 @@ const loadAndDrawCampaign = function(campaignID) {
       } else {
         document.querySelector('#campaignContribution_inputs').innerHTML += `<input type="${contirbutionInputType}" id="${contributionInputID}" placeholder="${parseSolidityMethodName(contributeInput.name)}" /> <br /><br />`;
       }
-    });
+    });*/
   });
 };
 
@@ -513,20 +669,10 @@ const drawCampaigns = function(campaignsToDraw) {
 
       // campaign is a staff pick, change draw target
       if (campaignToDraw.staffPick === true) {
-        campaignDrawTarget = 'staffpicks_list';
+        document.querySelector(`#staffpicks_list`).innerHTML += components.campaignHighlightMedium(campaignToDraw);
       } else {
-        campaignDrawTarget = 'campaigns_list';
+        document.querySelector(`#campaigns_list`).innerHTML += components.campaignMedium(campaignToDraw);
       }
-
-      // draw in inner html
-      document.querySelector(`#${campaignDrawTarget}`).innerHTML += `
-      <div style="float: left; width: 200px; height: 150px; padding: 20px; border: 1px dotted #aaa;">
-        <h3><a href="/campaign/${campaignID}">${campaignToDraw.name && campaignToDraw.name || 'Unnamed  Campaign'}</a></h3>
-        <div>Progress: <span>${campaignToDraw.progress || 0}</span>%</div>
-        <div>Amount Raised: <span>${web3.fromWei(campaignToDraw.amountRaised, 'ether')}</span> ETH</div>
-        <div>Funding Goal: <span>${web3.fromWei(campaignToDraw.fundingGoal, 'ether')}</span> ETH</div>
-        <div>${campaignToDraw.active && 'Active' || 'Inactive'}
-      </div>`;
     }
   }
 
@@ -535,8 +681,8 @@ const drawCampaigns = function(campaignsToDraw) {
 
 // load all campaigns
 const loadAndDrawCampaignsList = function() {
-  // loading message
-  document.querySelector('#campaigns_list').innerHTML = `Loading campaigns...`;
+  // draw loader
+  document.querySelector('#view-list').innerHTML = components.viewLoader();
 
   // load campaigns
   getCampaignsData({}, function(loadCampaignsError, loadCampaignsResult){
@@ -545,6 +691,9 @@ const loadAndDrawCampaignsList = function() {
       document.querySelector('#campaigns_list').innerHTML = `Error while loading campaigns ${JSON.stringify(loadCampaignsError)}`;
       return;
     }
+
+    // draw campaigns page
+    document.querySelector('#view-list').innerHTML = components.campaignsView();
 
     // if load result is nice
     if (typeof loadCampaignsResult === 'object') {
@@ -558,10 +707,14 @@ const loadAndDrawCampaignsList = function() {
   });
 };
 
+
+
 // module exports
 module.exports = {
-  drawNav: drawNav,
+  drawNavBar: drawNavBar,
+  drawFooter: drawFooter,
   loadAndDrawCampaign: loadAndDrawCampaign,
+  loadAndDrawCampaignContribute: loadAndDrawCampaignContribute,
   drawCampaigns: drawCampaigns,
   drawDetails: drawDetails,
   drawSelectedAccount: drawSelectedAccount,

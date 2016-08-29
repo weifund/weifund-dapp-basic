@@ -34,6 +34,18 @@ const isValidCampaignData = function(data) {
   return typeof data === 'object' && data !== null;
 };
 
+// is a valid campaign to be listed
+const isValidCampaign = function(data) {
+  if (data.hasName
+    && data.hasValidBeneficiaryAddress
+    && data.hasOwner
+    && !isNaN(data.progress)) {
+    return true;
+  }
+
+  return false;
+}
+
 // is valid ipfs data
 const isValidIPFSHash = function(hash) {
   return true;
@@ -68,17 +80,31 @@ const parseCampaignDataObject = function(combinedCampaignData, callback) {
     hasFailed: false,
     hasExpired: false,
     hasSucceeded: false,
+    valid: false,
     hasPaidOut: false,
     hasIPFSHash: false,
     hasData: false,
     hasOwner: false,
+    hasFundingGoal: false,
+    hasAmountRaised: false,
+
+    hasValidContributeMethodABI: false,
+    hasValidPayoutMethodABI: false,
+    hasValidRefundMethodABI: false,
+
     hasMailChimp: false,
+
     hasMainEntity: false,
     mainEntityType: false,
     mainEntityIsValidUrl: false,
     mainEntityUrl: {},
     mainEntityIsVideo: false,
     mainEntityVideo: null,
+
+    hasImage: false,
+    hasValidImage: false,
+    imageUrl: `https://unsplash.it/450/450?image=${combinedCampaignData.id || 0}`,
+
     interfaceIsCampaignAddress: false,
     hasValidIPFSHash: isValidIPFSHash(combinedCampaignData.ipfsHash),
     hasValidData: isValidCampaignData(combinedCampaignData.data),
@@ -172,6 +198,22 @@ const parseCampaignDataObject = function(combinedCampaignData, callback) {
 
   // parse campaign data
   if (campaignDataObject.hasValidData
+    && campaignDataObject.data.hasOwnProperty('image')) {
+
+    // data has image
+    campaignDataObject.hasImage = true;
+
+    // is valid image
+    campaignDataObject.hasValidImage = validUrl.isUri(campaignDataObject.data.image) && true || false;
+
+    // image url
+    if (campaignDataObject.hasValidImage) {
+      campaignDataObject.imageUrl = campaignDataObject.data.image;
+    }
+  }
+
+  // parse campaign data
+  if (campaignDataObject.hasValidData
     && campaignDataObject.data.hasOwnProperty('mainEntity')) {
     if (campaignDataObject.data.mainEntity !== '') {
       campaignDataObject.hasMainEntity = true;
@@ -203,6 +245,9 @@ const parseCampaignDataObject = function(combinedCampaignData, callback) {
       }
     }
   }
+
+  // campaign is valid
+  campaignDataObject.valid = isValidCampaign(campaignDataObject);
 
   // return new data object
   return campaignDataObject;
