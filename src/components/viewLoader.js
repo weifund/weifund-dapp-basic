@@ -9,7 +9,7 @@ const viewLoader = function(options) {
     <br />
     <br />
     <h3 style="text-align: center;">
-      ${options.message && options.message || 'Loading campaign from the blockchain... this may take a minute'}
+      ${options.message && options.message || 'Loading campaigns from the blockchain... this may take a minute'}
     </h3>
   </div>`;
 };

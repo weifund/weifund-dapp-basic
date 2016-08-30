@@ -36,8 +36,18 @@ const campaignFocusView = function(campaignObject) {
 
         <br /><br />
 
-        <a href="/campaign/${campaignObject.id}/contribute">
-          <button class="btn btn-lg btn-primary">Back This Project</button>
+
+
+        ${campaignObject.hasSucceeded
+          && `<a id="campaign_payoutButton" href="/campaign/${campaignObject.id}/payout">
+          <button class="btn btn-lg btn-success">Payout This Project</button>
+        </a>`
+          || `<a id="campaign_contributeButton" ${campaignObject.active && `href="/campaign/${campaignObject.id}/contribute"` || ``}>
+          <button ${campaignObject.active && `class="btn btn-lg btn-primary"` || `disabled="disabled" class="btn btn-lg btn-primary"` }>Back This Project</button>
+        </a>`}
+
+        <a id="campaign_refundButton" href="/campaign/${campaignObject.id}/refund" ${campaignObject.hasFailed && `` || `style="display: none;"`}>
+          <button class="btn btn-lg btn-warning">Claim Refund</button>
         </a>
       </div>
     </div>
@@ -48,6 +58,10 @@ const campaignFocusView = function(campaignObject) {
         <h3>${parseDisambiguatedDescription(campaignObject)}</h3>
       </div>
       <div class="col-xs-12 col-sm-4">
+        <div class="alert alert-warning" id="campaign_contributeFailureMessage" ${(campaignObject.active || campaignObject.hasSucceeded) && `style="display: none;"` || ``}>
+          You can no longer contribute to this campaign as it is no longer active.
+        </div>
+
         <br />
 
         <small>This project will expire at ${(new Date(campaignObject.expiry.toNumber(10) * 1000)).toString()}.</small>
@@ -59,7 +73,7 @@ const campaignFocusView = function(campaignObject) {
     <div style="background-color: #FFF; padding-bottom: 150px;">
       ${campaignFocusNav({campaignObject: campaignObject, getLocale: getLocale})}
 
-      ${campaignFocusOverviewView({campaignObject: campaignObject, getLocale: getLocale})}      ${campaignFocusDetailsView({campaignObject: campaignObject, getLocale: getLocale})}      ${campaignFocusContractsView({campaignObject: campaignObject, getLocale: getLocale})}      ${campaignFocusQRView({campaignObject: campaignObject, getLocale: getLocale})}
+      ${campaignFocusOverviewView({campaignObject: campaignObject, getLocale: getLocale})}      ${campaignFocusDetailsView({campaignObject: campaignObject, getLocale: getLocale, web3: web3})}      ${campaignFocusContractsView({campaignObject: campaignObject, getLocale: getLocale})}      ${campaignFocusQRView({campaignObject: campaignObject, getLocale: getLocale})}
     </div>
   </div>`;
 };

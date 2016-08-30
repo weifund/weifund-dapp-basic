@@ -84,6 +84,16 @@ const parseSolidityMethodName = function(rawName) {
   return parseNamePieces.join(' ');
 };
 
+// is bignumber
+const isBigNumber = function(obj) {
+  if (typeof obj === 'object' && obj !== null) {
+    if (typeof obj.__proto__.dividedToIntegerBy !== 'undefined') {
+      return true;
+    }
+  }
+
+  return false;
+};
 
 // parse a solidity method interface
 const parseSolidityMethodInterface = function(methodInterface) {
@@ -185,6 +195,7 @@ const filterXSSObject = function(obj){
 
 module.exports = {
   log: log,
+  isBigNumber: isBigNumber,
   etherScanAddressUrl: etherScanAddressUrl,
   etherScanTxHashUrl: etherScanTxHashUrl,
   parseCampaignRegistryData: parseCampaignRegistryData,

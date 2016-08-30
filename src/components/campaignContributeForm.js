@@ -1,11 +1,15 @@
+const campaignContributeNav = require('./campaignContributeNav');
+
 const campaignContributeForm = function(options) {
+  const campaignObject = options.campaignObject;
+
   return `<div id="view-campaign-contribute-form" class="row center-block container" style="margin-top: 80px; margin-bottom: 150px;">
     <div class="col-xs-12 col-sm-6 col-md-8 no-border-xs no-border-sm" style="border-right: 3px solid #E1E1E1; padding-right: 50px;">
       <h3>Contribution Amount</h3>
       <h4>Please select the amount you want to contribute to Gnosis.</h4>
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-8">
-          <div class="input-slider input-slider-lg" data-input-id="contributionAmount">
+          <div class="input-slider input-slider-lg" data-input-id="campaign_contributeAmount">
             <div class="input-slider-rail">
               <div class="input-slider-rail-highlight"></div>
               <div class="input-slider-bar"></div>
@@ -13,7 +17,10 @@ const campaignContributeForm = function(options) {
           </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-4">
-          <input type="text" id="contributionAmount" class="form-control input-lg" placeholder="i.e. 1 ether" />
+          <div class="input-group">
+            <input type="text" id="campaign_contributeAmount" value="1.5" class="form-control input-lg" placeholder="i.e. 1" aria-describedby="basic-addon2" />
+            <span class="input-group-addon" id="basic-addon2">ether</span>
+          </div>
         </div>
       </div>
 
@@ -31,7 +38,10 @@ const campaignContributeForm = function(options) {
           </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-4">
-          <input type="text" id="campaign_input_1" class="form-control input-lg" placeholder="i.e. 400 Gnosis" />
+          <div class="input-group">
+            <input type="text" id="campaign_input_1" class="form-control input-lg" placeholder="i.e. 400" aria-describedby="basic-addon2" />
+            <span class="input-group-addon" id="basic-addon2">gnosis</span>
+          </div>
         </div>
       </div>
 
@@ -41,7 +51,7 @@ const campaignContributeForm = function(options) {
       <h4>Help support WeiFund by making a small donation to the team.</h4>
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-8">
-          <div class="input-slider input-slider-lg" data-input-id="campaign_weifundDonation">
+          <div class="input-slider input-slider-lg" data-input-id="campaign_weifundContributeAmount">
             <div class="input-slider-rail">
               <div class="input-slider-rail-highlight"></div>
               <div class="input-slider-bar"></div>
@@ -49,7 +59,11 @@ const campaignContributeForm = function(options) {
           </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-4">
-          <input type="text" id="campaign_weifundDonation" class="form-control input-lg" placeholder="i.e. 3 ether" />
+          <div class="input-group">
+            <input type="text" id="campaign_weifundContributeAmount" value=".03" class="form-control input-lg" placeholder="i.e. 3" aria-describedby="basic-addon2" />
+            <span class="input-group-addon" id="basic-addon2">ether</span>
+          </div>
+
         </div>
       </div>
 
@@ -66,17 +80,17 @@ The data displayed in the Public Data tool is provided by the third party indica
 Google (A) expressly disclaims the accuracy, adequacy, or completeness of any data and (B) shall not be liable for any errors, omissions or other defects in, delays or interruptions in such data, or for any actions taken in reliance thereon. Neither Google nor any of its data providers will be liable for any damages relating to your use of the data provided herein.
       </textarea>
       <br />
-      <input type="checkbox" id="campaign_input_1" placeholder="i.e. 400" />
+      <input type="checkbox" id="campaign-contribute-disclaimer" placeholder="i.e. 400" />
       By checking this box, you agree to the WeiFund disclaimer.
       <br />
       <br />
       <br />
       <br />
-      <button class="btn btn-primary btn-lg">Review Contribution</button>
+      <a href="/campaign/${campaignObject.id}/contribute/review" class="btn btn-primary btn-lg">Review Contribution</a>
       <br /><br />
-      <div class="alert alert-dismissible alert-warning">
+      <div id="campaign-contribute-form-response-wrapper" class="alert alert-dismissible alert-warning" style="diplay: none;">
         <h4>Warning!</h4>
-        <p>Best check yo self, you're not looking too good. Nulla vitae elit libero, a pharetra augue. Praesent commodo cursus magna, <a href="#" class="alert-link">vel scelerisque nisl consectetur et</a>.</p>
+        <p id="campaign-contribute-form-response-body">Best check yo self, you're not looking too good. Nulla vitae elit libero, a pharetra augue. Praesent commodo cursus magna, <a href="#" class="alert-link">vel scelerisque nisl consectetur et</a>.</p>
       </div>
     </div>
     <div class="col-xs-12 col-sm-6 col-md-4 no-padding-xs text-break-all" style="padding-left: 50px;">
@@ -120,6 +134,7 @@ Google (A) expressly disclaims the accuracy, adequacy, or completeness of any da
       <h4>Web3 Provider</h4>
       <h5>MetaMask Provider</h5>
     </div>
+    ${campaignContributeNav({backURL: `/campaign/${options.campaignObject.id}/contribute/`, showNextButton: false})}
   </div>`;
 };
 

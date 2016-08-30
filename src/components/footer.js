@@ -5,10 +5,13 @@ const footer = function() {
       <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6">
           <h4 class="text-light-gray">Discover</h4>
-          <a class="text-light-gray">Active</a> <br/>
-          <a class="text-light-gray">Inactive</a>
+          <a href="/" class="text-light-gray">Active</a> <br/>
+          <a href="/" class="text-light-gray">Inactive</a>
         </div>
         <div class="col-xs-12 col-md-6">
+          <h4 class="text-light-gray">Connect With Us</h4>
+          <a href="http://weifund.io" class="text-light-gray">weifund.io</a> <br/>
+          <a href="http://reddit.com/r/weifund" class="text-light-gray">Reddit</a> <br/>
         </div>
       </div>
       <br />
@@ -18,7 +21,7 @@ const footer = function() {
       <br />
       <div class="row">
         <div class="col-xs-6 col-md-9">
-          <img src="/weifund-logo-small-white.png" style="height: 35px; max-width: auto;" />
+          <a href="/"><img src="/weifund-logo-small-white.png" style="height: 35px; max-width: auto;" /></a>
           <br />
           <small>&copy; 2016</small>
         </div>

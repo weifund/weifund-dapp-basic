@@ -12,11 +12,13 @@ const campaignsView = require('./components/campaignsView');
 const campaignMedium = require('./components/campaignMedium');
 const campaignHighlightMedium = require('./components/campaignHighlightMedium');
 const campaignContributeView = require('./components/campaignContributeView');
+const campaignPayoutView = require('./components/campaignPayoutView');
 
 module.exports = {
   campaignHighlightMedium: campaignHighlightMedium,
   campaignMedium: campaignMedium,
   campaignsView: campaignsView,
+  campaignPayoutView: campaignPayoutView,
   campaignContributeView: campaignContributeView,
   campaignFocusView: campaignFocusView,
   viewLoader: viewLoader,

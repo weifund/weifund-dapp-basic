@@ -85,7 +85,7 @@ const parseCampaignDataObject = function(combinedCampaignData, callback) {
     hasIPFSHash: false,
     hasData: false,
     hasOwner: false,
-    hasFundingGoal: false,
+    hasFundingGoal: true,
     hasAmountRaised: false,
 
     hasValidContributeMethodABI: false,

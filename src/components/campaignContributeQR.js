@@ -1,3 +1,5 @@
+const campaignContributeNav = require('./campaignContributeNav');
+
 const campaignContributeQR = function(options) {
   return `<div id="view-campaign-contribute-ether-qrcode" class="row center-block container" style=" margin-bottom: 150px;">
     <div class="col-xs-12">
@@ -19,7 +21,9 @@ const campaignContributeQR = function(options) {
         </div>
       </div>
     </div>
-  </div>`;
+    ${campaignContributeNav({backURL: `/campaign/${options.campaignObject.id}/contribute/ether`, showNextButton: false})}
+  </div>
+  `;
 };
 
 

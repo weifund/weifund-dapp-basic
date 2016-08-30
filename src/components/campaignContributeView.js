@@ -2,6 +2,7 @@ const campaignContributeQR = require('./campaignContributeQR');
 const campaignContributeReceipt = require('./campaignContributeReceipt');
 const campaignContributeForm = require('./campaignContributeForm');
 const campaignContributeReview = require('./campaignContributeReview');
+const campaignContributeNav = require('./campaignContributeNav');
 
 const campaignContributeView = function(options) {
   const campaignObject = options.campaignObject;
@@ -25,7 +26,7 @@ const campaignContributeView = function(options) {
 
     <br />-->
 
-    <div class="row">
+    <div class="row col-xs-12">
       <div class="col-xs-12">
         <h3>Select Contribution Method</h3>
         <br />
@@ -48,10 +49,11 @@ const campaignContributeView = function(options) {
             </a>
           </div>
         </div>
+        <br />
+        <h4>Please select the method in which you will contribute to this campaign</h4>
       </div>
     </div>
-    <br />
-    <h4>Please select the method in which you will contribute to this campaign</h4>
+    ${campaignContributeNav({backURL: `/campaign/${options.campaignObject.id}/`, showNextButton: false})}
   </div>
 
   <div id="view-campaign-contribute-wallet" class="row center-block container" style="margin-top: 40px; display: none;">
@@ -87,6 +89,7 @@ const campaignContributeView = function(options) {
         </div>
       </div>
     </div>
+    ${campaignContributeNav({backURL: `/campaign/${options.campaignObject.id}/contribute`, showNextButton: false})}
   </div>
 
   <div id="view-campaign-contribute-exchanges" class="row center-block container" style="margin-top: 40px; display: none;">
@@ -127,6 +130,7 @@ const campaignContributeView = function(options) {
         </div>
       </div>
     </div>
+    ${campaignContributeNav({backURL: `/campaign/${options.campaignObject.id}/contribute`, showNextButton: false})}
   </div>
 
   <div id="view-campaign-contribute-ether-method" class="row center-block container" style="margin-top: 40px; display: none;">
@@ -147,6 +151,7 @@ const campaignContributeView = function(options) {
       <br />
       <h4>Please select the method in which you will contribute Ether to this campaign</h4>
     </div>
+    ${campaignContributeNav({backURL: `/campaign/${options.campaignObject.id}/contribute`, showNextButton: false})}
   </div>
 
   <div id="view-campaign-contribute-cryptocurrency-method" class="row center-block container" style="margin-top: 40px; display: none;">
@@ -173,6 +178,7 @@ const campaignContributeView = function(options) {
       <h4>Please verify that this is your Ethereum address and you have access and control over it before sending Ether (ETH) to it.</h4>
       <br /><br />
     </div>
+    ${campaignContributeNav({backURL: `/campaign/${options.campaignObject.id}/contribute`, showNextButton: false})}
   </div>
 
   ${campaignContributeQR({campaignObject: options.campaignObject, getLocale: options.getLocale})}

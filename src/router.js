@@ -30,13 +30,13 @@ const openCampaign = function(options, params, callback) {
 
 // open campaign contribute
 const openCampaignContribute = function(options, params, callback) {
+  // draw campaign
+  options.openView('view-campaign-contribute');
+
   if (campaignContributeIdOfLoadedFocus === parseInt(params.campaignID)) {
     callback(null, true);
     return;
   }
-
-  // draw campaign
-  options.openView('view-campaign-contribute');
   options.loadAndDrawCampaignContribute(parseInt(params.campaignID), callback);
   campaignIdOfLoadedFocus = false;
   campaignContributeIdOfLoadedFocus = parseInt(params.campaignID);
@@ -60,13 +60,13 @@ const setupRouter = function(options) {
 
       options.openView('view-list');
     }],
-    /* ['/start', function(params){
+    ['/start', function(params){
       options.openView('view-start');
     }],
     ['/register', function(params){
       options.openView('view-register');
     }],
-    ['/account', function(params){
+    /* ['/account', function(params){
       options.openView('view-account');
     }], */
     ['/campaign/:campaignID', function(params) {
@@ -148,8 +148,9 @@ const setupRouter = function(options) {
       ]],
       ['/payout', function(params) {
         // draw campaign
-        options.loadAndDrawCampaign(parseInt(params.campaignID));
-
+        campaignIdOfLoadedFocus = false;
+        campaignContributeIdOfLoadedFocus = false;
+        options.loadAndDrawCampaignPayout(parseInt(params.campaignID));
         options.openView('view-campaign-payout');
       }, [
         ['/receipt', function(params) {

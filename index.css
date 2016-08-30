@@ -12,6 +12,20 @@ body, html {
   overflow-x: hidden;
 }
 
+.input-group .form-control {
+  border-right: none;
+  padding-right: 0px;
+}
+
+.input-group-addon {
+  border-left: none !important;
+  background-color: #FFF;
+  color: #999;
+  font-family: inherit;
+  font-size: 17px;
+  text-align: left;
+}
+
 @media only screen and (max-device-width: 480px) {
   .no-padding-xs {
     padding: 0px !important;
@@ -228,6 +242,20 @@ footer {
   margin-bottom: 10px;
 
   color: #333;
+}
+
+@media screen and (min-width: 300px) {
+  .list-campaign-medium-text {
+     display: block;
+     min-height: 80px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .list-campaign-medium-text {
+     display: block;
+     min-height: 130px;
+  }
 }
 
 .list-campaign-medium a:hover {

@@ -25,7 +25,7 @@ const subViews = [
 
   'view-campaign-contribute-method',
   'view-campaign-contribute-wallet',
-  'view-campaign-contribute-exchange',
+  'view-campaign-contribute-exchanges',
   'view-campaign-contribute-ether-method',
   'view-campaign-contribute-cryptocurrency-method',
   'view-campaign-contribute-ether-qrcode',

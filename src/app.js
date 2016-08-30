@@ -51,6 +51,7 @@ const handleCampaignPayout = handlers.handleCampaignPayout;
 const handleRegisterCampaignData = handlers.handleCampaignPayout;
 const loadAndDrawCampaignsList = handlers.loadAndDrawCampaignsList;
 const loadAndDrawCampaignContribute = handlers.loadAndDrawCampaignContribute;
+const loadAndDrawCampaignPayout = handlers.loadAndDrawCampaignPayout;
 
 // draw navbar
 drawNavBar();
@@ -65,6 +66,7 @@ const loadApp = function() {
   setupRouter({
     openView: openView,
     openSubView: openSubView,
+    loadAndDrawCampaignPayout: loadAndDrawCampaignPayout,
     loadAndDrawCampaignContribute: loadAndDrawCampaignContribute,
     loadAndDrawCampaignsList: loadAndDrawCampaignsList,
     loadAndDrawCampaign: loadAndDrawCampaign,
@@ -88,16 +90,16 @@ const loadApp = function() {
   document.querySelector('#newCampaign').addEventListener('click', handleNewCampaign);
 
   // add payout event listener
-  document.querySelector('#payout').addEventListener('click', handleCampaignPayout);
+  //document.querySelector('#payout').addEventListener('click', handleCampaignPayout);
 
   // add contribute event listener
   //document.querySelector('#contribute').addEventListener('click', handleCampaignContribution);
 
   // register campaign button
-  //document.querySelector('#registerCampaign').addEventListener('click', handleRegisterCampaign);
+  document.querySelector('#registerCampaign').addEventListener('click', handleRegisterCampaign);
 
   // ipfs register
-  //document.querySelector('#registerCampaignData').addEventListener('click', handleRegisterCampaignData);
+  document.querySelector('#registerCampaignData').addEventListener('click', handleRegisterCampaignData);
 };
 
 // setup provider

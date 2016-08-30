@@ -19,11 +19,13 @@ const campaignMedium = function(campaignObject) {
         </div>
       </a>
       <div class="list-campaign-medium-description">
-        <a href="/campaign/${campaignObject.id}">
-          <h3>${campaignObject.name}</h3>
-        </a>
+        <div class="list-campaign-medium-text">
+          <a href="/campaign/${campaignObject.id}">
+            <h3>${campaignObject.name}</h3>
+          </a>
 
-        <p style="display: block; min-height: 50px;">${parseDisambiguatedDescription(campaignObject)}</p>
+          <p style="display: block; min-height: 50px;">${parseDisambiguatedDescription(campaignObject)}</p>
+        </div>
 
         <div class="row">
           <div class="col-xs-12">

@@ -50,7 +50,7 @@ const getCampaigns = function(options, callback) {
     }
 
     // loop through campaigns and load from registry
-    for(var campaignID = 0; campaignID < totalCampaigns; campaignID++){
+    for(var campaignID = totalCampaigns - 1; campaignID >= 0; campaignID--){
       getCampaignAndAssign(campaignID);
     }
   });

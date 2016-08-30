@@ -45,6 +45,7 @@ const ipfs = require('./ipfs').ipfs;
 // setup campaign and data registries
 // Campaign/token contracts
 const contracts = require('./contracts');
+const classes = require('./contracts').classes;
 const campaignRegistry = contracts.campaignRegistryContract;
 const staffPicks = contracts.staffPicksContract;
 const campaignDataRegistry = contracts.campaignDataRegistryContract;
@@ -423,6 +424,36 @@ const buildAllInputSliders = function() {
       inputSliderRailHighlight.style.width = `${barLeftPositionPercentage}%`;
     };
 
+    // handle input change
+    if (typeof inputSliderElement.dataset.inputId === 'string') {
+      const dataInputElement = document.querySelector(`#${inputSliderElement.dataset.inputId}`);
+
+      // handle input element change
+      const handleInputElementChange = function(event) {
+        var inputElementValue = parseInt(dataInputElement.value, 10);
+
+        if (inputElementValue > 100) {
+          inputElementValue = 100;
+        }
+
+        if (inputElementValue < 0) {
+          inputElementValue = 0;
+        }
+
+        if (!isNaN(inputElementValue)) {
+          // set input slider bar left position
+          inputSliderBar.style.left = `${inputElementValue}%`;
+          inputSliderRailHighlight.style.width = `${inputElementValue}%`;
+        }
+      };
+
+      // instantiate initial handler default input
+      handleInputElementChange({});
+
+      // mouse move listener
+      document.body.addEventListener('change', handleInputElementChange, false);
+    }
+
     // mouse move listener
     document.body.addEventListener('mousemove', handleInputSliderMouseMove, false);
 
@@ -434,6 +465,40 @@ const buildAllInputSliders = function() {
     inputSliderBar.addEventListener('mouseup', handleInputSliderMouseUp, false);
     document.body.addEventListener('mouseup', handleInputSliderMouseUp, false);
 
+  });
+};
+
+const loadAndDrawCampaignPayout = function(campaignID, callback) {
+  // handle empty callback
+  if (typeof callback !== 'function') {
+    callback = function(e, r) {};
+  }
+
+  // draw loader
+  document.querySelector('#view-campaign-payout').innerHTML = components.viewLoader();
+
+  // load campaign fresh to draw
+  getCampaignData(campaignID, function(campaignLoadError, campaignData){
+    if (campaignLoadError) {
+      log('Campaign load while drawing...', campaignLoadError);
+      callback(campaignLoadError, null);
+      return;
+    }
+
+    // save in campaigns
+    setCampaign(campaignID, campaignData);
+
+    // draw campaign focus
+    document.querySelector('#view-campaign-payout').innerHTML = components.campaignPayoutView({campaignObject: campaignData, getLocale: getLocale});
+
+    // refresh all page buttons after redraw
+    refreshPageButtons();
+
+    // build all sliders
+    buildAllInputSliders();
+
+    // callback
+    callback(null, true);
   });
 };
 
@@ -660,7 +725,7 @@ const drawCampaigns = function(campaignsToDraw) {
   document.querySelector('#campaigns_list').innerHTML = ``;
 
   // draw campaigns in list
-  for(var campaignID = 0; campaignID < getCampaigns().length; campaignID++){
+  for(var campaignID = getCampaigns().length; campaignID >= 0; campaignID--){
     var campaignToDraw = campaignsToDraw[campaignID];
     var campaignDrawTarget = 'campaigns_list';
 
@@ -714,6 +779,7 @@ module.exports = {
   drawNavBar: drawNavBar,
   drawFooter: drawFooter,
   loadAndDrawCampaign: loadAndDrawCampaign,
+  loadAndDrawCampaignPayout: loadAndDrawCampaignPayout,
   loadAndDrawCampaignContribute: loadAndDrawCampaignContribute,
   drawCampaigns: drawCampaigns,
   drawDetails: drawDetails,
