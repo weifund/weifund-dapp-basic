@@ -12,6 +12,10 @@ body, html {
   overflow-x: hidden;
 }
 
+a:hover {
+  text-decoration: none;
+}
+
 .input-group .form-control {
   border-right: none;
   padding-right: 0px;

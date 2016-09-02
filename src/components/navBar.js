@@ -3,6 +3,7 @@ const navBar = function(options) {
   <nav class="navbar nav navbar-fixed-top row">
     <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 nav-left hidden-xs hidden-sm">
       <a href="/">Discover</a>
+      <a href="/start" style="padding-left: 40px;">Start a campaign</a>
     </div>
     <div class="col-xs-6 col-sm-12 col-md-4 col-lg-4 text-center">
       <a href="/"><img id="nav-logo" src="/weifund-logo-small.png"></a>
@@ -29,6 +30,7 @@ const navBar = function(options) {
       <div class="row">
         <div class="col-xs-6 col-sm-6">
           <a href="/">Discover</a>
+          <a href="/start" style="padding-left: 40px;">Start a campaign</a>
         </div>
         <div class="col-xs-6 col-sm-6 text-right">
           <select class="footer-locale-select">
@@ -50,6 +52,7 @@ const navBar = function(options) {
             <ul class="list-group">
               <li class="list-group-item">
                 <a href="/">Discover</a>
+                <a href="/start" style="padding-left: 40px;">Start a campaign</a>
               </li>
               <li class="list-group-item">
                 <select class="footer-locale-select">

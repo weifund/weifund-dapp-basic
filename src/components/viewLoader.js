@@ -2,6 +2,7 @@ const viewLoader = function(options) {
   if (typeof options === 'undefined') {
     options = {};
   }
+  window.scrollTo(0, 0);
 
   return `<div style="height: 500px;">
     <span class="cssload-loader" style="margin-top: 17%;"><span class="cssload-loader-inner"></span></span>

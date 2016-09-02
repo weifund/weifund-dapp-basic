@@ -18,42 +18,58 @@ const campaignContributeReview = function(options) {
     </div>
     <div class="row">
       <div class="col-xs-12 col-sm-6">
-        <h4>Founder Amount</h4>
-        <h4><b>500 Gnosis Tokens</b></h4>
-        <br />
+        <div id="campaign_contributeReviewInputs">
+        </div>
+
         <h4>Campaign Contribution</h4>
-        <h4><b>3 Ether</b> <small>(ETH)</small></h4>
+        <h4><b><span id="campaign_contributeReview_contributeAmount"><span> Ether</b> <small>(ETH)</small></h4>
         <br />
+
         <h4>WeiFund Contribution</h4>
-        <h4><b>.3 Ether</b> <small>(ETH)</small></h4>
-        <small>Note, this will create a small second transaction of .3 ether (ETH).</small>
+        <h4><b><span id="campaign_contributeReview_weifundContributeAmount"><span> Ether</b> <small>(ETH)</small></h4>
+        <small>Note, this will create a small second transaction for the amount specified.</small>
+
       </div>
       <div class="col-xs-12 col-sm-6">
+
         <h4>Your Account</h4>
-        <h4><b>0x8e6316f44baeeee5d41a1070516cc5fa47baf222</b> </h4>
+        <h4><b>${options.defaultAccount()}</b> </h4>
         <small><i>Balance: <b>300</b> Ether (ETH)</i></small>
+
         <br />
         <br />
+
         <h4>Campaign Contract</h4>
-        <h4><b>0xFe6316f44baeeee5d41a1070516cc5fa47baf22e</b> </h4>
-        <small><i>Balance: <b>22</b> Ether (ETH)</i></small>
+        <h4><b>${options.campaignObject.addr}</b> </h4>
+        <small><i>Balance: <b>${options.web3.fromWei(options.campaignObject.balance, 'ether').toString(10)}</b> Ether (ETH)</i></small>
       </div>
     </div>
     <div class="row">
       <div class="col-xs-12">
         <br />
         <hr />
+
         <h4>Contribution Total</h4>
-        <h4><b>3.3 Ether</b> <small>(ETH)</small></h4>
+        <h4><b id="campaign_contributeReview_totalContributeAmount">0</b> Ether <small>(ETH)</small></h4>
+
         <br />
         <br />
-        <button class="btn btn-primary btn-lg">Make Contribution</button>
+
+        <button id="campaign_reviewContributeButton" class="btn btn-primary btn-lg">Make Contribution</button>
+
         <br />
         <br />
-        <div class="alert alert-dismissible alert-warning" style="display: none;">
-          <h4>Warning!</h4>
-          <p>Best check yo self, you're not looking too good. Nulla vitae elit libero, a pharetra augue. Praesent commodo cursus magna, <a href="#" class="alert-link">vel scelerisque nisl consectetur et</a>.</p>
+
+        <div id="campaign_contribute_info_response" class="alert alert-info" style="display: none;">
+          <h4>Processing</h4>
+          <p id="campaign_contribute_info_response_body"></p>
         </div>
+
+        <div id="campaign_contribute_warning_response" class="alert alert-warning" style="display: none;">
+          <h4>Warning!</h4>
+          <p id="campaign_contribute_warning_response_body"></p>
+        </div>
+
       </div>
     </div>
   </div>`;

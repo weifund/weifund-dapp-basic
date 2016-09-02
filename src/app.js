@@ -39,6 +39,7 @@ const t = require('./i18n').t;
 const handlers = require('./handlers');
 const drawNavBar = handlers.drawNavBar;
 const drawFooter = handlers.drawFooter;
+const drawStartCampaignView = handlers.drawStartCampaignView;
 
 const drawCampaigns = handlers.drawCampaigns;
 const loadAndDrawCampaign = handlers.loadAndDrawCampaign;
@@ -56,8 +57,37 @@ const loadAndDrawCampaignPayout = handlers.loadAndDrawCampaignPayout;
 // draw navbar
 drawNavBar();
 
+// draw startcampaign page
+drawStartCampaignView();
+
+// confirm on page exit
+const confirmOnPageExit = function (e) {
+  // If we haven't been passed the event get the window.event
+  e = e || window.event;
+
+  const message = `
+    WARNING:
+
+
+    Leaving this page while a transaction is in progress may result in a loss of funds or data.
+
+    Please ensure your transactions have completed or are not in progress before exiting or reloading this page.
+  `;
+
+  // For IE6-8 and Firefox prior to version 4
+  if (e) {
+    e.returnValue = message;
+  }
+
+  // For Chrome, Safari, IE8+ and Opera 12+
+  return message;
+};
+
 // load application
 const loadApp = function() {
+  // window warnign message
+  window.onunload = window.onbeforeunload = confirmOnPageExit;
+
   // setup the web3 provider
   setupWeb3Provider();
   setupIPFSProvider();
@@ -80,6 +110,14 @@ const loadApp = function() {
     if (!accountsError && accounts.length) {
       setDefaultAccount(accounts[0]);
       //drawSelectedAccount();
+
+      /* const txObject = require('./environment').txObject;
+      const classes = require('./contracts').classes;
+      const standardRefundCampaignFactory = require('./contracts').standardRefundCampaignFactory;
+
+      standardRefundCampaignFactory.new(Object.assign({data: classes.StandardRefundCampaignFactory.bytecode},  txObject()), function(err, result){
+        console.log('refund camp factory', err, result);
+      }); */
     }
   });
 
@@ -87,7 +125,7 @@ const loadApp = function() {
   drawFooter();
 
   // new campaign
-  document.querySelector('#newCampaign').addEventListener('click', handleNewCampaign);
+  //document.querySelector('#startCampaign_button').addEventListener('click', handleStartCampaign);
 
   // add payout event listener
   //document.querySelector('#payout').addEventListener('click', handleCampaignPayout);

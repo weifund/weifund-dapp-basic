@@ -1,6 +1,4 @@
 const campaignContributeNav = function(options) {
-  console.log(options.showNextButton);
-
   return `
   <div class="row">
     <div class="col-xs-12">

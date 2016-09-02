@@ -6,8 +6,9 @@ const campaignContributeNav = require('./campaignContributeNav');
 
 const campaignContributeView = function(options) {
   const campaignObject = options.campaignObject;
-
   return `<div id="campaign-contribute" style="margin-top: 40px; margin-bottom: 150px;">
+
+  <input type="hidden" value="${campaignObject.id}" id="campaign_id" />
 
   <div class="row center-block container text-center" style="margin-bottom: 60px;">
     <a href="/campaign/${campaignObject.id}/" target="_blank" style="color: #333; text-decoration: none;">
@@ -173,7 +174,7 @@ const campaignContributeView = function(options) {
       <h4>Please select a Bitcoin payment method, either by ShapeShifting to the provided Ether address or using an exchange and widthrawing to your provided ether address.</h4>
       <br />
       <h3>Your Ethereum Address</h3>
-      <h2>0x9e6316f44baeeee5d41a1070516cc5fa47baf227</h2>
+      <h2>${options.defaultAccount()}</h2>
       <br />
       <h4>Please verify that this is your Ethereum address and you have access and control over it before sending Ether (ETH) to it.</h4>
       <br /><br />
@@ -182,9 +183,12 @@ const campaignContributeView = function(options) {
   </div>
 
   ${campaignContributeQR({campaignObject: options.campaignObject, getLocale: options.getLocale})}
-  ${campaignContributeForm({campaignObject: options.campaignObject, getLocale: options.getLocale})}
-  ${campaignContributeReview({campaignObject: options.campaignObject, getLocale: options.getLocale})}
-  ${campaignContributeReceipt({campaignObject: options.campaignObject, getLocale: options.getLocale})}
+
+  ${campaignContributeForm({campaignObject: options.campaignObject, getLocale: options.getLocale, defaultAccount: options.defaultAccount, web3: options.web3})}
+
+  ${campaignContributeReview({campaignObject: options.campaignObject, getLocale: options.getLocale, defaultAccount: options.defaultAccount, web3: options.web3})}
+
+  <div id="view-campaign-contribute-receipt"></div>
 `;
 };
 

@@ -72,4 +72,5 @@ text-overflow: ellipsis;">${parseDisambiguatedDescription(campaignObject)}</p>
   </div>`;
 };
 
+// export highlight medium
 module.exports = campaignHighlightMedium;

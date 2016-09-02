@@ -61,7 +61,7 @@ const setupRouter = function(options) {
       options.openView('view-list');
     }],
     ['/start', function(params){
-      options.openView('view-start');
+      options.openView('view-start-campaign');
     }],
     ['/register', function(params){
       options.openView('view-register');

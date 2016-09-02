@@ -15,7 +15,7 @@ const campaignFocusNav = function(options) {
         Contracts
       </a>
       <a href="/campaign/${campaignObject.id}/qr" class="text-gray" style="padding-left: 40px;">
-        QR
+        QR Code
       </a>
     </div>
 

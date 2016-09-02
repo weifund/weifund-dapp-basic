@@ -7,7 +7,7 @@ const views = [
   'view-campaign-refund',
   'view-campaign-refund-receipt',
   'view-landing',
-  'view-start',
+  'view-start-campaign',
   'view-register',
   'view-list',
   'view-focus',
@@ -71,8 +71,6 @@ const openView = function(openViewId) {
 const openSubView = function(openViewId) {
   // clsoe all views
   closeAllSubViews();
-
-  console.log(openViewId, document.querySelector(`#${openViewId}`));
 
   // open selected view
   document.querySelector(`#${openViewId}`).style.display = '';

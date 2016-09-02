@@ -1,6 +1,22 @@
 const campaignFocusOverviewView = function(options) {
   const campaignObject = options.campaignObject;
   const getLocale = options.getLocale;
+  var mailChimpFormAction = '';
+  var showMailChimp = false;
+
+  console.log(campaignObject);
+
+  // if IPFS data is present and mailchimp
+  if (campaignObject.hasValidData) {
+    try {
+      if (campaignObject.hasMailChimp) {
+        showMailChimp = true;
+        mailChimpFormAction = campaignObject.data.mailChimp.forms[0].action;
+      }
+    } catch (mailChimpDrawError) {
+      log(`MailChimp draw error: ${mailChimpDrawError}`);
+    }
+  }
 
   return `
 <div id="view-campaign-info">
@@ -14,6 +30,35 @@ const campaignFocusOverviewView = function(options) {
       <div class="row">
         <div class="col-xs-12">
           ${campaignObject.hasValidData && campaignObject.data.i18n[getLocale()].about || 'No about section was written for this campaign.'}
+        </div>
+      </div>
+
+      <br /><br />
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div id="mc_embed_signup" ${showMailChimp && ' ' || 'style="display: none;"'}>
+            <form action="${mailChimpFormAction}" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+              <div id="mc_embed_signup_scroll">
+              <h3>Subscribe to our mailing list</h3>
+              <h4>via <a href="https://mailchimp.com">MailChimp</a></h4>
+              <br /><br />
+              <div class="mc-field-group">
+                <label for="mce-EMAIL">Email Address </label>
+                <input type="email" value="" name="EMAIL" placeholder="john@gmail.com" class="required email form-control"  id="mce-EMAIL">
+              </div>
+              <div id="mce-responses" class="clear">
+                <div class="response" id="mce-error-response" style="display:none"></div>
+                <div class="response" id="mce-success-response" style="display:none"></div>
+              </div>
+              <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_19406abd2b46ce9447a91562e_f5c4326349" tabindex="-1" value=""></div>
+              <br />
+              <div class="clear">
+                <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button btn btn-primary">
+              </div>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>

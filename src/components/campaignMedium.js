@@ -35,7 +35,7 @@ const campaignMedium = function(campaignObject) {
           </div>
         </div>
 
-        <div style="min-height: 70px;">
+        <div style="min-height: 70px; overflow: hidden;">
           <div class="row">
             <div class="col-xs-4">
               <h4>${campaignObject.progress}%</h4>
@@ -44,7 +44,7 @@ const campaignMedium = function(campaignObject) {
               <h4>${web3.fromWei(campaignObject.amountRaised, 'ether').toFixed(2)} ETH</h4>
             </div>
             <div class="col-xs-4">
-              <h4>${web3.fromWei(campaignObject.amountRaised, 'ether').toFixed(2)} ETH</h4>
+              <h4>${web3.fromWei(campaignObject.fundingGoal, 'ether').toFixed(2)} ETH</h4>
             </div>
           </div>
           <div class="row" style="padding-top: 0px;">

@@ -11,9 +11,14 @@ const campaignPayoutView = function(options) {
       </div>
       <h3>Payout Campaign</h3>
       <br />
+      <p>Payout the amount raised by this campaign to the beneficiary account specified.</p>
       <div class="row">
         <div class="col-xs-12">
-
+          <h3>Beneficiary Account</h3>
+          <h4>${campaignObject.beneficiary}</h4>
+          <br />
+          <h3>Feature Not Supported</h3>
+          <h4>This feature is not yet supported.</h4>
         </div>
       </div>
     </div>

@@ -9,8 +9,10 @@ const campaignFocusQRView = require('./campaignFocusQRView');
 const campaignFocusNav = require('./campaignFocusNav');
 
 const parseDisambiguatedDescription = function(campaignDataObject) {
-  return campaignDataObject.hasValidData && campaignDataObject.data.i18n[getLocale()].disambiguatedDescription || `A crowdfund that is valid enough to be listed, but does not have a description.`;
-}
+  return campaignDataObject.hasValidData && campaignDataObject.data.i18n[getLocale()].disambiguatedDescription || `A childrens charity based around helping kids in need succeed in life.`;
+
+  //`A crowdfund that is valid enough to be listed, but does not have a description.`
+};
 
 const campaignFocusView = function(campaignObject) {
   return `<div class="campaign-focus" style="margin-top: 40px;">
