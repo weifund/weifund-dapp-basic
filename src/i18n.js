@@ -4,13 +4,18 @@ const Polyglot = require('node-polyglot');
 // environment
 const getLocale = require('./environment').getLocale;
 
-// translations
-const translations = require('./translations/');
+// english translation
+const enLocaleTranslation = require('./translations/en.json');
+
+// all translations
+const localeTranslations = {
+  en: enLocaleTranslation,
+};
 
 // translate utility
 const polyglot = new Polyglot({
   locale: getLocale(),
-  phrases: translations[getLocale()],
+  phrases: localeTranslations[getLocale()],
 });
 
 // translate function

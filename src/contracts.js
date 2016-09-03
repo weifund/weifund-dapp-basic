@@ -17,7 +17,7 @@ const standardRefundCampaignFactory = web3.eth.contract(JSON.parse(classes.Stand
 const campaignRegistryContract = campaignRegistryFactory.at('0x93700217d32474d1637b4ddd04eb67b6adecf01a');
 const campaignDataRegistryContract = campaignDataRegistryFactory.at('0x51ec7392def0584ccfd5ff29f35c0d286ad0373d');
 const staffPicksContract = staffPicksContractFactory.at('0x2de8ffc2a818f375669a0bf178cb4f6a89da597b');
-const standardRefundCampaignFactoryContract = standardRefundCampaignFactory.at('0x49fb7653e2ed5709aaf1f142d4b0f9e9db8ae3ce');
+const standardRefundCampaignFactoryContract = standardRefundCampaignFactory.at('0xffb9adf430ed7a2d535eb3bd40981f1d8367bb8c');
 
 // export contracts
 module.exports = {

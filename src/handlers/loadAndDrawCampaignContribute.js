@@ -29,9 +29,6 @@ const getCampaigns = environment.getCampaigns;
 // web3
 const web3 = require('../web3').web3;
 
-// ipfs instance
-const ipfs = require('../ipfs').ipfs;
-
 // require contracts
 // setup campaign and data registries
 // Campaign/token contracts

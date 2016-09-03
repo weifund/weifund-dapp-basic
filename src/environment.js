@@ -32,8 +32,6 @@ const getDefaultAccount = function() {
   return defaultAccount;
 };
 
-
-
 // txObject builder
 const txObject = function() {
   return {

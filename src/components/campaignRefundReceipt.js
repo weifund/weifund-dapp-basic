@@ -1,8 +1,8 @@
-const campaignContributeReceipt = function(options){
+const campaignRefundReceipt = function(options){
   return `
   <div class="row center-block container" style="margin-top: 40px; margin-bottom: 150px;">
     <div class="col-xs-12">
-      <h3>Contribution Receipt
+      <h3>Refund Receipt
         <a href="javascript:window.print()">
           <button class="btn btn-sm text-gray" style="float: right;">
             Print Receipt
@@ -43,4 +43,4 @@ const campaignContributeReceipt = function(options){
   </div>`;
 };
 
-module.exports = campaignContributeReceipt;
+module.exports = campaignRefundReceipt;

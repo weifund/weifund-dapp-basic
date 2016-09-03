@@ -65,19 +65,118 @@ const buildInputsArray = function(rawInputsString) {
   return returnArray;
 };
 
+const toCapitalizedWords = function(name) {
+    var words = name.match(/[A-Za-z][a-z]*/g);
+
+    return words.map(capitalize).join(" ");
+}
+
+const capitalize = function(word) {
+    return word.charAt(0).toUpperCase() + word.substring(1);
+}
+
+// intake object, return html
+const objectToHTML = function(object, options) {
+  var returnedHTML = ``;
+  const web3 = options.web3;
+
+  // move through layout, display what is set in options.layout
+  Object.keys(options.layout).forEach(function(objectKey, keyIndex){
+    // if property exists
+    if (!object.hasOwnProperty(objectKey)) {
+      return;
+    }
+
+    // setup value input, output and layout object
+    const valueInput = object[objectKey];
+    var valueOutput = `none`;
+    var layoutObject = {};
+
+    // build layout object, if any
+    if (typeof options.layout[objectKey] === 'object') {
+      layoutObject = options.layout[objectKey];
+    }
+
+    // handle input of undefined
+    if (typeof valueInput === 'undefined') {
+      valueOutput = 'undefined';
+    }
+
+    // handle boolean input
+    if (typeof valueInput === 'boolean') {
+      valueOutput = `${valueInput && `true` || `false`}`;
+    }
+
+    // handle number
+    if (typeof valueInput === 'number') {
+      valueOutput = `${String(valueInput)}`;
+    }
+
+    // handle string
+    if (typeof valueInput === 'string') {
+      valueOutput = valueInput;
+    }
+
+    // handle object
+    if (typeof valueInput === 'object') {
+      // handle bignumber
+      if (isBigNumber(valueInput)) {
+        valueOutput = valueInput.toString(10);
+      }
+
+      // handle just standard type
+      valueOutput = `<pre style="overflow: scroll;">${JSON.stringify(valueInput, null, 2)}</pre>`
+    }
+
+    // handle special type ether
+    if (layoutObject.type === 'ether') {
+      valueOutput = `${web3.fromWei(valueInput, 'ether').toString(10)} ether (ETH)`;
+    }
+
+    // add to html return
+    returnedHTML += `
+      <br />
+      <h4>${layoutObject.name && layoutObject.name || toCapitalizedWords(objectKey)}</h4>
+      <small>${layoutObject.description}</small>
+      <h5>${valueOutput}</h5>
+    `;
+  });
+
+  // return html
+  return returnedHTML;
+};
+
 // cap first letter of words of words in string
 const capitalizeFirstLetter = function(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
+// name contains ID like property
+const nameContainsIDProperties = function(rawName){
+  return (String(rawName).toLowerCase().indexOf('id') !== -1);
+};
+
 // convert programatical name to pretty name
 const parseSolidityMethodName = function(rawName) {
+  // remove underscores and dashes
+  var spacedOutName = rawName.replace('_', '').replace('-', '');
+
   // break into parts
-  var parseNamePieces = rawName.split(/(?=[A-Z])/);
+  var parseNamePieces = spacedOutName.split(/(?=[A-Z])/);
 
   // cap first letter
   parseNamePieces = parseNamePieces.map(function(namePieceItem){
     return capitalizeFirstLetter(namePieceItem);
+  });
+
+  // fix all caps words
+  parseNamePieces.forEach(function(nameItem, nameItemIndex){
+    if (nameItem.length === 1 && parseNamePieces.length >= nameItemIndex + 1) {
+      var newNameArray = parseNamePieces.slice(0, nameItemIndex);
+      const newNameArrayAddition = `${nameItem}${parseNamePieces[nameItemIndex + 1]}`;
+      newNameArray.splice(nameItemIndex, 0, newNameArrayAddition);
+      parseNamePieces = newNameArray;
+    }
   });
 
   // rejoin name with space
@@ -192,7 +291,6 @@ const filterXSSObject = function(obj){
   // return object
   return obj;
 };
-
 
 // calculate outer height off an element
 const outerElHeight = function(el) {
@@ -352,8 +450,51 @@ const buildAllInputSliders = function() {
   });
 };
 
+// parse method abi object
+const parseMethodABIObject = function(methodType, methodABIObjectInput) {
+  // method type, method abi object
+  var methodABIObject = Object.assign({}, methodABIObjectInput);
+
+  // draw contribution inputs
+  methodABIObject.inputs.forEach(function(methodInput, methodInputIndex) {
+    // input type default
+    methodABIObject.inputs[methodInputIndex].kind = 'text';
+    methodABIObject.inputs[methodInputIndex].units = 'value';
+    methodABIObject.inputs[methodInputIndex].defaultValue = 0;
+    methodABIObject.inputs[methodInputIndex].usesSlider = true;
+
+    // method name nice
+    methodABIObject.inputs[methodInputIndex].nameParsed = parseSolidityMethodName(methodInput.name);
+
+    // set default dom ID and input type
+    methodABIObject.inputs[methodInputIndex].id = `campaign_${methodType}Input_${methodInputIndex}`;
+
+    // name contains id properties
+    if (nameContainsIDProperties(methodABIObject.inputs[methodInputIndex].nameParsed)) {
+      methodABIObject.inputs[methodInputIndex].units = 'id';
+      methodABIObject.inputs[methodInputIndex].usesSlider = false;
+      methodABIObject.inputs[methodInputIndex].defaultValue = '0';
+    }
+
+    // if type is numerical
+    if (String(methodInput.type).indexOf('int') !== -1) {
+      methodABIObject.inputs[methodInputIndex].kind = 'number';
+      methodABIObject.inputs[methodInputIndex].defaultValue = '0';
+    }
+
+    // is type a bool
+    if (methodInput.type === 'bool') {
+      methodABIObject.inputs[methodInputIndex].kind = 'bool';
+      methodABIObject.inputs[methodInputIndex].defaultValue = '0';
+    }
+  });
+
+  return methodABIObject;
+};
+
 module.exports = {
   log: log,
+  objectToHTML: objectToHTML,
   isBigNumber: isBigNumber,
   etherScanAddressUrl: etherScanAddressUrl,
   etherScanTxHashUrl: etherScanTxHashUrl,
@@ -362,8 +503,10 @@ module.exports = {
   oneDay: oneDay,
   parseSolidityMethodInterface: parseSolidityMethodInterface,
   emptyWeb3Address: emptyWeb3Address,
+  parseMethodABIObject: parseMethodABIObject,
   capitalizeFirstLetter: capitalizeFirstLetter,
   filterXSSObject: filterXSSObject,
+  nameContainsIDProperties: nameContainsIDProperties,
   parseSolidityMethodName: parseSolidityMethodName,
   outerElHeight: outerElHeight,
   outerElWidth: outerElWidth,

@@ -3,6 +3,12 @@ const sheetRouter = require('sheet-router');
 const href = require('sheet-router/href');
 const history = require('sheet-router/history');
 
+// view handling
+const views = require('./views');
+const closeAllViews = views.closeAllViews;
+const openView = views.openView;
+const openSubView = views.openSubView;
+
 // router instance
 var router;
 
@@ -22,7 +28,7 @@ const openCampaign = function(options, params, callback) {
     return;
   }
 
-  options.openView('view-focus');
+  openView('view-focus');
   options.loadAndDrawCampaign(parseInt(params.campaignID), callback);
   campaignIdOfLoadedFocus = parseInt(params.campaignID);
   campaignContributeIdOfLoadedFocus = false;
@@ -31,13 +37,27 @@ const openCampaign = function(options, params, callback) {
 // open campaign contribute
 const openCampaignContribute = function(options, params, callback) {
   // draw campaign
-  options.openView('view-campaign-contribute');
+  openView('view-campaign-contribute');
 
   if (campaignContributeIdOfLoadedFocus === parseInt(params.campaignID)) {
     callback(null, true);
     return;
   }
   options.loadAndDrawCampaignContribute(parseInt(params.campaignID), callback);
+  campaignIdOfLoadedFocus = false;
+  campaignContributeIdOfLoadedFocus = parseInt(params.campaignID);
+};
+
+// open campaign contribute
+const openCampaignRefund = function(options, params, callback) {
+  // draw campaign
+  openView('view-campaign-refund');
+
+  if (campaignContributeIdOfLoadedFocus === parseInt(params.campaignID)) {
+    callback(null, true);
+    return;
+  }
+  options.loadAndDrawCampaignRefund(parseInt(params.campaignID), callback);
   campaignIdOfLoadedFocus = false;
   campaignContributeIdOfLoadedFocus = parseInt(params.campaignID);
 };
@@ -51,98 +71,98 @@ const setupRouter = function(options) {
     /* ['/', function(params) {
       options.loadAndDrawCampaignsList();
 
-      options.openView('view-landing');
+      openView('view-landing');
     }], */
     ['/', function(params) {
       campaignIdOfLoadedFocus = false;
       campaignContributeIdOfLoadedFocus = false;
       options.loadAndDrawCampaignsList();
 
-      options.openView('view-list');
+      openView('view-list');
     }],
     ['/start', function(params){
-      options.openView('view-start-campaign');
+      openView('view-start-campaign');
     }],
     ['/register', function(params){
-      options.openView('view-register');
+      openView('view-register');
     }],
     /* ['/account', function(params){
-      options.openView('view-account');
+      openView('view-account');
     }], */
     ['/campaign/:campaignID', function(params) {
       // draw campaign
       openCampaign(options, params, function(e, r){
-        options.openSubView('view-campaign-info');
+        openSubView('view-campaign-info');
       });
     }, [
       ['/info', function(params) {
         openCampaign(options, params, function(e, r){
-          options.openSubView('view-campaign-info');
+          openSubView('view-campaign-info');
         });
       }],
       ['/details', function(params) {
         openCampaign(options, params, function(e, r){
-          options.openSubView('view-campaign-details');
+          openSubView('view-campaign-details');
         });
       }],
       ['/contracts', function(params) {
         openCampaign(options, params, function(e, r){
-          options.openSubView('view-campaign-contracts');
+          openSubView('view-campaign-contracts');
         });
       }],
       ['/qr', function(params) {
         openCampaign(options, params, function(e, r){
-          options.openSubView('view-campaign-qr');
+          openSubView('view-campaign-qr');
         });
       }],
       ['/contribute', function(params) {
         openCampaignContribute(options, params, function(err, result){
-          options.openSubView('view-campaign-contribute-method');
+          openSubView('view-campaign-contribute-method');
         });
       }, [
         ['/method', function(params) {
           openCampaignContribute(options, params, function(err, result){
-            options.openSubView('view-campaign-contribute-method');
+            openSubView('view-campaign-contribute-method');
           });
         }],
         ['/wallet', function(params) {
           openCampaignContribute(options, params, function(err, result){
-            options.openSubView('view-campaign-contribute-wallet');
+            openSubView('view-campaign-contribute-wallet');
           });
         }],
         ['/exchanges', function(params) {
           openCampaignContribute(options, params, function(err, result){
-            options.openSubView('view-campaign-contribute-exchanges');
+            openSubView('view-campaign-contribute-exchanges');
           });
         }],
         ['/cryptocurrency', function(params) {
           openCampaignContribute(options, params, function(err, result){
-            options.openSubView('view-campaign-contribute-cryptocurrency-method');
+            openSubView('view-campaign-contribute-cryptocurrency-method');
           });
         }],
         ['/ether', function(params) {
           openCampaignContribute(options, params, function(err, result){
-            options.openSubView('view-campaign-contribute-ether-method');
+            openSubView('view-campaign-contribute-ether-method');
           });
         }],
         ['/ether-qrcode', function(params) {
           openCampaignContribute(options, params, function(err, result){
-            options.openSubView('view-campaign-contribute-ether-qrcode');
+            openSubView('view-campaign-contribute-ether-qrcode');
           });
         }],
         ['/form', function(params) {
           openCampaignContribute(options, params, function(err, result){
-            options.openSubView('view-campaign-contribute-form');
+            openSubView('view-campaign-contribute-form');
           });
         }],
         ['/review', function(params) {
           openCampaignContribute(options, params, function(err, result){
-            options.openSubView('view-campaign-contribute-review');
+            openSubView('view-campaign-contribute-review');
           });
         }],
         ['/receipt', function(params) {
           openCampaignContribute(options, params, function(err, result){
-            options.openSubView('view-campaign-contribute-receipt');
+            openSubView('view-campaign-contribute-receipt');
           });
         }]
       ]],
@@ -151,25 +171,31 @@ const setupRouter = function(options) {
         campaignIdOfLoadedFocus = false;
         campaignContributeIdOfLoadedFocus = false;
         options.loadAndDrawCampaignPayout(parseInt(params.campaignID));
-        options.openView('view-campaign-payout');
+        openView('view-campaign-payout');
       }, [
         ['/receipt', function(params) {
-          options.openView('view-campaign-payout-receipt');
+          openView('view-campaign-payout-receipt');
         }]
       ]],
       ['/refund', function(params) {
-        // draw campaign
-        options.loadAndDrawCampaign(parseInt(params.campaignID));
-
-        options.openView('view-campaign-refund');
+        openCampaignRefund(options, params, function(err, result){
+          openSubView('view-campaign-refund-form');
+        });
       }, [
+        ['/review', function(params) {
+          openCampaignRefund(options, params, function(err, result){
+            openSubView('view-campaign-refund-review');
+          });
+        }],
         ['/receipt', function(params) {
-          options.openView('view-campaign-refund-receipt');
+          openCampaignRefund(options, params, function(err, result){
+            openSubView('view-campaign-refund-receipt');
+          });
         }]
       ]]
     ]],
     ['/404', function(params) {
-      options.openView('view-404');
+      openView('view-404');
     }],
   ]);
 

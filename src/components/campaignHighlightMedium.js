@@ -1,13 +1,15 @@
-const web3 = require('../web3').web3;
-const getLocale = require('../environment').getLocale;
 const oneDay = require('../utils/').oneDay;
 
-const parseDisambiguatedDescription = function(campaignDataObject) {
-  return campaignDataObject.hasValidData && campaignDataObject.data.i18n[getLocale()].disambiguatedDescription || `A crowdfund that is valid enough to be listed, but does not have a description.`;
+const parseDisambiguatedDescription = function(campaignDataObject, locale) {
+  return campaignDataObject.hasValidData && campaignDataObject.data.i18n[locale].disambiguatedDescription || `A crowdfund that is valid enough to be listed, but does not have a description.`;
 }
 
 // draw highlight campaign
-const campaignHighlightMedium = function(campaignObject) {
+const campaignHighlightMedium = function(options) {
+  const campaignObject = options.campaignObject;
+  const web3 = options.web3;
+  const getLocale = options.getLocale;
+
   // return nothing if invalid campaign
   if (!campaignObject.valid) {
     return ``;

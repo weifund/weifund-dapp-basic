@@ -5,7 +5,6 @@ const views = [
   'view-campaign-payout',
   'view-campaign-payout-receipt',
   'view-campaign-refund',
-  'view-campaign-refund-receipt',
   'view-landing',
   'view-start-campaign',
   'view-register',
@@ -22,6 +21,10 @@ const subViews = [
   'view-campaign-details',
   'view-campaign-contracts',
   'view-campaign-qr',
+
+  'view-campaign-refund-form',
+  'view-campaign-refund-review',
+  'view-campaign-refund-receipt',
 
   'view-campaign-contribute-method',
   'view-campaign-contribute-wallet',

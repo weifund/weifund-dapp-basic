@@ -6,7 +6,7 @@ const navBar = function(options) {
       <a href="/start" style="padding-left: 40px;">Start a campaign</a>
     </div>
     <div class="col-xs-6 col-sm-12 col-md-4 col-lg-4 text-center">
-      <a href="/"><img id="nav-logo" src="/weifund-logo-small.png"></a>
+      <a href="/"><img id="nav-logo" src="/styles/weifund-logo-small.png"></a>
     </div>
     <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 nav-right text-left-xs text-left-sm hidden-xs hidden-sm">
       <select class="footer-locale-select">

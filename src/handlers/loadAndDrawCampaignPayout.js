@@ -1,13 +1,8 @@
-// requires
-const QRious = require('qrious');
-
 // utils
 const utils = require('../utils/');
 const log = utils.log;
 const etherScanAddressUrl = utils.etherScanAddressUrl;
 const etherScanTxHashUrl = utils.etherScanTxHashUrl;
-const parseSolidityMethodName = utils.parseSolidityMethodName;
-const oneDay = utils.oneDay;
 
 // require components
 const components = require('../components');
@@ -16,7 +11,6 @@ const components = require('../components');
 const environment = require('../environment');
 const getNetwork = environment.getNetwork;
 const getLocale = environment.getLocale;
-const getContractEnvironment = environment.getContractEnvironment;
 const txObject = environment.txObject;
 const getDefaultAccount = environment.getDefaultAccount;
 const setDefaultAccount = environment.setDefaultAccount;
@@ -24,29 +18,38 @@ const setDefaultAccount = environment.setDefaultAccount;
 // campaign environment methods
 const getCampaign = environment.getCampaign;
 const setCampaign = environment.setCampaign;
-const getCampaigns = environment.getCampaigns;
 
 // web3
 const web3 = require('../web3').web3;
+
+// require contracts
+// setup campaign and data registries
+// Campaign/token contracts
+const contracts = require('../contracts');
+const campaign = contracts.campaignContractFactory;
 
 // loadCampaign method
 const lib = require('../lib');
 const getCampaignData = lib.getCampaign;
 const getCampaignsData = lib.getCampaigns;
 
-// router instance
-var router = require('../router');
-const refreshPageButtons = router.refreshPageButtons;
+// router
+const refreshPageButtons = require('../router').refreshPageButtons;
 
 // require i18n
 const t = require('../i18n').t;
 
-const handleCampaignContribution = require('./handleCampaignContribution');
+// draw utils
+const buildAllInputSliders = require('../utils').buildAllInputSliders;
 
-// draw campaign
-const loadAndDrawCampaign = function(campaignID, callback) {
+const loadAndDrawCampaignPayout = function(campaignID, callback) {
+  // handle empty callback
+  if (typeof callback !== 'function') {
+    callback = function(e, r) {};
+  }
+
   // draw loader
-  document.querySelector('#view-focus').innerHTML = components.viewLoader();
+  document.querySelector('#view-campaign-payout').innerHTML = components.viewLoader();
 
   // load campaign fresh to draw
   getCampaignData(campaignID, function(campaignLoadError, campaignData){
@@ -60,18 +63,17 @@ const loadAndDrawCampaign = function(campaignID, callback) {
     setCampaign(campaignID, campaignData);
 
     // draw campaign focus
-    document.querySelector('#view-focus').innerHTML = components.campaignFocusView({campaignObject: campaignData, web3: web3, getLocale: getLocale});
-
-    // draw qr code
-    const qr = new QRious({
-      element: document.querySelector('#campaign_qrcode'),
-      size: 250,
-      value: campaignData.addr,
-    });
+    document.querySelector('#view-campaign-payout').innerHTML = components.campaignPayoutView({campaignObject: campaignData, getLocale: getLocale});
 
     // refresh all page buttons after redraw
     refreshPageButtons();
+
+    // build all sliders
+    buildAllInputSliders();
+
+    // callback
+    callback(null, true);
   });
 };
 
-module.exports = loadAndDrawCampaign;
+module.exports = loadAndDrawCampaignPayout;

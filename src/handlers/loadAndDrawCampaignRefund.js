@@ -36,17 +36,21 @@ const getCampaignsData = lib.getCampaigns;
 
 // router instance
 var router = require('../router');
+const getRouter = router.getRouter;
 const refreshPageButtons = router.refreshPageButtons;
 
 // require i18n
 const t = require('../i18n').t;
 
-const handleCampaignContribution = require('./handleCampaignContribution');
+// build all input sliders
+const buildAllInputSliders = require('../utils').buildAllInputSliders;
+
+const handleCampaignRefund = require('./handleCampaignRefund');
 
 // draw campaign
-const loadAndDrawCampaign = function(campaignID, callback) {
+const loadAndDrawCampaignRefund = function(campaignID, callback) {
   // draw loader
-  document.querySelector('#view-focus').innerHTML = components.viewLoader();
+  document.querySelector('#view-campaign-refund').innerHTML = components.viewLoader();
 
   // load campaign fresh to draw
   getCampaignData(campaignID, function(campaignLoadError, campaignData){
@@ -60,18 +64,23 @@ const loadAndDrawCampaign = function(campaignID, callback) {
     setCampaign(campaignID, campaignData);
 
     // draw campaign focus
-    document.querySelector('#view-focus').innerHTML = components.campaignFocusView({campaignObject: campaignData, web3: web3, getLocale: getLocale});
+    document.querySelector('#view-campaign-refund').innerHTML = `
+    ${components.campaignRefundForm({campaignObject: campaignData, defaultAccount: getDefaultAccount, web3: web3})}
 
-    // draw qr code
-    const qr = new QRious({
-      element: document.querySelector('#campaign_qrcode'),
-      size: 250,
-      value: campaignData.addr,
-    });
+    ${components.campaignRefundReview({campaignObject: campaignData, defaultAccount: getDefaultAccount, web3: web3})}
+
+    <div id="view-campaign-refund-receipt"></div>
+    `;
+
+    // build all sliders
+    buildAllInputSliders();
 
     // refresh all page buttons after redraw
     refreshPageButtons();
+
+    // fire callback
+    callback(null, 1);
   });
 };
 
-module.exports = loadAndDrawCampaign;
+module.exports = loadAndDrawCampaignRefund;

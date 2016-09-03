@@ -32,7 +32,7 @@ const footer = function() {
       <br />
       <div class="row">
         <div class="col-xs-6 col-md-9">
-          <a href="/"><img src="/weifund-logo-small-white.png" style="height: 35px; max-width: auto;" /></a>
+          <a href="/"><img src="/styles/weifund-logo-small-white.png" style="height: 35px; max-width: auto;" /></a>
           <br />
           <small>&copy; 2016</small>
         </div>

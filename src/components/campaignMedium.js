@@ -1,16 +1,20 @@
-const web3 = require('../web3').web3;
-const getLocale = require('../environment').getLocale;
 const oneDay = require('../utils/').oneDay;
 
-const parseDisambiguatedDescription = function(campaignDataObject) {
-  return campaignDataObject.hasValidData && campaignDataObject.data.i18n[getLocale()].disambiguatedDescription || `A crowdfund that is valid enough to be listed, but does not have a description.`;
-}
+const parseDisambiguatedDescription = function(locale, campaignDataObject) {
+  return campaignDataObject.hasValidData && campaignDataObject.data.i18n[locale].disambiguatedDescription || `A crowdfund that is valid enough to be listed, but does not have a description.`;
+};
 
-const campaignMedium = function(campaignObject) {
+const campaignMedium = function(options) {
+  const campaignObject = options.campaignObject;
+  const web3 = options.web3;
+  const getLocale = options.getLocale;
+
+  // dont return non valid campaigns
   if (!campaignObject.valid) {
     return ``;
   }
 
+  // return campaign
   return `<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
     <div class="list-campaign-medium">
       <a href="/campaign/${campaignObject.id}">
@@ -21,10 +25,10 @@ const campaignMedium = function(campaignObject) {
       <div class="list-campaign-medium-description">
         <div class="list-campaign-medium-text">
           <a href="/campaign/${campaignObject.id}">
-            <h3>${campaignObject.name}</h3>
+            <h3 style="min-height: 60px;">${campaignObject.name}</h3>
           </a>
 
-          <p style="display: block; min-height: 50px;">${parseDisambiguatedDescription(campaignObject)}</p>
+          <p style="display: block; min-height: 70px;">${parseDisambiguatedDescription(campaignObject, getLocale())}</p>
         </div>
 
         <div class="row">

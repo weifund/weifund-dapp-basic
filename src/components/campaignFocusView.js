@@ -1,5 +1,3 @@
-const web3 = require('../web3').web3;
-const getLocale = require('../environment').getLocale;
 const oneDay = require('../utils/').oneDay;
 
 const campaignFocusOverviewView = require('./campaignFocusOverviewView');
@@ -14,7 +12,11 @@ const parseDisambiguatedDescription = function(campaignDataObject) {
   //`A crowdfund that is valid enough to be listed, but does not have a description.`
 };
 
-const campaignFocusView = function(campaignObject) {
+const campaignFocusView = function(options) {
+  const campaignObject = options.campaignObject;
+  const web3 = options.web3;
+  const getLocale = options.getLocale;
+
   return `<div class="campaign-focus" style="margin-top: 40px;">
 
     <div class="row center-block container text-center" style="margin-bottom: 60px;">
@@ -40,17 +42,37 @@ const campaignFocusView = function(campaignObject) {
 
 
 
-        ${campaignObject.hasSucceeded
-          && `<a id="campaign_payoutButton" href="/campaign/${campaignObject.id}/payout">
-          <button class="btn btn-lg btn-success">Payout This Project</button>
-        </a>`
-          || `<a id="campaign_contributeButton" ${campaignObject.active && `href="/campaign/${campaignObject.id}/contribute"` || ``}>
-          <button ${campaignObject.active && `class="btn btn-lg btn-primary"` || `disabled="disabled" class="btn btn-lg btn-primary"` }>Back This Project</button>
-        </a>`}
+        ${(function(){
 
-        <a id="campaign_refundButton" href="/campaign/${campaignObject.id}/refund" ${campaignObject.hasFailed && `` || `style="display: none;"`}>
-          <button class="btn btn-lg btn-warning">Claim Refund</button>
-        </a>
+          if (campaignObject.hasFailed) {
+            return `
+
+            <a id="campaign_refundButton" href="/campaign/${campaignObject.id}/refund">
+              <button class="btn btn-lg btn-warning">Claim Refund</button>
+            </a>
+
+            `;
+          } else {
+            if (campaignObject.hasSucceeded) {
+              return `
+
+              <a id="campaign_payoutButton" href="/campaign/${campaignObject.id}/payout">
+                <button class="btn btn-lg btn-success">Payout This Project</button>
+              </a>
+
+            `;
+            } else {
+              return `
+
+              <a id="campaign_contributeButton" ${campaignObject.active && `href="/campaign/${campaignObject.id}/contribute"` || ``}>
+                <button ${campaignObject.active && `class="btn btn-lg btn-primary"` || `disabled="disabled" class="btn btn-lg btn-primary"` }>Back This Project</button>
+              </a>
+
+              `;
+            }
+          }
+
+        })()}
       </div>
     </div>
 
