@@ -76,7 +76,7 @@ const loadAndDrawCampaignContribute = function(campaignID, callback) {
   }
 
   // draw loader
-  document.querySelector('#view-campaign-contribute').innerHTML = components.viewLoader();
+  document.querySelector('#view-campaign-contribute').innerHTML = components.viewLoader({t: t});
 
   // load campaign fresh to draw
   getCampaignData(campaignID, function(campaignLoadError, campaignData){

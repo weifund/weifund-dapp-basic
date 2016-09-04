@@ -3,6 +3,7 @@ const campaignContributeNav = require('./campaignContributeNav');
 const campaignContributeForm = function(options) {
   const campaignObject = options.campaignObject;
   const defaultAccount = options.defaultAccount;
+  const t = options.t;
 
   return `<div id="view-campaign-contribute-form" class="row center-block container" style="margin-top: 80px; margin-bottom: 150px;">
     <div class="col-xs-12 col-sm-6 col-md-8 no-border-xs no-border-sm" style="border-right: 3px solid #E1E1E1; padding-right: 50px;">

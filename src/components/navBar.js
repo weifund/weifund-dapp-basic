@@ -1,20 +1,19 @@
 const navBar = function(options) {
+  const t = options.t;
+
   return `
   <nav class="navbar nav navbar-fixed-top row">
     <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 nav-left hidden-xs hidden-sm">
-      <a href="/">Discover</a>
-      <a href="/start" style="padding-left: 40px;">Start a campaign</a>
+      <a href="/">${t("navBar.discover")}</a>
+      <a href="/start" style="padding-left: 40px;">${t("navBar.start")}</a>
     </div>
     <div class="col-xs-6 col-sm-12 col-md-4 col-lg-4 text-center">
       <a href="/"><img id="nav-logo" src="/styles/weifund-logo-small.png"></a>
     </div>
     <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 nav-right text-left-xs text-left-sm hidden-xs hidden-sm">
-      <select class="footer-locale-select">
-        <option>Locale</option>
-        <option>en</option>
-        <option>cmn</option>
+      <select class="input-locale-toggle footer-locale-select">
       </select>
-      <a href="/account">My account</a>
+      <a href="/account">${t("navBar.account")}</a>
     </div>
 
     <div class="col-xs-6 visible-xs text-right hidden-lg">
@@ -29,16 +28,13 @@ const navBar = function(options) {
       <hr />
       <div class="row">
         <div class="col-xs-6 col-sm-6">
-          <a href="/">Discover</a>
-          <a href="/start" style="padding-left: 40px;">Start a campaign</a>
+          <a href="/">${t("navBar.discover")}</a>
+          <a href="/start" style="padding-left: 40px;">${t("navBar.start")}</a>
         </div>
         <div class="col-xs-6 col-sm-6 text-right">
-          <select class="footer-locale-select">
-            <option>Locale</option>
-            <option>en</option>
-            <option>cmn</option>
+          <select class="input-locale-toggle footer-locale-select">
           </select>
-          <a href="/account">My account</a>
+          <a href="/account">${t("navBar.account")}</a>
         </div>
       </div>
     </div>
@@ -51,18 +47,17 @@ const navBar = function(options) {
           <h3>
             <ul class="list-group">
               <li class="list-group-item">
-                <a href="/">Discover</a>
-                <a href="/start" style="padding-left: 40px;">Start a campaign</a>
+                <a href="/">${t("navBar.discover")}</a>
               </li>
               <li class="list-group-item">
-                <select class="footer-locale-select">
-                  <option>Locale</option>
-                  <option>en</option>
-                  <option>cmn</option>
+                <a href="/start">${t("navBar.start")}</a>
+              </li>
+              <li class="list-group-item">
+                <select class="input-locale-toggle footer-locale-select">
                 </select>
               </li>
               <li class="list-group-item">
-                <a href="/account">My account</a>
+                <a href="/account">${t("navBar.account")}</a>
               </li>
             </ul>
           </h3>

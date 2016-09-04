@@ -1,4 +1,6 @@
 const campaignRefundReceipt = function(options){
+  const t = options.t;
+  
   return `
   <div class="row center-block container" style="margin-top: 40px; margin-bottom: 150px;">
     <div class="col-xs-12">

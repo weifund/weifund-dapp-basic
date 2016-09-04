@@ -2,6 +2,7 @@
 const setDefaultAccount = require('./environment').setDefaultAccount;
 
 // web3 instance and setup method
+const web3 = require('./web3').web3;
 const setupWeb3Provider = require('./web3').setupWeb3Provider;
 
 // ipfs instance and setup
@@ -17,7 +18,6 @@ const handlers = require('./handlers');
 const drawNavBar = handlers.drawNavBar;
 const drawFooter = handlers.drawFooter;
 const drawStartCampaignView = handlers.drawStartCampaignView;
-const drawCampaigns = handlers.drawCampaigns;
 const loadAndDrawCampaign = handlers.loadAndDrawCampaign;
 const loadAndDrawCampaignsList = handlers.loadAndDrawCampaignsList;
 const loadAndDrawCampaignContribute = handlers.loadAndDrawCampaignContribute;

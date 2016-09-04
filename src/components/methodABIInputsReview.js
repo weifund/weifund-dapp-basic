@@ -8,6 +8,7 @@ const methodABIInputsReview = function(options) {
   // campagin object, method type, method abi object
   const campaignObject = options.campaignObject;
   const methodType = options.methodType;
+  const t = options.t;
   const methodABIObject = parseMethodABIObject(methodType, campaignObject[`${methodType}MethodABIObject`]);
 
   // draw contribution inputs

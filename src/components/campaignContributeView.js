@@ -6,6 +6,8 @@ const campaignContributeNav = require('./campaignContributeNav');
 
 const campaignContributeView = function(options) {
   const campaignObject = options.campaignObject;
+  const t = options.t;
+
   return `<div id="campaign-contribute" style="margin-top: 40px; margin-bottom: 150px;">
 
   <input type="hidden" value="${campaignObject.id}" id="campaign_id" />

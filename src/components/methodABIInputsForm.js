@@ -5,6 +5,7 @@ const methodABIInputsForm = function(options) {
   var outputHTML = ``;
 
   // campagin object, method type, method abi object
+  const t = options.t;
   const campaignObject = options.campaignObject;
   const methodType = options.methodType;
   const methodABIObject = parseMethodABIObject(methodType, campaignObject[`${methodType}MethodABIObject`]);

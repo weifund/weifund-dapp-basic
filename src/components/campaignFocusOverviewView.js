@@ -1,10 +1,10 @@
 const campaignFocusOverviewView = function(options) {
-  const campaignObject = options.campaignObject;
-  const getLocale = options.getLocale;
   var mailChimpFormAction = '';
   var showMailChimp = false;
 
-  console.log(campaignObject);
+  const t = options.t;
+  const campaignObject = options.campaignObject;
+  const getLocale = options.getLocale;
 
   // if IPFS data is present and mailchimp
   if (campaignObject.hasValidData) {

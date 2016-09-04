@@ -3,6 +3,9 @@
 // the goal being to make the app fairly stupid
 // state variables
 
+// localstore
+const store = require('store');
+
 // loaded campaigns
 var campaigns = [];
 
@@ -49,7 +52,12 @@ const getNetwork = function(){
 
 // get current locale
 const getLocale = function() {
-  return 'en';
+  return store.get('locale') || 'en';
+};
+
+// set locale
+const setLocale = function (locale) {
+  store.set('locale', locale);
 };
 
 // get contract environment
@@ -84,6 +92,7 @@ module.exports = {
   setCampaign: setCampaign,
   getNetwork: getNetwork,
   getLocale: getLocale,
+  setLocale: setLocale,
   setTransaction: setTransaction,
   getTransactions: getTransactions,
 };

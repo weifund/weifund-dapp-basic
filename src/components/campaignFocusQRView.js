@@ -1,4 +1,6 @@
 const campaignFocusContractsView = function(options) {
+  const t = options.t;
+  
   return `<div id="view-campaign-qr" class="bg-white container row center-block" style="display: none;">
     <div class="col-xs-12">
       <h3>Campaign QR Code</h3>

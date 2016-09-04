@@ -3,6 +3,7 @@ const methodABIInputsReview = require('./methodABIInputsReview');
 const campaignRefundReview = function(options) {
   const campaignObject = options.campaignObject;
   const defaultAccount = options.defaultAccount;
+  const t = options.t;
 
   return `
   <div id="view-campaign-refund-review" class="center-block container" style="margin-top: 40px; margin-bottom: 150px; display: none;">

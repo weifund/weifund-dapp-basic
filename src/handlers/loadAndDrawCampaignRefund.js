@@ -50,7 +50,7 @@ const handleCampaignRefund = require('./handleCampaignRefund');
 // draw campaign
 const loadAndDrawCampaignRefund = function(campaignID, callback) {
   // draw loader
-  document.querySelector('#view-campaign-refund').innerHTML = components.viewLoader();
+  document.querySelector('#view-campaign-refund').innerHTML = components.viewLoader({t: t});
 
   // load campaign fresh to draw
   getCampaignData(campaignID, function(campaignLoadError, campaignData){

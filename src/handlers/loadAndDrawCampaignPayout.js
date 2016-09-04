@@ -49,7 +49,7 @@ const loadAndDrawCampaignPayout = function(campaignID, callback) {
   }
 
   // draw loader
-  document.querySelector('#view-campaign-payout').innerHTML = components.viewLoader();
+  document.querySelector('#view-campaign-payout').innerHTML = components.viewLoader({t: t});
 
   // load campaign fresh to draw
   getCampaignData(campaignID, function(campaignLoadError, campaignData){

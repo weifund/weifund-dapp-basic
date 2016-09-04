@@ -24,14 +24,14 @@ const isMultiSigContract = function(code) {
   return false;
 };
 
-// is valid web3 address
-const isValidWeb3Address = function(address) {
-  return web3.isAddress(address);
-};
-
 // is valid ipfs data
 const isValidCampaignData = function(data) {
   return typeof data === 'object' && data !== null;
+};
+
+// is valid web3 address
+const isValidWeb3Address = function(address) {
+  return web3.isAddress(address);
 };
 
 // is a valid campaign to be listed
@@ -68,7 +68,7 @@ const getLocation = function(href) {
     search: match[6],
     hash: match[7],
   };
-}
+};
 
 // parse campaign abi properties
 const parseCampaignDataObject = function(combinedCampaignData, callback) {

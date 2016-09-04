@@ -1,11 +1,71 @@
 {
-  "app": {
-    "nav": {
-      "weifund": "WeiFund",
-      "campaigns": "Campaigns",
-      "start": "Start",
-      "register": "Register",
-      "account": "My Account"
+  "campaignsView": {
+    "header": "Explore a universe of next-gen technology",
+    "subHeader": "Tons of amazing projects.",
+    "campaignsHeader": "Campaigns",
+    "loading": "Loading campaigns..."
+  },
+  "navBar": {
+    "discover": "Discover",
+    "start": "Start A Campaign",
+    "locale": "Locale",
+    "account": "My Account"
+  },
+  "campaignFocusView": {
+    "by": "by",
+    "progress": "progress",
+    "raised": "raised",
+    "contributedOf": "contributed of %{fundingGoal} %{fundingGoalUnits} goal",
+    "daysToGo": "days to go",
+    "overview": "Overview",
+    "expiryNotice": "This project will expire at %{expiryDate}.",
+    "defaultDescription": "A crowdfund that is valid enough to be listed, but does not have a description.",
+    "defaultTitle": "Untitled Crowdfund",
+    "buttons": {
+      "refund": "Claim Refund",
+      "payout": "Payout This Project",
+      "contribute": "Back This Project"
     }
+  },
+  "campaignFocusNav": {
+    "campaign": "Campaign",
+    "details": "Details",
+    "contracts": "Contracts",
+    "qrcode": "QR Code"
+  },
+  "viewLoader": {
+    "defaultLoadingMessage": "Loading campaigns from the blockchain... this may take a minute"
+  },
+  "campaignHighlightMedium": {
+    "progress": "Progress",
+    "raised": "Raised",
+    "goal": "Goal",
+    "defaultDescription": "A crowdfund that is valid enough to be listed, but does not have a description.",
+    "defaultTitle": "Untitled Crowdfund"
+  },
+  "campaignMedium": {
+    "progress": "Progress",
+    "raised": "Raised",
+    "goal": "Goal",
+    "defaultDescription": "A crowdfund that is valid enough to be listed, but does not have a description.",
+    "defaultTitle": "Untitled Crowdfund"
+  },
+  "footer": {
+    "headers": {
+      "discover": "Discover",
+      "community": "Community",
+      "powered": "Powered By",
+      "connect": "Connect With Us"
+    },
+    "active": "Active",
+    "inactive": "InActive",
+    "redditEthereum": "/r/ethereum",
+    "infura": "Infura",
+    "ipfs": "IPFS",
+    "ethereum": "Ethereum",
+    "consensys": "ConsenSys",
+    "weifundWebsite": "weifund.io",
+    "weifundReddit": "/r/weifund",
+    "copyright": "&copy; 2016"
   }
 }

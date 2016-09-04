@@ -2,6 +2,8 @@
 const objectToHTML = require('../utils/').objectToHTML;
 
 const campaignFocusDetailsView = function(options) {
+  const t = options.t;
+
   const campaignObject = options.campaignObject;
   const web3 = options.web3;
 
@@ -58,25 +60,30 @@ const campaignFocusDetailsView = function(options) {
           ${objectToHTML(campaignObject, {
             layout: {
               active: {
+                name: 'Active',
                 description: 'Is the campaign active (i.e. can you contribute to it)',
               },
               hasName:  {
+                name: 'Has Name',
                 description: 'Is the campaign named.',
               },
               hasFailed: {
+                name: 'Has Failed',
                 description: 'Has the campaign failed.',
               },
               hasExpired: {
+                name: 'Has Expired',
                 description: 'Has the campaign expired.',
               },
               hasSucceeded: {
+                name: 'Has Succeeded',
                 description: 'Has the campaign succeeded.',
               },
               valid: {
                 description: 'Is all campaign data valid.',
               },
               hasPaidOut: {
-                name: 'Is Valid Campaign',
+                name: 'Paid Out',
                 description: 'Has the campaign been paid out.',
               },
               hasIPFSHash: {

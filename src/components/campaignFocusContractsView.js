@@ -1,4 +1,6 @@
 const campaignFocusContractsView = function(options) {
+  const t = options.t;
+  
   return `<div id="view-campaign-contracts" class="bg-white container row center-block" style="display: none;">
     <div class="col-xs-12">
 

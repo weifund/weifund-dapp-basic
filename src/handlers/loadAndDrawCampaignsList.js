@@ -61,9 +61,9 @@ const drawCampaigns = function(campaignsToDraw) {
 
       // campaign is a staff pick, change draw target
       if (campaignToDraw.staffPick === true) {
-        document.querySelector(`#staffpicks_list`).innerHTML += components.campaignHighlightMedium({campaignObject: campaignToDraw, web3: web3, getLocale: getLocale});
+        document.querySelector(`#staffpicks_list`).innerHTML += components.campaignHighlightMedium({campaignObject: campaignToDraw, web3: web3, getLocale: getLocale, t: t});
       } else {
-        document.querySelector(`#campaigns_list`).innerHTML += components.campaignMedium({campaignObject: campaignToDraw, web3: web3, getLocale: getLocale});
+        document.querySelector(`#campaigns_list`).innerHTML += components.campaignMedium({campaignObject: campaignToDraw, web3: web3, getLocale: getLocale, t: t});
       }
     }
   }
@@ -74,7 +74,7 @@ const drawCampaigns = function(campaignsToDraw) {
 // load all campaigns
 const loadAndDrawCampaignsList = function() {
   // draw loader
-  document.querySelector('#view-list').innerHTML = components.viewLoader();
+  document.querySelector('#view-list').innerHTML = components.viewLoader({t: t});
 
   // load campaigns
   getCampaignsData({}, function(loadCampaignsError, loadCampaignsResult){
@@ -85,7 +85,7 @@ const loadAndDrawCampaignsList = function() {
     }
 
     // draw campaigns page
-    document.querySelector('#view-list').innerHTML = components.campaignsView();
+    document.querySelector('#view-list').innerHTML = components.campaignsView({t: t});
 
     // if load result is nice
     if (typeof loadCampaignsResult === 'object') {

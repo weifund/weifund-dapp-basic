@@ -14,6 +14,7 @@ const getLocale = environment.getLocale;
 const txObject = environment.txObject;
 const getDefaultAccount = environment.getDefaultAccount;
 const setDefaultAccount = environment.setDefaultAccount;
+const setLocale = environment.setLocale;
 
 // campaign environment methods
 const getCampaign = environment.getCampaign;
@@ -51,18 +52,53 @@ const buildAllInputSliders = require('../utils').buildAllInputSliders;
 
 const handleStartCampaign = require('./handleStartCampaign');
 
+const buildLocaleToggles = function() {
+  [].slice.call(document.querySelectorAll('.input-locale-toggle')).forEach(function(inputToggleElement){
+    // check if toggle is listening
+    if (inputToggleElement.dataset.listening) {
+      return;
+    }
+
+    // add supported locales
+    inputToggleElement.innerHTML = `
+      <option>Locale</option>
+      <option value="en">en</option>
+      <option value="zh">zh</option>
+    `;
+
+    // input is now listening
+    inputToggleElement.dataset.listening = true;
+
+    // add toggle event listener
+    inputToggleElement.addEventListener('change', function(localeToggleEvent){
+      // input toggle value
+      const inputToggleValue = inputToggleElement.value;
+
+      // set the locale
+      setLocale(inputToggleValue);
+
+      console.log(getLocale());
+
+      // localtion reload
+      location.reload();
+    });
+  });
+};
+
 const drawFooter = function() {
-  document.body.querySelector('#footer-wrapper').innerHTML = components.footer();
+  document.body.querySelector('#footer-wrapper').innerHTML = components.footer({t: t});
+  buildLocaleToggles();
 };
 
 const drawNavBar = function() {
-  document.body.querySelector('#nav-wrapper').innerHTML = components.navBar();
+  document.body.querySelector('#nav-wrapper').innerHTML = components.navBar({t: t});
   buildAllNavToggles();
+  buildLocaleToggles();
 };
 
 // start campaign draw
 const drawStartCampaignView = function(options) {
-  document.querySelector('#view-start-campaign').innerHTML = components.startCampaignView({});
+  document.querySelector('#view-start-campaign').innerHTML = components.startCampaignView({t: t});
 
   // build all sliders
   buildAllInputSliders();

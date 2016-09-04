@@ -1,4 +1,6 @@
 const registerCampaignView = function(options) {
+  const t = options.t;
+
   return `
     <h2>CampaignRegistry | Register Your Campaign</h2>
 

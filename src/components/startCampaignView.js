@@ -1,4 +1,6 @@
 const startCampaignView = function(options) {
+  const t = options.t;
+
   return `
   <div style="margin-top: 100px; margin-bottom: 150px;">
 

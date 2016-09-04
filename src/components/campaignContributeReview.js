@@ -1,6 +1,8 @@
 const campaignContributeNav = require('./campaignContributeNav');
 
 const campaignContributeReview = function(options) {
+  const t = options.t;
+  
   return `<div id="view-campaign-contribute-review" class="center-block container" style="margin-top: 40px; margin-bottom: 150px;">
     <div class="row">
       <div class="col-xs-12">

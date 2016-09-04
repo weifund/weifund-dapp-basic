@@ -1,4 +1,6 @@
 const campaignContributeNav = function(options) {
+  const t = options.t;
+
   return `
   <div class="row">
     <div class="col-xs-12">

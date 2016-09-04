@@ -3,6 +3,7 @@ const methodABIInputsForm = require('./methodABIInputsForm');
 const campaignRefundForm = function(options) {
   const campaignObject = options.campaignObject;
   const defaultAccount = options.defaultAccount;
+  const t = options.t;
 
   return `
 

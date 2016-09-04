@@ -46,7 +46,7 @@ const handleCampaignContribution = require('./handleCampaignContribution');
 // draw campaign
 const loadAndDrawCampaign = function(campaignID, callback) {
   // draw loader
-  document.querySelector('#view-focus').innerHTML = components.viewLoader();
+  document.querySelector('#view-focus').innerHTML = components.viewLoader({t: t});
 
   // load campaign fresh to draw
   getCampaignData(campaignID, function(campaignLoadError, campaignData){
@@ -60,7 +60,7 @@ const loadAndDrawCampaign = function(campaignID, callback) {
     setCampaign(campaignID, campaignData);
 
     // draw campaign focus
-    document.querySelector('#view-focus').innerHTML = components.campaignFocusView({campaignObject: campaignData, web3: web3, getLocale: getLocale});
+    document.querySelector('#view-focus').innerHTML = components.campaignFocusView({campaignObject: campaignData, web3: web3, getLocale: getLocale, t: t});
 
     // draw qr code
     const qr = new QRious({

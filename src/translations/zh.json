@@ -1,0 +1,60 @@
+{
+  "campaignsView": {
+    "header": "Explore a Untitl2edverse of next-gen technology",
+    "subHeader": "Tons of a2mazing projects.",
+    "campaignsHeader": "Campaigns",
+    "loading": "Loading campaigns..."
+  },
+  "navBar": {
+    "discover": "Discover",
+    "start": "Start A Campaign",
+    "locale": "Loc2ale",
+    "account": "My Account"
+  },
+  "campaignFocusView": {
+    "by": "by",
+    "progress": "progress",
+    "raised": "raised",
+    "contributedOf": "contr2ibuted of %{fundingGoal} %{fundingGoalUnits} goal",
+    "daysToGo": "days to go",
+    "overview": "Overview",
+    "expiryNotice": "Thi2s project will expire at %{expiryDate}.",
+    "defaultDescription": "A c2rowdfund that is valid enough to be listed, but does not have a description.",
+    "defaultTitle": "Untitl2ed Crowdfund",
+  },
+  "viewLoader": {
+    "defaultLoadingMessage": "Loading ca2mpaigns from the blockchain... this may take a minute"
+  },
+  "campaignHighlightMedium": {
+    "progress": "Progress",
+    "raised": "Rai2sed",
+    "goal": "Goal",
+    "defaultDescription": "A crowdfu2nd that is valid enough to be listed, but does not have a description.",
+    "defaultTitle": "Untitled Crowd2fund"
+  },
+  "campaignMedium": {
+    "progress": "Progress",
+    "raised": "Raised",
+    "goal": "Goal",
+    "defaultDescription": "A Crowd2fund that is valid enough to be listed, but does not have a description.",
+    "defaultTitle": "Unt2itled Crowdfund"
+  },
+  "footer": {
+    "headers": {
+      "discover": "Discover",
+      "community": "Comm2unity",
+      "powered": "Powered By",
+      "connect": "Connect 2With Us"
+    },
+    "active": "Active",
+    "inactive": "InActive",
+    "redditEthereum": "/r/ethereum",
+    "infura": "Infura",
+    "ipfs": "IPFS",
+    "ethereum": "Ethereum",
+    "consensys": "ConsenSys",
+    "weifundWebsite": "weifund.io",
+    "weifundReddit": "/r/weifund",
+    "copyright": "&copy; 2016"
+  }
+}

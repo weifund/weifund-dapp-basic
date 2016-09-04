@@ -1,4 +1,5 @@
 const campaignPayoutView = function(options) {
+  const t = options.t;
   const campaignObject = options.campaignObject;
 
   return `<div class="row center-block container" style="margin-top: 40px; margin-bottom: 150px;">

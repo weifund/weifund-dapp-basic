@@ -1,6 +1,8 @@
 const campaignContributeNav = require('./campaignContributeNav');
 
 const campaignContributeQR = function(options) {
+  const t = options.t;
+  
   return `<div id="view-campaign-contribute-ether-qrcode" class="row center-block container" style=" margin-bottom: 150px;">
     <div class="col-xs-12">
       <h3>Campaign QR Code</h3>

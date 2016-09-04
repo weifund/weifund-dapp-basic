@@ -6,10 +6,12 @@ const getLocale = require('./environment').getLocale;
 
 // english translation
 const enLocaleTranslation = require('./translations/en.json');
+const zhLocaleTranslation = require('./translations/zh.json');
 
 // all translations
 const localeTranslations = {
   en: enLocaleTranslation,
+  zh: zhLocaleTranslation,
 };
 
 // translate utility

@@ -1,13 +1,10 @@
 const oneDay = require('../utils/').oneDay;
 
-const parseDisambiguatedDescription = function(locale, campaignDataObject) {
-  return campaignDataObject.hasValidData && campaignDataObject.data.i18n[locale].disambiguatedDescription || `A crowdfund that is valid enough to be listed, but does not have a description.`;
-};
-
 const campaignMedium = function(options) {
   const campaignObject = options.campaignObject;
   const web3 = options.web3;
   const getLocale = options.getLocale;
+  const t = options.t;
 
   // dont return non valid campaigns
   if (!campaignObject.valid) {
@@ -28,7 +25,12 @@ const campaignMedium = function(options) {
             <h3 style="min-height: 60px;">${campaignObject.name}</h3>
           </a>
 
-          <p style="display: block; min-height: 70px;">${parseDisambiguatedDescription(campaignObject, getLocale())}</p>
+          <p style="display: block; min-height: 70px;">
+            ${(campaignObject.hasValidData
+              && typeof campaignObject.data.i18n[getLocale()] !== "undefined"
+              && campaignObject.data.i18n[getLocale()].disambiguatedDescription
+              || t('campaignMedium.defaultDescription'))}
+          </p>
         </div>
 
         <div class="row">
@@ -53,13 +55,13 @@ const campaignMedium = function(options) {
           </div>
           <div class="row" style="padding-top: 0px;">
             <div class="col-xs-4" style="padding-top: 0px;">
-              <h6 style="margin-top: 0px; margin-bottom: 0px;">Progress</h6>
+              <h6 style="margin-top: 0px; margin-bottom: 0px;">${t('campaignMedium.progress')}</h6>
             </div>
             <div class="col-xs-4" style="padding-top: 0px;">
-              <h6 style="margin-top: 0px; margin-bottom: 0px;">Raised</h6>
+              <h6 style="margin-top: 0px; margin-bottom: 0px;">${t('campaignMedium.raised')}</h6>
             </div>
             <div class="col-xs-4" style="padding-top: 0px;">
-              <h6 style="margin-top: 0px; margin-bottom: 0px;">Goal</h6>
+              <h6 style="margin-top: 0px; margin-bottom: 0px;">${t('campaignMedium.goal')}</h6>
             </div>
           </div>
         </div>

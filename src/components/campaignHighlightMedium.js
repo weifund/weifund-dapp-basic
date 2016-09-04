@@ -1,11 +1,8 @@
 const oneDay = require('../utils/').oneDay;
 
-const parseDisambiguatedDescription = function(campaignDataObject, locale) {
-  return campaignDataObject.hasValidData && campaignDataObject.data.i18n[locale].disambiguatedDescription || `A crowdfund that is valid enough to be listed, but does not have a description.`;
-}
-
 // draw highlight campaign
 const campaignHighlightMedium = function(options) {
+  const t = options.t;
   const campaignObject = options.campaignObject;
   const web3 = options.web3;
   const getLocale = options.getLocale;
@@ -28,7 +25,12 @@ const campaignHighlightMedium = function(options) {
 
             <p style="max-height: 40px;
 overflow: hidden;
-text-overflow: ellipsis;">${parseDisambiguatedDescription(campaignObject)}</p>
+text-overflow: ellipsis;">
+              ${(campaignObject.hasValidData
+                && typeof campaignObject.data.i18n[getLocale()] !== "undefined"
+                && campaignObject.data.i18n[getLocale()].disambiguatedDescription
+                || t('campaignHighlightMedium.defaultDescription'))}
+            </p>
 
             <div class="hidden-xs show-md">
               <br /><br />
@@ -59,13 +61,13 @@ text-overflow: ellipsis;">${parseDisambiguatedDescription(campaignObject)}</p>
             </div>
             <div class="row">
               <div class="col-xs-4">
-                <h6 style="margin-top: 0px;">Progress</h6>
+                <h6 style="margin-top: 0px;">${t('campaignHighlightMedium.progress')}</h6>
               </div>
               <div class="col-xs-4">
-                <h6 style="margin-top: 0px;">Raised</h6>
+                <h6 style="margin-top: 0px;">${t('campaignHighlightMedium.raised')}</h6>
               </div>
               <div class="col-xs-4">
-                <h6 style="margin-top: 0px;">Goal</h6>
+                <h6 style="margin-top: 0px;">${t('campaignHighlightMedium.goal')}</h6>
               </div>
             </div>
           </div>

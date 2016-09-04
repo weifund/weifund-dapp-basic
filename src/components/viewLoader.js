@@ -4,6 +4,8 @@ const viewLoader = function(options) {
     options = {};
   }
 
+  const t = options.t;
+
   // scroll window view to top
   window.scrollTo(0, 0);
 
@@ -14,7 +16,7 @@ const viewLoader = function(options) {
     <br />
     <br />
     <h3 style="text-align: center;">
-      ${options.message && options.message || 'Loading campaigns from the blockchain... this may take a minute'}
+      ${options.message && options.message || t('viewLoader.defaultLoadingMessage')}
     </h3>
   </div>`;
 };
