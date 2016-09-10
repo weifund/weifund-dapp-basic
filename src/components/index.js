@@ -13,6 +13,7 @@ const viewLoader = require('./viewLoader');
 const navBar = require('./navBar');
 const footer = require('./footer');
 const startCampaignView = require('./startCampaignView');
+const accountView = require('./accountView');
 
 module.exports = {
   campaignRefundReview: campaignRefundReview,
@@ -27,6 +28,7 @@ module.exports = {
   campaignContributeReceipt: campaignContributeReceipt,
   viewLoader: viewLoader,
   startCampaignView: startCampaignView,
+  accountView: accountView,
   navBar: navBar,
   footer: footer,
 };

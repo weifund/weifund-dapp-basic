@@ -24,6 +24,7 @@ const loadAndDrawCampaignContribute = handlers.loadAndDrawCampaignContribute;
 const loadAndDrawCampaignPayout = handlers.loadAndDrawCampaignPayout;
 const loadAndDrawCampaignRefund = handlers.loadAndDrawCampaignRefund;
 const handleConfirmOnPageExit = handlers.handleConfirmOnPageExit;
+const loadAndDrawAccount = handlers.loadAndDrawAccount;
 
 // draw navbar
 drawNavBar();
@@ -48,6 +49,7 @@ const loadApp = function() {
 
     loadAndDrawCampaign: loadAndDrawCampaign,
     loadAndDrawCampaignsList: loadAndDrawCampaignsList,
+    loadAndDrawAccount: loadAndDrawAccount,
   });
 
   // set initial route from params

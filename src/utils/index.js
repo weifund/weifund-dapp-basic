@@ -493,8 +493,6 @@ const parseMethodABIObject = function(methodType, methodABIObjectInput) {
 };
 
 module.exports = {
-  log: log,
-  objectToHTML: objectToHTML,
   isBigNumber: isBigNumber,
   etherScanAddressUrl: etherScanAddressUrl,
   etherScanTxHashUrl: etherScanTxHashUrl,
@@ -508,6 +506,9 @@ module.exports = {
   filterXSSObject: filterXSSObject,
   nameContainsIDProperties: nameContainsIDProperties,
   parseSolidityMethodName: parseSolidityMethodName,
+
+  log: log,
+  objectToHTML: objectToHTML,
   outerElHeight: outerElHeight,
   outerElWidth: outerElWidth,
   buildAllNavToggles: buildAllNavToggles,

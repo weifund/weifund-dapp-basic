@@ -78,6 +78,9 @@ const handleCampaignContribution = function(event){
   const confirmationMessage = `Contribution Confirmation:
 
 Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')} ether to the "${selectedCampaign.name}" campaign and make a second donation transaction of ${web3.fromWei(weifundContributionAmountEther, 'ether')} ether to WeiFund?
+
+  WARNING:
+  If you selected a donatation to WeiFUnd, this will create a second transaction. Do not be alarmed.
   `;
 
   // reset review responses

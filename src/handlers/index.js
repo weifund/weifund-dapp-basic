@@ -122,6 +122,7 @@ module.exports = {
   loadAndDrawCampaignPayout: require('./loadAndDrawCampaignPayout'),
   loadAndDrawCampaignContribute: require('./loadAndDrawCampaignContribute'),
   loadAndDrawCampaignsList: require('./loadAndDrawCampaignsList'),
+  loadAndDrawAccount: require('./loadAndDrawAccount'),
   handleConfirmOnPageExit: require('./handleConfirmOnPageExit'),
 
   handleStartCampaign: handleStartCampaign,

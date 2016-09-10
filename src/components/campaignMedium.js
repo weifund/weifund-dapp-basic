@@ -41,7 +41,7 @@ const campaignMedium = function(options) {
           </div>
         </div>
 
-        <div style="min-height: 70px; overflow: hidden;">
+        <div style="min-height: 100px; overflow: hidden;">
           <div class="row">
             <div class="col-xs-4">
               <h4>${campaignObject.progress}%</h4>

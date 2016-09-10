@@ -67,7 +67,7 @@ const setupRouter = function(options) {
 
   // default to `/404` if no path matches
   // router setup
-  router = sheetRouter('/404', [
+  router = sheetRouter({ default: '/404' }, [
     /* ['/', function(params) {
       options.loadAndDrawCampaignsList();
 
@@ -86,9 +86,11 @@ const setupRouter = function(options) {
     ['/register', function(params){
       openView('view-register');
     }],
-    /* ['/account', function(params){
+    ['/account', function(params){
       openView('view-account');
-    }], */
+
+      options.loadAndDrawAccount();
+    }],
     ['/campaign/:campaignID', function(params) {
       // draw campaign
       openCampaign(options, params, function(e, r){

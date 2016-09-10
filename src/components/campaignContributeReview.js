@@ -2,7 +2,7 @@ const campaignContributeNav = require('./campaignContributeNav');
 
 const campaignContributeReview = function(options) {
   const t = options.t;
-  
+
   return `<div id="view-campaign-contribute-review" class="center-block container" style="margin-top: 40px; margin-bottom: 150px;">
     <div class="row">
       <div class="col-xs-12">
@@ -48,6 +48,9 @@ const campaignContributeReview = function(options) {
     </div>
     <div class="row">
       <div class="col-xs-12">
+        <h4>Total Transactions to Send</h4>
+        <h3><span id="campaign_contributeReview_transactionTotal">0</span> Transactions Queued</h3>
+
         <br />
         <hr />
 

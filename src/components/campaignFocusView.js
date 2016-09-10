@@ -18,6 +18,8 @@ const campaignFocusView = function(options) {
   const web3 = options.web3;
   const getLocale = options.getLocale;
 
+  console.log(campaignObject);
+
   return `<div class="campaign-focus" style="margin-top: 40px;">
 
     <div class="row center-block container text-center" style="margin-bottom: 60px;">
@@ -34,7 +36,7 @@ const campaignFocusView = function(options) {
         <h4>${t('campaignFocusView.progress')}</h4>
         <h1><b>${web3.fromWei(campaignObject.amountRaised, 'ether').toFixed(4)} <small>ETH</small></b></h1>
         <h4>${t('campaignFocusView.contributedOf', {fundingGoal: web3.fromWei(campaignObject.fundingGoal, 'ether').toFixed(4), fundingGoalUnits: 'ETH'})}</h4>
-        <h1><b>${Math.round(Math.abs((campaignObject.expiry.toNumber(10) * 1000 - (new Date()).getTime()) / (oneDay)))} </b></h1>
+        <h1><b>${campaignObject.hasExpired && "0" || Math.round(Math.abs((campaignObject.expiry.toNumber(10) * 1000 - (new Date()).getTime()) / (oneDay)))} </b></h1>
         <h4>${t('campaignFocusView.daysToGo')}</h4>
 
         <br /><br />

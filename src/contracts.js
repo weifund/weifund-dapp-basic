@@ -1,6 +1,6 @@
 // require environment
 const web3 = require('./web3').web3;
-const classes = require('./lib/classes.json');
+const classes = require('weifund-contracts').classes;
 const txObject = require('./environment').txObject;
 
 // setup campaign and data registries

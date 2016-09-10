@@ -63,7 +63,14 @@ function updateCampaignContributeReview() {
     contributeTotal = 0;
   }
 
-  document.querySelector('#campaign_contributeReview_contributeAmount').innerHTML = contributeAmount
+  // if contribution greater than zero
+  if (parseFloat(weifundContributeAmount) > 0) {
+    document.querySelector('#campaign_contributeReview_transactionTotal').innerHTML = 2;
+  } else {
+    document.querySelector('#campaign_contributeReview_transactionTotal').innerHTML = 1;
+  }
+
+  document.querySelector('#campaign_contributeReview_contributeAmount').innerHTML = contributeAmount;
   document.querySelector('#campaign_contributeReview_weifundContributeAmount').innerHTML = weifundContributeAmount;
   document.querySelector('#campaign_contributeReview_totalContributeAmount').innerHTML = contributeTotal;
 };
