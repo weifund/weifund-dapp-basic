@@ -6,7 +6,7 @@ const startCampaignView = function(options) {
 
     <div class="row center-block container text-center" style="margin-bottom: 60px;">
       <h1 class="text-pretty-huge">Start A Campaign</h1>
-      <h4>Launch your project today!</h4>
+      <h4>Launch your project into the Ethersphere!</h4>
     </div>
 
     <div class="row center-block container">
@@ -53,12 +53,12 @@ const startCampaignView = function(options) {
 
         <br /><br />
 
-        <h3>End Date (Expiry)</h3>
-        <p>The date at which the campaign will end.</p>
+        <h3>Duration (in days)</h3>
+        <p>The total campaign duration in days.</p>
 
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-8">
-            <div class="input-slider input-slider-lg" data-input-id="startCampaign_expiry">
+            <div class="input-slider input-slider-lg" data-fixed-decimal-amount="0" data-input-id="startCampaign_expiry">
               <div class="input-slider-rail">
                 <div class="input-slider-rail-highlight"></div>
                 <div class="input-slider-bar"></div>

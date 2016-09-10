@@ -375,6 +375,7 @@ const buildAllInputSliders = function() {
       const clientX = event.clientX;
       var barLeftPositionShim = (parseFloat(((clientX - sliderOffsetLeft) / sliderWidth) - 1).toFixed(2) * 17) * -1;
       var barLeftPositionPercentage = ((clientX - barLeftPositionShim - sliderOffsetLeft) / sliderWidth) * 100;
+      var fixedDecimalAmount = 2;
 
       // fix invarience
       if (barLeftPositionPercentage > 100 || clientX > sliderOffsetLeft + sliderWidth) {
@@ -386,13 +387,17 @@ const buildAllInputSliders = function() {
         barLeftPositionPercentage = 0;
       }
 
+      if (inputSliderElement.dataset.fixedDecimalAmount) {
+        fixedDecimalAmount = parseInt(inputSliderElement.dataset.fixedDecimalAmount, 10);
+      }
+
       // handle input id
       if (typeof inputSliderElement.dataset.inputId === 'string') {
         const dataInputElement = document.querySelector(`#${inputSliderElement.dataset.inputId}`);
 
         // if element exists
         if (dataInputElement !== null && dataInputElement.length !== 0) {
-          dataInputElement.value = parseFloat(barLeftPositionPercentage).toFixed(2);
+          dataInputElement.value = parseFloat(barLeftPositionPercentage).toFixed(fixedDecimalAmount);
         }
 
         // dispatch change event
