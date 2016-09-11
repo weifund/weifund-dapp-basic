@@ -1,5 +1,5 @@
 // require ipfs from vendor
-const ipfs = require('../vendor/ipfs.min.js');
+const ipfs = require('ipfs-js');
 
 // setup ipfs provider
 const setupIPFSProvider = function() {

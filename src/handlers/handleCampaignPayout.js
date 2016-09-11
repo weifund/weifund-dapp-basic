@@ -1,5 +1,5 @@
 // utils
-const utils = require('../utils/');
+const utils = require('weifund-util');
 const log = utils.log;
 const etherScanAddressUrl = utils.etherScanAddressUrl;
 const etherScanTxHashUrl = utils.etherScanTxHashUrl;
@@ -15,7 +15,6 @@ const setDefaultAccount = environment.setDefaultAccount;
 // campaign environment methods
 const getCampaign = environment.getCampaign;
 const setCampaign = environment.setCampaign;
-const getCampaigns = environment.getCampaigns;
 
 // web3
 const web3 = require('../web3').web3;
@@ -23,13 +22,8 @@ const web3 = require('../web3').web3;
 // require contracts
 // setup campaign and data registries
 // Campaign/token contracts
-const contracts = require('../contracts');
-const campaign = contracts.campaignContractFactory;
-
-// loadCampaign method
-const lib = require('../lib');
-const getCampaignData = lib.getCampaign;
-const getCampaignsData = lib.getCampaigns;
+const contracts = require('weifund-contracts');
+const campaign = contracts.factories.Campaign(web3);
 
 // require i18n
 const t = require('../i18n').t;

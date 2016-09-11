@@ -1,4 +1,4 @@
-const oneDay = require('../utils/').oneDay;
+const oneDay = require('weifund-util').oneDay;
 
 const campaignMedium = function(options) {
   const campaignObject = options.campaignObject;

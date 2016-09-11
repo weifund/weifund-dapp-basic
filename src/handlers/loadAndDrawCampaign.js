@@ -1,14 +1,6 @@
 // requires
 const QRious = require('qrious');
 
-// utils
-const utils = require('../utils/');
-const log = utils.log;
-const etherScanAddressUrl = utils.etherScanAddressUrl;
-const etherScanTxHashUrl = utils.etherScanTxHashUrl;
-const parseSolidityMethodName = utils.parseSolidityMethodName;
-const oneDay = utils.oneDay;
-
 // require components
 const components = require('../components');
 
@@ -24,15 +16,16 @@ const setDefaultAccount = environment.setDefaultAccount;
 // campaign environment methods
 const getCampaign = environment.getCampaign;
 const setCampaign = environment.setCampaign;
-const getCampaigns = environment.getCampaigns;
 
 // web3
 const web3 = require('../web3').web3;
 
+// web3
+const ipfs = require('../ipfs').ipfs;
+
 // loadCampaign method
-const lib = require('../lib');
-const getCampaignData = lib.getCampaign;
-const getCampaignsData = lib.getCampaigns;
+const lib = require('weifund-lib');
+const getCampaigns = lib.getCampaigns;
 
 // router instance
 var router = require('../router');
@@ -49,12 +42,22 @@ const loadAndDrawCampaign = function(campaignID, callback) {
   document.querySelector('#view-focus').innerHTML = components.viewLoader({t: t});
 
   // load campaign fresh to draw
-  getCampaignData(campaignID, function(campaignLoadError, campaignData){
+  getCampaigns({
+    network: getNetwork(),
+    selector: [campaignID],
+    web3Provider: web3.currentProvider,
+    ipfsProvider: ipfs.currentProvider,
+  }, function(campaignLoadError, campaignDataObject){
     if (campaignLoadError) {
       log('Campaign load while drawing...', campaignLoadError);
       callback(campaignLoadError, null);
       return;
     }
+
+    console.log(campaignDataObject);
+
+    // campaign data
+    const campaignData = campaignDataObject[campaignID];
 
     // save in campaigns
     setCampaign(campaignID, campaignData);

@@ -1,5 +1,5 @@
 // object to html
-const objectToHTML = require('../utils/').objectToHTML;
+const objectView = require('./objectView');
 
 const campaignFocusDetailsView = function(options) {
   const t = options.t;
@@ -57,8 +57,7 @@ const campaignFocusDetailsView = function(options) {
 
       <div class="row">
         <div class="col-xs-12 col-sm-6">
-          ${objectToHTML(campaignObject, {
-            layout: {
+          ${objectView({web3: web3, object: campaignObject, layout: {
               active: {
                 name: 'Active',
                 description: 'Is the campaign active (i.e. can you contribute to it)',
@@ -164,11 +163,10 @@ const campaignFocusDetailsView = function(options) {
               type: 'percentage',
               description: 'The percentage progress of the campaign.',
             },
-            web3: web3
-          })}
+        })}
         </div>
         <div class="col-xs-12 col-md-6">
-          ${objectToHTML(campaignObject, {layout: {
+          ${objectView({web3: web3, object: campaignObject, layout: {
             contributeMethodABIObject: {
               description: 'The contribute method interface object.',
             },
@@ -184,7 +182,7 @@ const campaignFocusDetailsView = function(options) {
             abi: {
               description: 'The generated campaign contract ABI object.',
             },
-          }, web3: web3})}
+          }})}
         </div>
       </div>
 

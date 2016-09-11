@@ -1,4 +1,4 @@
-const oneDay = require('../utils/').oneDay;
+const oneDay = require('weifund-util').oneDay;
 
 const campaignFocusOverviewView = require('./campaignFocusOverviewView');
 const campaignFocusDetailsView = require('./campaignFocusDetailsView');
@@ -17,8 +17,6 @@ const campaignFocusView = function(options) {
   const campaignObject = options.campaignObject;
   const web3 = options.web3;
   const getLocale = options.getLocale;
-
-  console.log(campaignObject);
 
   return `<div class="campaign-focus" style="margin-top: 40px;">
 

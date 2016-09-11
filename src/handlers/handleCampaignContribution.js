@@ -1,5 +1,5 @@
 // utils
-const utils = require('../utils/');
+const utils = require('weifund-util');
 const log = utils.log;
 const etherScanAddressUrl = utils.etherScanAddressUrl;
 const etherScanTxHashUrl = utils.etherScanTxHashUrl;
@@ -18,15 +18,14 @@ const txObject = environment.txObject;
 // campaign environment methods
 const getCampaign = environment.getCampaign;
 const setCampaign = environment.setCampaign;
-const getCampaigns = environment.getCampaigns;
 
 // web3
 const web3 = require('../web3').web3;
 
 // require contracts
-const contracts = require('../contracts');
-const campaignRegistry = contracts.campaignRegistryContract;
-const campaign = contracts.campaignContractFactory;
+const contracts = require('weifund-contracts');
+const campaignRegistry = contracts.CampaignRegistry(web3, getNetwork());
+const campaign = contracts.factories.Campaign(web3);
 
 // router instance
 var router = require('../router');

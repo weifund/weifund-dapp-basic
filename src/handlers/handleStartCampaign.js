@@ -2,7 +2,7 @@
 const QRious = require('qrious');
 
 // utils
-const utils = require('../utils/');
+const utils = require('weifund-util');
 const log = utils.log;
 const etherScanAddressUrl = utils.etherScanAddressUrl;
 const etherScanTxHashUrl = utils.etherScanTxHashUrl;
@@ -22,24 +22,18 @@ const txObject = environment.txObject;
 // campaign environment methods
 const getCampaign = environment.getCampaign;
 const setCampaign = environment.setCampaign;
-const getCampaigns = environment.getCampaigns;
 
 // web3
 const web3 = require('../web3').web3;
 
 // require contracts
-const contracts = require('../contracts');
+const contracts = require('weifund-contracts');
 const classes = contracts.classes;
-const campaignRegistry = contracts.campaignRegistryContract;
-const campaign = contracts.campaignContractFactory;
-const ownedContractFactory = contracts.ownedContractFactory;
-const standardCampaignContractFactory = contracts.standardCampaignContractFactory;
-const standardRefundCampaignFactoryContract = contracts.standardRefundCampaignFactoryContract;
-
-// loadCampaign method
-const lib = require('../lib');
-const getCampaignData = lib.getCampaign;
-const getCampaignsData = lib.getCampaigns;
+const campaignRegistry = contracts.CampaignRegistry(web3, getNetwork());
+const campaign = contracts.factories.Campaign(web3);
+const ownedContractFactory = contracts.factories.Owned(web3);
+const standardCampaignContractFactory = contracts.factories.StandardCampaign(web3);
+const standardCampaignFactory = contracts.StandardCampaignFactory(web3, getNetwork());
 
 // router instance
 var router = require('../router');
@@ -92,7 +86,7 @@ const handleStartCampaign = function(event){
     `;
 
     // listen for service registered
-    standardRefundCampaignFactoryContract.ServiceRegistered({}, function(serviceRegisteredError, serviceRegisteredResult){
+    standardCampaignFactory.ServiceRegistered({}, function(serviceRegisteredError, serviceRegisteredResult){
       // service property
       const serviceAddress = serviceRegisteredResult.args._service;
 
@@ -152,7 +146,7 @@ const handleStartCampaign = function(event){
     });
 
     // new standard campaign tx
-    standardRefundCampaignFactoryContract.newStandardRefundCampaign(name, expiry, fundingGoal, beneficiary, txObject(), function(newStandardCampaignError, newStandardCampaignTxHash){
+    standardCampaignFactory.newStandardRefundCampaign(name, expiry, fundingGoal, beneficiary, txObject(), function(newStandardCampaignError, newStandardCampaignTxHash){
       // handle new standard campaign error
       if (newStandardCampaignError) {
         resetStartCampaignResponses();

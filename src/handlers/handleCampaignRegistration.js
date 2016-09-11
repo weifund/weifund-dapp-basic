@@ -1,5 +1,5 @@
 // utils
-const utils = require('../utils/');
+const utils = require('weifund-util');
 const log = utils.log;
 const etherScanAddressUrl = utils.etherScanAddressUrl;
 const etherScanTxHashUrl = utils.etherScanTxHashUrl;
@@ -18,7 +18,6 @@ const setDefaultAccount = environment.setDefaultAccount;
 // campaign environment methods
 const getCampaign = environment.getCampaign;
 const setCampaign = environment.setCampaign;
-const getCampaigns = environment.getCampaigns;
 
 // web3
 const web3 = require('../web3').web3;
@@ -26,18 +25,13 @@ const web3 = require('../web3').web3;
 // require contracts
 // setup campaign and data registries
 // Campaign/token contracts
-const contracts = require('../contracts');
-const classes = require('../contracts').classes;
-const campaignRegistry = contracts.campaignRegistryContract;
-const staffPicks = contracts.staffPicksContract;
-const campaignDataRegistry = contracts.campaignDataRegistryContract;
-const standardCampaignFactory = contracts.standardCampaignContractFactory;
-const campaign = contracts.campaignContractFactory;
-
-// loadCampaign method
-const lib = require('../lib');
-const getCampaignData = lib.getCampaign;
-const getCampaignsData = lib.getCampaigns;
+const contracts = require('weifund-contracts');
+const classes = require('weifund-contracts').classes;
+const campaignRegistry = contracts.CampaignRegistry(web3, getNetwork());
+const staffPicks = contracts.StaffPicks(web3, getNetwork());
+const campaignDataRegistry = contracts.CampaignDataRegistry(web3, getNetwork());
+const standardCampaignFactory = contracts.factories.StandardCampaign(web3);
+const campaign = contracts.factories.Campaign(web3);
 
 // router
 const refreshPageButtons = require('../router').refreshPageButtons;

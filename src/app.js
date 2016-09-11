@@ -59,13 +59,6 @@ const loadApp = function() {
   web3.eth.getAccounts(function(accountsError, accounts){
     if (!accountsError && accounts.length) {
       setDefaultAccount(accounts[0]);
-      /* const txObject = require('./environment').txObject;
-      const classes = require('./contracts').classes;
-      const standardRefundCampaignFactory = require('./contracts').standardRefundCampaignFactory;
-
-      standardRefundCampaignFactory.new(Object.assign({data: classes.StandardRefundCampaignFactory.bytecode},  txObject()), function(err, result){
-        console.log('refund camp factory', err, result);
-      }); */
     }
   });
 

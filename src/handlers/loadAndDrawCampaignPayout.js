@@ -1,5 +1,5 @@
 // utils
-const utils = require('../utils/');
+const utils = require('weifund-util');
 const log = utils.log;
 const etherScanAddressUrl = utils.etherScanAddressUrl;
 const etherScanTxHashUrl = utils.etherScanTxHashUrl;
@@ -22,16 +22,17 @@ const setCampaign = environment.setCampaign;
 // web3
 const web3 = require('../web3').web3;
 
+// web3
+const ipfs = require('../ipfs').ipfs;
+
 // require contracts
 // setup campaign and data registries
 // Campaign/token contracts
-const contracts = require('../contracts');
-const campaign = contracts.campaignContractFactory;
+const contracts = require('weifund-contracts');
 
 // loadCampaign method
-const lib = require('../lib');
-const getCampaignData = lib.getCampaign;
-const getCampaignsData = lib.getCampaigns;
+const lib = require('weifund-lib');
+const getCampaigns = lib.getCampaigns;
 
 // router
 const refreshPageButtons = require('../router').refreshPageButtons;
@@ -40,7 +41,7 @@ const refreshPageButtons = require('../router').refreshPageButtons;
 const t = require('../i18n').t;
 
 // draw utils
-const buildAllInputSliders = require('../utils').buildAllInputSliders;
+const buildAllInputSliders = require('./drawAllInputSliders');
 
 const loadAndDrawCampaignPayout = function(campaignID, callback) {
   // handle empty callback
@@ -52,12 +53,29 @@ const loadAndDrawCampaignPayout = function(campaignID, callback) {
   document.querySelector('#view-campaign-payout').innerHTML = components.viewLoader({t: t});
 
   // load campaign fresh to draw
-  getCampaignData(campaignID, function(campaignLoadError, campaignData){
+  getCampaigns({
+    // set network
+    // or 'testnet'
+    network: getNetwork(),
+
+    // set campaign selector
+    // array (i.e. array of campaignIDs)
+    selector: [campaignID],
+
+    // set web3 provider
+    web3Provider: web3.currentProvider,
+
+    // set ipfs provider
+    ipfsProvider: ipfs.currentProvider,
+  }, function(campaignLoadError, campaignDataObject){
     if (campaignLoadError) {
       log('Campaign load while drawing...', campaignLoadError);
       callback(campaignLoadError, null);
       return;
     }
+
+    // campaign data
+    const campaignData = campaignDataObject[campaignID];
 
     // save in campaigns
     setCampaign(campaignID, campaignData);

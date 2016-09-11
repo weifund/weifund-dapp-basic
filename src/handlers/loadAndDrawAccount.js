@@ -2,7 +2,7 @@
 const QRious = require('qrious');
 
 // utils
-const utils = require('../utils/');
+const utils = require('weifund-util');
 const log = utils.log;
 const etherScanAddressUrl = utils.etherScanAddressUrl;
 const etherScanTxHashUrl = utils.etherScanTxHashUrl;
@@ -21,18 +21,11 @@ const txObject = environment.txObject;
 const getDefaultAccount = environment.getDefaultAccount;
 const setDefaultAccount = environment.setDefaultAccount;
 
-// campaign environment methods
-const getCampaign = environment.getCampaign;
-const setCampaign = environment.setCampaign;
-const getCampaigns = environment.getCampaigns;
-
 // web3
 const web3 = require('../web3').web3;
 
-// loadCampaign method
-const lib = require('../lib');
-const getCampaignData = lib.getCampaign;
-const getCampaignsData = lib.getCampaigns;
+// web3
+const ipfs = require('../ipfs').ipfs;
 
 // router instance
 var router = require('../router');

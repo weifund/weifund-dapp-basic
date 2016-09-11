@@ -1,5 +1,5 @@
 // utils
-const utils = require('../utils/');
+const utils = require('weifund-util');
 const log = utils.log;
 const etherScanAddressUrl = utils.etherScanAddressUrl;
 const etherScanTxHashUrl = utils.etherScanTxHashUrl;
@@ -17,27 +17,25 @@ const setDefaultAccount = environment.setDefaultAccount;
 
 // campaign environment methods
 const getCampaign = environment.getCampaign;
+const getStoredCampaigns = environment.getCampaigns;
 const setCampaign = environment.setCampaign;
-const getCampaigns = environment.getCampaigns;
 
 // web3
 const web3 = require('../web3').web3;
 
+// web3
+const ipfs = require('../ipfs').ipfs;
+
 // require contracts
 // setup campaign and data registries
 // Campaign/token contracts
-const contracts = require('../contracts');
-const classes = require('../contracts').classes;
-const campaignRegistry = contracts.campaignRegistryContract;
-const staffPicks = contracts.staffPicksContract;
-const campaignDataRegistry = contracts.campaignDataRegistryContract;
-const standardCampaignFactory = contracts.standardCampaignContractFactory;
-const campaign = contracts.campaignContractFactory;
+const contracts = require('weifund-contracts');
+const campaignRegistry = contracts.CampaignRegistry(web3, getNetwork());
+const staffPicks = contracts.StaffPicks(web3, getNetwork());
 
 // loadCampaign method
-const lib = require('../lib');
-const getCampaignData = lib.getCampaign;
-const getCampaignsData = lib.getCampaigns;
+const lib = require('weifund-lib');
+const getCampaigns = lib.getCampaigns;
 
 // router
 const refreshPageButtons = require('../router').refreshPageButtons;
@@ -52,7 +50,7 @@ const drawCampaigns = function(campaignsToDraw) {
   document.querySelector('#campaigns_list').innerHTML = ``;
 
   // draw campaigns in list
-  for(var campaignID = getCampaigns().length; campaignID >= 0; campaignID--){
+  for(var campaignID = getStoredCampaigns().length; campaignID >= 0; campaignID--){
     var campaignToDraw = campaignsToDraw[campaignID];
     var campaignDrawTarget = 'campaigns_list';
 
@@ -73,29 +71,59 @@ const drawCampaigns = function(campaignsToDraw) {
 
 // load all campaigns
 const loadAndDrawCampaignsList = function() {
+  // the campaign id selector array
+  var selectorArray = [];
+
   // draw loader
   document.querySelector('#view-list').innerHTML = components.viewLoader({t: t});
 
-  // load campaigns
-  getCampaignsData({}, function(loadCampaignsError, loadCampaignsResult){
-    // handle errors
-    if (loadCampaignsError) {
-      document.querySelector('#campaigns_list').innerHTML = `Error while loading campaigns ${JSON.stringify(loadCampaignsError)}`;
+  // get the number of campaigns then load campaigns list accordingly
+  campaignRegistry.numCampaigns(function(numCampaignsError, numCampaignsResult){
+    if (numCampaignsError) {
+      document.querySelector('#campaigns_list').innerHTML = `Error while loading campaigns ${JSON.stringify(numCampaignsError)}`;
       return;
     }
 
-    // draw campaigns page
-    document.querySelector('#view-list').innerHTML = components.campaignsView({t: t});
-
-    // if load result is nice
-    if (typeof loadCampaignsResult === 'object') {
-      Object.keys(loadCampaignsResult).forEach(function(campaignID){
-        setCampaign(campaignID, loadCampaignsResult[campaignID]);
-
-        // draw campaigns everytime
-        drawCampaigns(getCampaigns());
-      });
+    // build selector array, select all campaigns
+    for(var cid = 0; cid < numCampaignsResult.toNumber(10); cid++) {
+      selectorArray.push(cid);
     }
+
+    // load campaigns
+    getCampaigns({
+      // set network
+      // or 'testnet'
+      network: getNetwork(),
+
+      // set campaign selector
+      // array (i.e. array of campaignIDs)
+      selector: selectorArray,
+
+      // set web3 provider
+      web3Provider: web3.currentProvider,
+
+      // set ipfs provider
+      ipfsProvider: ipfs.currentProvider,
+    }, function(loadCampaignsError, loadCampaignsResult){
+      // handle errors
+      if (loadCampaignsError) {
+        document.querySelector('#campaigns_list').innerHTML = `Error while loading campaigns ${JSON.stringify(loadCampaignsError)}`;
+        return;
+      }
+
+      // draw campaigns page
+      document.querySelector('#view-list').innerHTML = components.campaignsView({t: t});
+
+      // if load result is nice
+      if (typeof loadCampaignsResult === 'object') {
+        Object.keys(loadCampaignsResult).forEach(function(campaignID){
+          setCampaign(campaignID, loadCampaignsResult[campaignID]);
+
+          // draw campaigns everytime
+          drawCampaigns(getStoredCampaigns());
+        });
+      }
+    });
   });
 };
 

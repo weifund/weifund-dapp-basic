@@ -1,4 +1,4 @@
-const parseMethodABIObject = require('../utils').parseMethodABIObject;
+const parseMethodABIObject = require('weifund-util').parseMethodABIObject;
 
 const methodABIInputsForm = function(options) {
   // the output html

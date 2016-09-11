@@ -1,4 +1,4 @@
-const oneDay = require('../utils/').oneDay;
+const oneDay = require('weifund-util').oneDay;
 
 // draw highlight campaign
 const campaignHighlightMedium = function(options) {
