@@ -16,7 +16,7 @@ const campaignHighlightMedium = function(options) {
   <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 list-feature-column">
     <div class="list-campaign-feature">
       <div class="row">
-        <div class="col-xs-5" style="height: 100%; background: url(${campaignObject.imageUrl});">
+        <div class="col-xs-5" style="height: 100%; background: url(${campaignObject.imageUrl}); background-size: cover;">
         </div>
         <div class="col-xs-7">
             <a href="/campaign/${campaignObject.id}">
@@ -28,7 +28,7 @@ overflow: hidden;
 text-overflow: ellipsis;">
               ${(campaignObject.hasValidData
                 && typeof campaignObject.data.i18n[getLocale()] !== "undefined"
-                && campaignObject.data.i18n[getLocale()].disambiguatedDescription
+                && campaignObject.data.i18n[getLocale()].description
                 || t('campaignHighlightMedium.defaultDescription'))}
             </p>
 

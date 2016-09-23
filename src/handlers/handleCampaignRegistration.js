@@ -39,6 +39,12 @@ const refreshPageButtons = require('../router').refreshPageButtons;
 // require i18n
 const t = require('../i18n').t;
 
+const registerCampaign = function(campaignAddress) {
+  campaignRegistry.register(campaignAddress, '', txObject(), function(registerError, registerTxHash){
+    console.log(registerError, registerTxHash);
+  });
+};
+
 // register a campaign with the weifund registry
 const handleCampaignRegistration = function(){
   const campaignAddress = document.querySelector('#registerCampaign_campaign').value;

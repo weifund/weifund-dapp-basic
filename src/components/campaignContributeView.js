@@ -164,7 +164,7 @@ const campaignContributeView = function(options) {
       <div class="row checkbox-list-wrapper">
         <div class="col-xs-12">
           <div class="checkbox">
-            <h4><input type="checkbox">via ShapeShift to your Ether address</h4>
+            <h4><a href="https://shapeshift.io/#" target="_blank"><input type="checkbox">via ShapeShift to your Ether address</a></h4>
           </div>
           <br />
           <a href="/campaign/${campaignObject.id}/contribute/exchanges" class="checkbox" style="text-decoration: none; cursor: pointer; color: #333;">

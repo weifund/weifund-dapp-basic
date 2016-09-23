@@ -1,6 +1,8 @@
 const campaignContributeReceipt = function(options){
   const t = options.t;
-  
+  const to = options.to;
+  const from = options.from;
+
   return `
   <div class="row center-block container" style="margin-top: 40px; margin-bottom: 150px;">
     <div class="col-xs-12">
@@ -20,21 +22,21 @@ const campaignContributeReceipt = function(options){
       <br /> <br />
 
       <h4>To (Campaign Account)</h4>
-      ${options.receipt.to}
+      ${to}
 
       <br /> <br />
 
       <h4>From (Your Selected Account)</h4>
-      ${options.receipt.from}
+      ${from}
 
       <br /> <br />
 
       <h4>Block Number</h4>
-      ${options.receipt.blockNumber.toString(10)}
+      ${options.receipt.blockNumber !== null && options.receipt.blockNumber.toString(10) || 'pending'}
 
       <br /> <br />
       <h4>Cumulative Gas Used</h4>
-      ${options.receipt.cumulativeGasUsed.toString(10)} wei
+      ${options.receipt.cumulativeGasUsed !== null && options.receipt.cumulativeGasUsed.toString(10) || 'pending'} wei
 
       <br /> <br /> <br />
 

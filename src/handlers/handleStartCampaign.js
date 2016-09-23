@@ -145,8 +145,10 @@ const handleStartCampaign = function(event){
       });
     });
 
+    console.log(standardCampaignFactory);
+
     // new standard campaign tx
-    standardCampaignFactory.newStandardRefundCampaign(name, expiry, fundingGoal, beneficiary, txObject(), function(newStandardCampaignError, newStandardCampaignTxHash){
+    standardCampaignFactory.newStandardCampaign(name, expiry, fundingGoal, beneficiary, txObject(), function(newStandardCampaignError, newStandardCampaignTxHash){
       // handle new standard campaign error
       if (newStandardCampaignError) {
         resetStartCampaignResponses();

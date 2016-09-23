@@ -7,13 +7,13 @@ const campaignsView = function(options) {
     <h1 class="text-huge text-center">${t("campaignsView.header")}</h1>
     <h3 class="text-center">${t("campaignsView.subHeader")}</h3>
 
-    <br /><br /><br /><br /><br /><br /><br />
+    <br /><br /><br /><br />
 
     <div class="row">
       <div id="staffpicks_list"><h3>${t("campaignsView.loading")}</h3></div>
     </div>
 
-    <br /><br /><br /><br /><br /><br />
+    <!--<br /><br /><br /><br /><br /><br />-->
 
     <div class="row">
       <h3>${t("campaignsView.campaignsHeader")}</h3>

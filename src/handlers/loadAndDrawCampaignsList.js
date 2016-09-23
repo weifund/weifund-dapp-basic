@@ -61,7 +61,7 @@ const drawCampaigns = function(campaignsToDraw) {
       if (campaignToDraw.staffPick === true) {
         document.querySelector(`#staffpicks_list`).innerHTML += components.campaignHighlightMedium({campaignObject: campaignToDraw, web3: web3, getLocale: getLocale, t: t});
       } else {
-        document.querySelector(`#campaigns_list`).innerHTML += components.campaignMedium({campaignObject: campaignToDraw, web3: web3, getLocale: getLocale, t: t});
+        document.querySelector(`#campaigns_list`).innerHTML += components.campaignHighlightMedium({campaignObject: campaignToDraw, web3: web3, getLocale: getLocale, t: t});
       }
     }
   }
@@ -97,7 +97,7 @@ const loadAndDrawCampaignsList = function() {
 
       // set campaign selector
       // array (i.e. array of campaignIDs)
-      selector: selectorArray,
+      selector: [28,29],
 
       // set web3 provider
       web3Provider: web3.currentProvider,
@@ -105,6 +105,7 @@ const loadAndDrawCampaignsList = function() {
       // set ipfs provider
       ipfsProvider: ipfs.currentProvider,
     }, function(loadCampaignsError, loadCampaignsResult){
+
       // handle errors
       if (loadCampaignsError) {
         document.querySelector('#campaigns_list').innerHTML = `Error while loading campaigns ${JSON.stringify(loadCampaignsError)}`;
@@ -116,6 +117,7 @@ const loadAndDrawCampaignsList = function() {
 
       // if load result is nice
       if (typeof loadCampaignsResult === 'object') {
+        console.log(loadCampaignsResult, Object.keys(loadCampaignsResult).length);
         Object.keys(loadCampaignsResult).forEach(function(campaignID){
           setCampaign(campaignID, loadCampaignsResult[campaignID]);
 

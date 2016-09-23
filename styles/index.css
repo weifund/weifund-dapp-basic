@@ -298,12 +298,14 @@ footer {
   height: 20%;
   background-position: center center;
   background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .list-campaign-image-wrapper {
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-position: center center;
+  background-size: contain;
 }
 
 .list-campaign-feature {

@@ -4,7 +4,7 @@
   "description": "A basic limited JS framework high preformance WeiFund client",
   "main": "index.js",
   "scripts": {
-    "start": "budo src/app.js:bundle.js -P --cors --open",
+    "start": "node ./node_modules/budo/bin/cmd.js src/app.js:bundle.js -P --cors --open",
     "browserify": "browserify src/app.js -o bundle.js",
     "surge": "npm run browserify && cp index.html 200.html && surge --domain weifund-basic.surge.sh && rm 200.html && rm bundle.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -34,6 +34,7 @@
     "weifund-util": "git+https://github.com/weifund/weifund-util"
   },
   "devDependencies": {
+    "budo": "^9.2.0",
     "pem": "^1.8.3"
   }
 }

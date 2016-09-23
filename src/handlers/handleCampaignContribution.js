@@ -102,6 +102,7 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
         resetReviewResponses();
         document.querySelector('#campaign_contribute_warning_response').style.display = '';
         document.querySelector('#campaign_contribute_warning_response').innerHTML = `There was an error while sending your contribution transaction: ${String(JSON.stringify(contributeError, null, 2))}`;
+        return;
       }
 
       // if tx hash present
@@ -128,19 +129,23 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
             clearInterval(receiptInterval);
           }
 
+          console.log('Transaction Receipt', contributeResultTxHash, receiptResult, receiptError);
+
           // display transaction receipt
           if (receiptResult) {
-            resetReviewResponses();
-            document.querySelector('#campaign_contribute_info_response').style.display = '';
-            document.querySelector('#campaign_contribute_info_response').innerHTML = `Your transaction was processed: ${JSON.stringify(receiptResult, null, 2)} with transaction hash: ${contributeResultTxHash}`;
+            if (receiptResult.blockNumber !== null) {
+              resetReviewResponses();
+              document.querySelector('#campaign_contribute_info_response').style.display = '';
+              document.querySelector('#campaign_contribute_info_response').innerHTML = `Your transaction was processed: ${JSON.stringify(receiptResult, null, 2)} with transaction hash: ${contributeResultTxHash}`;
 
-            document.querySelector('#view-campaign-contribute-receipt').innerHTML = components.campaignContributeReceipt({receipt: receiptResult, campaignObject: selectedCampaign, getLocale: getLocale, web3: web3});
+              document.querySelector('#view-campaign-contribute-receipt').innerHTML = components.campaignContributeReceipt({receipt: receiptResult, from: txObject().from, to: selectedCampaign.addr, campaignObject: selectedCampaign, getLocale: getLocale, web3: web3});
 
-            // clear receipt interval
-            clearInterval(receiptInterval);
+              // clear receipt interval
+              clearInterval(receiptInterval);
 
-            // receipt page
-            getRouter()(`/campaign/${selectedCampaign.id}/contribute/receipt`);
+              // receipt page
+              getRouter()(`/campaign/${selectedCampaign.id}/contribute/receipt`);
+            }
           }
         });
 

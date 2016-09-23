@@ -5,15 +5,16 @@ const navBar = function(options) {
   <nav class="navbar nav navbar-fixed-top row">
     <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 nav-left hidden-xs hidden-sm">
       <a href="/">${t("navBar.discover")}</a>
-      <a href="/start" style="padding-left: 40px;">${t("navBar.start")}</a>
+      <!-- <a href="/start" style="padding-left: 40px;">${t("navBar.start")}</a> -->
     </div>
     <div class="col-xs-6 col-sm-12 col-md-4 col-lg-4 text-center">
       <a href="/"><img id="nav-logo" src="/styles/weifund-logo-small.png"></a>
     </div>
     <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 nav-right text-left-xs text-left-sm hidden-xs hidden-sm">
-      <select class="input-locale-toggle footer-locale-select">
+      <!-- <select class="input-locale-toggle footer-locale-select">
       </select>
-      <a href="/account">${t("navBar.account")}</a>
+      <a href="/account">${t("navBar.account")}</a> -->
+      <a href="https://weifund.readthedocs.org/" target="_blank">Read The Docs</a>
     </div>
 
     <div class="col-xs-6 visible-xs text-right hidden-lg">
@@ -29,12 +30,13 @@ const navBar = function(options) {
       <div class="row">
         <div class="col-xs-6 col-sm-6">
           <a href="/">${t("navBar.discover")}</a>
-          <a href="/start" style="padding-left: 40px;">${t("navBar.start")}</a>
+          <!-- <a href="/start" style="padding-left: 40px;">${t("navBar.start")}</a> -->
         </div>
         <div class="col-xs-6 col-sm-6 text-right">
-          <select class="input-locale-toggle footer-locale-select">
-          </select>
-          <a href="/account">${t("navBar.account")}</a>
+          <!--<select class="input-locale-toggle footer-locale-select">
+          </select>-->
+          <a href="https://weifund.readthedocs.org/" target="_blank">Read The Docs</a>
+          <!-- <a href="/account">${t("navBar.account")}</a> -->
         </div>
       </div>
     </div>
@@ -50,14 +52,15 @@ const navBar = function(options) {
                 <a href="/">${t("navBar.discover")}</a>
               </li>
               <li class="list-group-item">
-                <a href="/start">${t("navBar.start")}</a>
+                <!-- <a href="/start">${t("navBar.start")}</a> -->
               </li>
               <li class="list-group-item">
-                <select class="input-locale-toggle footer-locale-select">
-                </select>
+                <!--<select class="input-locale-toggle footer-locale-select">
+                </select> -->
               </li>
               <li class="list-group-item">
-                <a href="/account">${t("navBar.account")}</a>
+                <a href="https://weifund.readthedocs.org/" target="_blank">Read The Docs</a>
+                <!-- <a href="/account">${t("navBar.account")}</a> -->
               </li>
             </ul>
           </h3>
