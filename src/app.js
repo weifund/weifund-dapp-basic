@@ -25,6 +25,7 @@ const loadAndDrawCampaignPayout = handlers.loadAndDrawCampaignPayout;
 const loadAndDrawCampaignRefund = handlers.loadAndDrawCampaignRefund;
 const handleConfirmOnPageExit = handlers.handleConfirmOnPageExit;
 const loadAndDrawAccount = handlers.loadAndDrawAccount;
+const networkDetective = require('web3-network-detective');
 
 // draw navbar
 drawNavBar();
@@ -33,12 +34,34 @@ drawNavBar();
 drawStartCampaignView();
 
 // load application
-const loadApp = function() {
+const loadApp = function (loadEvent) {
   // window warnign message
   window.onunload = window.onbeforeunload = handleConfirmOnPageExit;
 
   // setup the web3 provider
-  setupWeb3Provider();
+  if (!loadEvent.bypassProviderSetup) {
+    setupWeb3Provider();
+  }
+
+  // detect what network everything is on
+  networkDetective(web3.currentProvider, function(detectiveError, detectiveResut){
+    if (!detectiveError) {
+      if (detectiveResut.testnet !== true) {
+        alert(`WARNING:
+-----------
+Your Web3 provider is not set to the Ethereum Morden Testnet.
+
+Please switch your provider to the Ethereum Morden testnet or hit "Ok" to switch to a third-party provider.`);
+
+        // switch provider for now
+        web3.setProvider(new web3.providers.HttpProvider('https://morden.infura.io/'));
+
+        // reload app
+        loadApp({bypassProviderSetup: true});
+      }
+    }
+  });
+
   setupIPFSProvider();
 
   // setup the router

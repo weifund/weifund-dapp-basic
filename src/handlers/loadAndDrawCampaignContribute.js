@@ -64,6 +64,30 @@ function updateCampaignContributeReview() {
     contributeTotal = 0;
   }
 
+  // parse float
+  if (parseFloat(contributeAmount, 10) === 0) {
+    document.querySelector('#campaign-contribute-review-button').href = ``;
+    document.querySelector('#campaign_contributeAmountGroup').style.border = `red solid 1px`;
+    document.querySelector('#campaign_contributeAmount').focus();
+    document.querySelector('#campaign_contributeAmount').blur();
+    return;
+  } else {
+    document.querySelector('#campaign-contribute-review-button').href = `/campaign/29/contribute/review`;
+    document.querySelector('#campaign_contributeAmountGroup').style.border = `none`;
+  }
+
+  // disclaimer check
+  if (!document.querySelector('#campaign-contribute-disclaimer').checked) {
+    document.querySelector('#campaign-contribute-review-button').href = ``;
+    document.querySelector('#campaign-contribute-disclaimer').style.border = `red solid 1px`;
+    document.querySelector('#campaign-contribute-disclaimer').focus();
+    document.querySelector('#campaign-contribute-disclaimer').blur();
+    return;
+  } else {
+    document.querySelector('#campaign-contribute-review-button').href = `/campaign/29/contribute/review`;
+    document.querySelector('#campaign-contribute-disclaimer').style.border = `none`;
+  }
+
   // if contribution greater than zero
   if (parseFloat(weifundContributeAmount) > 0) {
     document.querySelector('#campaign_contributeReview_transactionTotal').innerHTML = 2;
@@ -122,6 +146,13 @@ const loadAndDrawCampaignContribute = function(campaignID, callback) {
       defaultAccount: getDefaultAccount
     });
 
+    // get latest account balance
+    web3.eth.getBalance(getDefaultAccount(), function(balanceError, balanceResult) {
+      if (!balanceError) {
+        document.querySelector('#defaultAccountBalance').innerHTML = web3.fromWei(balanceResult, 'ether');
+      }
+    });
+
     // draw qr code
     const qr = new QRious({
       element: document.querySelector('#campaign-contribute-qrcode'),
@@ -137,6 +168,9 @@ const loadAndDrawCampaignContribute = function(campaignID, callback) {
 
     // weifund amount contributor amount
     document.querySelector('#campaign_contributeAmount').addEventListener('change', updateCampaignContributeReview);
+
+    // update form when disclaimer is checked
+    document.querySelector('#campaign-contribute-disclaimer').addEventListener('change', updateCampaignContributeReview);
 
     // handleCampaignContribution
     document.querySelector('#campaign_reviewContributeButton').addEventListener('click', handleCampaignContribution);

@@ -19,7 +19,7 @@ const campaignContributeForm = function(options) {
           </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-4">
-          <div class="input-group">
+          <div class="input-group" id="campaign_contributeAmountGroup">
             <input type="text" id="campaign_contributeAmount" value="1.5" class="form-control input-lg" placeholder="i.e. 1" aria-describedby="basic-addon2" />
             <span class="input-group-addon" id="basic-addon2">ether</span>
           </div>
@@ -81,13 +81,13 @@ WeiFund (A) expressly disclaims the accuracy, adequacy, or completeness of any d
       <h3>Technical Details</h3>
       <br />
       <h4>Network</h4>
-      <h5>Ethereum (ETH) Live Network*</h5>
+      <h5>Ethereum (ETH) Morden Test Network*</h5>
       <br />
       <h4>Selected Account</h4>
       <h5>${defaultAccount()}</h5>
       <br />
       <h4>Selected Account Balance</h4>
-      <h5>30 Ether (ETH)</h5>
+      <h5><span id="defaultAccountBalance">0</span> Ether (ETH)</h5>
       <br />
       <h4>Contract Address</h4>
       <h5>${campaignObject.addr}</h5>

@@ -8,7 +8,7 @@ const web3 = new Web3();
 const setupWeb3Provider = function() {
   // window provider support (metamask)
   // set provider later
-  if(typeof window.web3 !== 'undefined' && typeof window.web3.currentProvider !== 'undefined') {
+  if (typeof window.web3 !== 'undefined' && typeof window.web3.currentProvider !== 'undefined') {
     web3.setProvider(window.web3.currentProvider);
   } else {
     // set default provider to local 8545
