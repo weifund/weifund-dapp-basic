@@ -26,6 +26,8 @@ const campaignContributeForm = function(options) {
         </div>
       </div>
 
+      <input type="hidden" id="campaignFormID" value="${campaignObject.id}" />
+
       <div id="campaignContribution_inputs">
       </div>
 

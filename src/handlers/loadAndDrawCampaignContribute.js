@@ -56,9 +56,12 @@ const t = require('../i18n').t;
 const buildAllInputSliders = require('./drawAllInputSliders');
 
 function updateCampaignContributeReview() {
+  const campaignContributeID = document.querySelector('#campaignFormID').value;
   const contributeAmount = document.querySelector('#campaign_contributeAmount').value;
   const weifundContributeAmount = document.querySelector('#campaign_weifundContributeAmount').value;
   var contributeTotal = parseFloat(contributeAmount) + parseFloat(weifundContributeAmount);
+
+  // `/campaign/${campaignContributeID}/contribute/review`
 
   if (isNaN(contributeTotal)) {
     contributeTotal = 0;
@@ -72,7 +75,7 @@ function updateCampaignContributeReview() {
     document.querySelector('#campaign_contributeAmount').blur();
     return;
   } else {
-    document.querySelector('#campaign-contribute-review-button').href = `/campaign/29/contribute/review`;
+    document.querySelector('#campaign-contribute-review-button').href = `/campaign/${campaignContributeID}/contribute/review`;
     document.querySelector('#campaign_contributeAmountGroup').style.border = `none`;
   }
 
@@ -84,7 +87,7 @@ function updateCampaignContributeReview() {
     document.querySelector('#campaign-contribute-disclaimer').blur();
     return;
   } else {
-    document.querySelector('#campaign-contribute-review-button').href = `/campaign/29/contribute/review`;
+    document.querySelector('#campaign-contribute-review-button').href = `/campaign/${campaignContributeID}/contribute/review`;
     document.querySelector('#campaign-contribute-disclaimer').style.border = `none`;
   }
 
