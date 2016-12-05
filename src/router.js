@@ -89,7 +89,7 @@ const setupRouter = function(options) {
     ['/account', function(params){
       openView('view-account');
 
-      options.loadAndDrawAccount();
+      // options.loadAndDrawAccount();
     }],
     ['/campaign/:campaignID', function(params) {
       // draw campaign
