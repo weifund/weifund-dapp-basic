@@ -4,7 +4,7 @@
 // state variables
 
 // localstore
-const store = require('store');
+import store from 'store';
 
 // loaded campaigns
 var campaigns = [];
@@ -16,83 +16,83 @@ var transactions = [];
 var defaultAccount = '';
 
 // get transactions
-const getTransactions = function() {
+function getTransactions() {
   return personalTransactions;
-};
+}
 
 // transactions
-const setTransaction = function(transactionId, transactionHash) {
+function setTransaction(transactionId, transactionHash) {
   personalTransactions[transactionId] = transactionHash;
-};
+}
 
 // set default account
-const setDefaultAccount = function(account) {
+function setDefaultAccount(account) {
   defaultAccount = account;
-};
+}
 
 // get default account
-const getDefaultAccount = function() {
+function getDefaultAccount() {
   return defaultAccount;
-};
+}
 
 // txObject builder
-const txObject = function() {
-  return {
-    from: defaultAccount,
+function txObject() {
+  return Object.assign({}, {
+    from: getDefaultAccount(),
     gas: 3141592,
-  };
-};
+  });
+}
 
 // state related here
 // this and locale will be localstore
 // environment
-const getNetwork = function(){
+function getNetwork(){
   return 'testnet'; // or livenet
-};
+}
 
 // get current locale
-const getLocale = function() {
+function getLocale() {
   return store.get('locale') || 'en';
-};
+}
 
 // set locale
-const setLocale = function (locale) {
+function setLocale(locale) {
   store.set('locale', locale);
-};
+}
 
 // get contract environment
-const getContractEnvironment = function() {
-  return 'morden';
-};
+function getContractEnvironment() {
+  return 'ropsten';
+}
 
 // get all campaigns
-const getCampaigns = function() {
+function getStoredCampaigns() {
   return campaigns;
-};
+}
 
 // get single campaign
-const getCampaign = function(campaignId) {
-  return campaigns[parseInt(campaignId)];
-};
+function getCampaign(campaignId) {
+  return campaigns[parseInt(campaignId, 10)];
+}
 
 // set campaign data
-const setCampaign = function(campaignId, campaignData) {
-  campaigns[parseInt(campaignId)] = campaignData;
-};
+function setCampaign(campaignId, campaignData) {
+  campaigns[parseInt(campaignId, 10)] = campaignData;
+}
 
 // export campaign
 module.exports = {
-  getDefaultAccount: getDefaultAccount,
-  getContractEnvironment: getContractEnvironment,
-  setDefaultAccount: setDefaultAccount,
-  txObject: txObject,
-  campaigns: campaigns,
-  getCampaigns: getCampaigns,
-  getCampaign: getCampaign,
-  setCampaign: setCampaign,
-  getNetwork: getNetwork,
-  getLocale: getLocale,
-  setLocale: setLocale,
-  setTransaction: setTransaction,
-  getTransactions: getTransactions,
+  getDefaultAccount,
+  getContractEnvironment,
+  setDefaultAccount,
+  txObject,
+  campaigns,
+  getStoredCampaigns,
+  getCampaign,
+  setCampaign,
+  getNetwork,
+  getLocale,
+  setLocale,
+  setTransaction,
+  getTransactions,
 };

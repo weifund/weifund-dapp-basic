@@ -1,17 +1,21 @@
-const isBigNumber = require('weifund-util').isBigNumber;
+import { isBigNumber } from 'weifund-util';
 
-const capitalize = function(word) {
-    return word.charAt(0).toUpperCase() + word.substring(1);
+// helper methods
+function capitalize(word) {
+  return word.charAt(0).toUpperCase() + word.substring(1);
 }
 
-const toCapitalizedWords = function(name) {
+function toCapitalizedWords(name) {
   var words = name.match(/[A-Za-z][a-z]*/g);
 
   return words.map(capitalize).join(" ");
 }
 
+// main export
+module.exports = objectView;
+
 // intake object, return html
-const objectView = function(options) {
+function objectView(options) {
   var returnedHTML = ``;
   const object = options.object;
   const layout = options.layout;
@@ -81,6 +85,4 @@ const objectView = function(options) {
 
   // return html
   return returnedHTML;
-};
-
-module.exports = objectView;
+}

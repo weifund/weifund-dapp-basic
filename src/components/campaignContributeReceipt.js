@@ -1,4 +1,8 @@
-const campaignContributeReceipt = function(options){
+// export method
+module.exports = campaignContributeReceipt;
+
+// main export
+function campaignContributeReceipt(options){
   const t = options.t;
   const to = options.to;
   const from = options.from;
@@ -45,6 +49,4 @@ const campaignContributeReceipt = function(options){
       </a>
     </div>
   </div>`;
-};
-
-module.exports = campaignContributeReceipt;
+}

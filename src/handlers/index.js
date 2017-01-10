@@ -1,27 +1,23 @@
-
 // require components
-const components = require('../components');
+import { footer, navBar, startCampaignView } from '../components';
+
+// document helper
+import { el } from '../document';
 
 // environment
-const environment = require('../environment');
-const getNetwork = environment.getNetwork;
-const getLocale = environment.getLocale;
-const txObject = environment.txObject;
-const getDefaultAccount = environment.getDefaultAccount;
-const setDefaultAccount = environment.setDefaultAccount;
-const setLocale = environment.setLocale;
+import { setDefaultAccount, getDefaultAccount, getCampaign, setCampaign,
+  getNetwork, getLocale, getContractEnvironment, txObject } from '../environment';
 
 // require i18n
-const t = require('../i18n').t;
-
-const util = require('weifund-util');
+import { t } from '../i18n';
 
 // draw utils
-const buildAllNavToggles = require('./drawAllNavToggles');
-const buildAllInputSliders = require('./drawAllInputSliders');
-const handleStartCampaign = require('./handleStartCampaign');
+import buildAllNavToggles from './drawAllNavToggles';
+import buildAllInputSliders from './drawAllInputSliders';
+import handleStartCampaign from './handleStartCampaign';
 
-const buildLocaleToggles = function() {
+// export
+function buildLocaleToggles() {
   [].slice.call(document.querySelectorAll('.input-locale-toggle')).forEach(function(inputToggleElement){
     // check if toggle is listening
     if (inputToggleElement.dataset.listening) {
@@ -50,39 +46,39 @@ const buildLocaleToggles = function() {
       location.reload();
     });
   });
-};
+}
 
-const drawFooter = function() {
-  document.body.querySelector('#footer-wrapper').innerHTML = components.footer({t: t});
+function drawFooter() {
+  document.body.querySelector('#footer-wrapper').innerHTML = footer({t: t});
   buildLocaleToggles();
-};
+}
 
-const drawNavBar = function() {
-  document.body.querySelector('#nav-wrapper').innerHTML = components.navBar({t: t});
+function drawNavBar() {
+  document.body.querySelector('#nav-wrapper').innerHTML = navBar({t: t});
   buildAllNavToggles();
   buildLocaleToggles();
-};
+}
 
 // start campaign draw
-const drawStartCampaignView = function(options) {
-  document.querySelector('#view-start-campaign').innerHTML = components.startCampaignView({t: t});
+function drawStartCampaignView(options) {
+  el('#view-start-campaign').innerHTML = startCampaignView({t: t});
 
   // build all sliders
   buildAllInputSliders();
 
-  document.querySelector('#startCampaign_useMyAccount').addEventListener('click', function(event){
-    document.querySelector('#startCampaign_beneficiary').value = getDefaultAccount();
+  el('#startCampaign_useMyAccount').addEventListener('click', function(event){
+    el('#startCampaign_beneficiary').value = getDefaultAccount();
   });
 
   // add start campaign button
-  document.querySelector('#startCampaign_button').addEventListener('click', handleStartCampaign);
-};
+  el('#startCampaign_button').addEventListener('click', handleStartCampaign);
+}
 
 // module exports
 module.exports = {
-  drawNavBar: drawNavBar,
-  drawFooter: drawFooter,
-  drawStartCampaignView: drawStartCampaignView,
+  drawNavBar,
+  drawFooter,
+  drawStartCampaignView,
 
   loadAndDrawCampaign: require('./loadAndDrawCampaign'),
   loadAndDrawCampaignRefund: require('./loadAndDrawCampaignRefund'),

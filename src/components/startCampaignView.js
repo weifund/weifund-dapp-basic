@@ -1,4 +1,7 @@
-const startCampaignView = function(options) {
+module.exports = startCampaignView;
+
+// main export
+function startCampaignView(options) {
   const t = options.t;
 
   return `
@@ -144,6 +147,4 @@ const startCampaignView = function(options) {
 
   </div>
   `;
-};
-
-module.exports = startCampaignView;
+}

@@ -18,6 +18,11 @@ const campaignFocusView = function(options) {
   const web3 = options.web3;
   const getLocale = options.getLocale;
 
+  if (typeof campaignObject === 'undefined') {
+    setTimeout(options.reload, 5000);
+    return;
+  }
+
   return `<div class="campaign-focus" style="margin-top: 40px;">
 
     <div class="row center-block container text-center" style="margin-bottom: 60px;">
@@ -34,7 +39,7 @@ const campaignFocusView = function(options) {
         <h4>${t('campaignFocusView.progress')}</h4>
         <h1><b>${web3.fromWei(campaignObject.amountRaised, 'ether').toFixed(4)} <small>ETH</small></b></h1>
         <h4>${t('campaignFocusView.contributedOf', {fundingGoal: web3.fromWei(campaignObject.fundingGoal, 'ether').toFixed(4), fundingGoalUnits: 'ETH'})}</h4>
-        <h1><b>${campaignObject.hasExpired && "0" || Math.round(Math.abs((campaignObject.expiry.toNumber(10) * 1000 - (new Date()).getTime()) / (oneDay)))} </b></h1>
+        <h1><b>${campaignObject.hasExpired && "0" || campaignObject.expiry.toString(10)} </b></h1>
         <h4>${t('campaignFocusView.daysToGo')}</h4>
 
         <br /><br />
@@ -79,8 +84,8 @@ const campaignFocusView = function(options) {
       <div class="col-xs-12 col-sm-8">
         <h4>${t('campaignFocusView.overview')}</h4>
         <h3>${(campaignObject.hasValidData
-              && typeof campaignObject.data.i18n[getLocale()] !== "undefined"
-              && campaignObject.data.i18n[getLocale()].disambiguatedDescription
+              && typeof campaignObject.data.campaignSchema.i18n[getLocale()] !== "undefined"
+              && campaignObject.data.campaignSchema.i18n[getLocale()].disambiguatedDescription
               || t('campaignFocusView.defaultDescription'))}</h3>
       </div>
       <div class="col-xs-12 col-sm-4">

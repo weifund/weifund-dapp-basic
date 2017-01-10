@@ -1,64 +1,46 @@
 // requires
-const QRious = require('qrious');
+import QRious from 'qrious';
 
 // utils
-const utils = require('weifund-util');
-const log = utils.log;
-const etherScanAddressUrl = utils.etherScanAddressUrl;
-const etherScanTxHashUrl = utils.etherScanTxHashUrl;
-const parseSolidityMethodName = utils.parseSolidityMethodName;
-const parseSolidityMethodInterface = utils.parseSolidityMethodInterface;
-const oneDay = utils.oneDay;
+import { log, etherScanAddressUrl, parseSolidityMethodName,
+  parseSolidityMethodInterface, etherScanTxHashUrl, oneDay, emptyWeb3Address } from 'weifund-util';
+
+// document helper
+import { el } from '../document';
 
 // require components
-const components = require('../components');
+import { campaignContributeView, viewLoader } from '../components';
 
 // environment
-const environment = require('../environment');
-const getNetwork = environment.getNetwork;
-const getLocale = environment.getLocale;
-const getContractEnvironment = environment.getContractEnvironment;
-const txObject = environment.txObject;
-const getDefaultAccount = environment.getDefaultAccount;
-
-// campaign environment methods
-const getCampaign = environment.getCampaign;
-const setCampaign = environment.setCampaign;
+import { setDefaultAccount, getDefaultAccount, getCampaign, setCampaign,
+  getNetwork, getLocale, getContractEnvironment, txObject } from '../environment';
 
 // web3
-const web3 = require('../web3').web3;
-
-// web3
-const ipfs = require('../ipfs').ipfs;
+// loadCampaign method
+import { web3 } from '../web3';
+import { ipfs } from '../ipfs';
+import { getCampaigns } from 'weifund-lib';
+import { getRouter, refreshPageButtons } from '../router';
+import { t } from '../i18n';
 
 // require contracts
-// setup campaign and data registries
-// Campaign/token contracts
-const contracts = require('weifund-contracts');
-const campaignRegistry = contracts.CampaignRegistry(web3, getNetwork());
-
-// loadCampaign method
-const lib = require('weifund-lib');
-const getCampaigns = lib.getCampaigns;
-
-// router instance
-var router = require('../router');
-const getRouter = router.getRouter;
-const refreshPageButtons = router.refreshPageButtons;
+import Contracts from 'weifund-contracts';
+const contracts = new Contracts('ropsten', web3.currentProvider);
+const campaignRegistry = contracts.CampaignRegistry.instance();
 
 // handle cmapaign contribution
-const handleCampaignContribution = require('./handleCampaignContribution');
-
-// require i18n
-const t = require('../i18n').t;
-
 // build all input sliders
-const buildAllInputSliders = require('./drawAllInputSliders');
+import handleCampaignContribution from './handleCampaignContribution';
+import buildAllInputSliders from './drawAllInputSliders';
 
+// export method
+module.exports = loadAndDrawCampaignContribute;
+
+// main export
 function updateCampaignContributeReview() {
-  const campaignContributeID = document.querySelector('#campaignFormID').value;
-  const contributeAmount = document.querySelector('#campaign_contributeAmount').value;
-  const weifundContributeAmount = document.querySelector('#campaign_weifundContributeAmount').value;
+  const campaignContributeID = el('#campaignFormID').value;
+  const contributeAmount = el('#campaign_contributeAmount').value;
+  const weifundContributeAmount = el('#campaign_weifundContributeAmount').value;
   var contributeTotal = parseFloat(contributeAmount) + parseFloat(weifundContributeAmount);
 
   // `/campaign/${campaignContributeID}/contribute/review`
@@ -69,68 +51,62 @@ function updateCampaignContributeReview() {
 
   // parse float
   if (parseFloat(contributeAmount, 10) === 0) {
-    document.querySelector('#campaign-contribute-review-button').href = ``;
-    document.querySelector('#campaign_contributeAmountGroup').style.border = `red solid 1px`;
-    document.querySelector('#campaign_contributeAmount').focus();
-    document.querySelector('#campaign_contributeAmount').blur();
+    el('#campaign-contribute-review-button').href = ``;
+    el('#campaign_contributeAmountGroup').style.border = `red solid 1px`;
+    el('#campaign_contributeAmount').focus();
+    el('#campaign_contributeAmount').blur();
     return;
   } else {
-    document.querySelector('#campaign-contribute-review-button').href = `/campaign/${campaignContributeID}/contribute/review`;
-    document.querySelector('#campaign_contributeAmountGroup').style.border = `none`;
+    el('#campaign-contribute-review-button').href = `/campaign/${campaignContributeID}/contribute/review`;
+    el('#campaign_contributeAmountGroup').style.border = `none`;
   }
 
   // disclaimer check
-  if (!document.querySelector('#campaign-contribute-disclaimer').checked) {
-    document.querySelector('#campaign-contribute-review-button').href = ``;
-    document.querySelector('#campaign-contribute-disclaimer').style.border = `red solid 1px`;
-    document.querySelector('#campaign-contribute-disclaimer').focus();
-    document.querySelector('#campaign-contribute-disclaimer').blur();
+  if (!el('#campaign-contribute-disclaimer').checked) {
+    el('#campaign-contribute-review-button').href = ``;
+    el('#campaign-contribute-disclaimer').style.border = `red solid 1px`;
+    el('#campaign-contribute-disclaimer').focus();
+    el('#campaign-contribute-disclaimer').blur();
     return;
   } else {
-    document.querySelector('#campaign-contribute-review-button').href = `/campaign/${campaignContributeID}/contribute/review`;
-    document.querySelector('#campaign-contribute-disclaimer').style.border = `none`;
+    el('#campaign-contribute-review-button').href = `/campaign/${campaignContributeID}/contribute/review`;
+    el('#campaign-contribute-disclaimer').style.border = `none`;
   }
 
   // if contribution greater than zero
   if (parseFloat(weifundContributeAmount) > 0) {
-    document.querySelector('#campaign_contributeReview_transactionTotal').innerHTML = 2;
+    el('#campaign_contributeReview_transactionTotal').innerHTML = 2;
   } else {
-    document.querySelector('#campaign_contributeReview_transactionTotal').innerHTML = 1;
+    el('#campaign_contributeReview_transactionTotal').innerHTML = 1;
   }
 
-  document.querySelector('#campaign_contributeReview_contributeAmount').innerHTML = contributeAmount;
-  document.querySelector('#campaign_contributeReview_weifundContributeAmount').innerHTML = weifundContributeAmount;
-  document.querySelector('#campaign_contributeReview_totalContributeAmount').innerHTML = contributeTotal;
+  el('#campaign_contributeReview_contributeAmount').innerHTML = contributeAmount;
+  el('#campaign_contributeReview_weifundContributeAmount').innerHTML = weifundContributeAmount;
+  el('#campaign_contributeReview_totalContributeAmount').innerHTML = contributeTotal;
 };
 
 // load and draw campaign contribute page/flow
-const loadAndDrawCampaignContribute = function(campaignID, callback) {
+function loadAndDrawCampaignContribute(campaignID, callback) {
   // handle empty callback
   if (typeof callback !== 'function') {
     callback = function(e, r) {};
   }
 
   // draw loader
-  document.querySelector('#view-campaign-contribute').innerHTML = components.viewLoader({t: t});
+  el('#view-campaign-contribute').innerHTML = viewLoader({ t });
 
   // load campaign fresh to draw
   getCampaigns({
     // set network
     // or 'testnet'
-    network: getNetwork(),
+    network: getContractEnvironment(),
 
     // set campaign selector
     // array (i.e. array of campaignIDs)
     selector: [campaignID],
-
-    // set web3 provider
-    web3Provider: web3.currentProvider,
-
-    // set ipfs provider
-    ipfsProvider: ipfs.currentProvider,
   }, function(campaignLoadError, campaignDataObject){
     if (campaignLoadError) {
-      log('Campaign load while drawing...', campaignLoadError);
+      alert('Campaign load while drawing...', campaignLoadError);
       callback(campaignLoadError, null);
       return;
     }
@@ -138,27 +114,35 @@ const loadAndDrawCampaignContribute = function(campaignID, callback) {
     // campaign data
     const campaignData = campaignDataObject[campaignID];
 
+    // campaign data undefined
+    if (typeof campaignData === 'undefined') {
+      alert('Problem while loading campaign.. no campaign data available..');
+      return;
+    }
+
     // save in campaigns
     setCampaign(campaignID, campaignData);
 
     // draw campaign focus
-    document.querySelector('#view-campaign-contribute').innerHTML = components.campaignContributeView({
+    el('#view-campaign-contribute').innerHTML = campaignContributeView({
       campaignObject: campaignData,
-      getLocale: getLocale,
-      web3: web3,
-      defaultAccount: getDefaultAccount
+      getLocale,
+      web3,
+      defaultAccount: getDefaultAccount,
     });
+
+    callback(null, true);
 
     // get latest account balance
     web3.eth.getBalance(getDefaultAccount(), function(balanceError, balanceResult) {
       if (!balanceError) {
-        document.querySelector('#defaultAccountBalance').innerHTML = web3.fromWei(balanceResult, 'ether');
+        el('#defaultAccountBalance').innerHTML = web3.fromWei(balanceResult, 'ether');
       }
     });
 
     // draw qr code
     const qr = new QRious({
-      element: document.querySelector('#campaign-contribute-qrcode'),
+      element: el('#campaign-contribute-qrcode'),
       size: 250,
       value: campaignData.addr,
     });
@@ -167,24 +151,24 @@ const loadAndDrawCampaignContribute = function(campaignID, callback) {
     updateCampaignContributeReview();
 
     // weifund amount contributor amount
-    document.querySelector('#campaign_weifundContributeAmount').addEventListener('change', updateCampaignContributeReview);
+    el('#campaign_weifundContributeAmount').addEventListener('change', updateCampaignContributeReview);
 
     // weifund amount contributor amount
-    document.querySelector('#campaign_contributeAmount').addEventListener('change', updateCampaignContributeReview);
+    el('#campaign_contributeAmount').addEventListener('change', updateCampaignContributeReview);
 
     // update form when disclaimer is checked
-    document.querySelector('#campaign-contribute-disclaimer').addEventListener('change', updateCampaignContributeReview);
+    el('#campaign-contribute-disclaimer').addEventListener('change', updateCampaignContributeReview);
 
     // handleCampaignContribution
-    document.querySelector('#campaign_reviewContributeButton').addEventListener('click', handleCampaignContribution);
+    el('#campaign_reviewContributeButton').addEventListener('click', handleCampaignContribution);
 
     // handle button click/disclaimer
-    // document.querySelector('#campaign-contribute-disclaimer')
-    // document.querySelector('#campaign-contribute-disclaimer').checked
-    // document.querySelector('#campaign-contribute-review-button')
+    // el('#campaign-contribute-disclaimer')
+    // el('#campaign-contribute-disclaimer').checked
+    // el('#campaign-contribute-review-button')
 
     // reset contribute inputs dom draw
-    //document.querySelector('#campaignContribution_inputs').innerHTML = '';
+    //el('#campaignContribution_inputs').innerHTML = '';
     var campaignContributionInputHTML = ``;
 
     // draw contribution inputs
@@ -264,17 +248,12 @@ const loadAndDrawCampaignContribute = function(campaignID, callback) {
     });
 
     // set campaign contribution custom inputs
-    document.querySelector('#campaignContribution_inputs').innerHTML = campaignContributionInputHTML;
+    el('#campaignContribution_inputs').innerHTML = campaignContributionInputHTML;
 
     // refresh all page buttons after redraw
     refreshPageButtons();
 
     // build all sliders
     buildAllInputSliders();
-
-    // callback
-    callback(null, true);
   });
-};
-
-module.exports = loadAndDrawCampaignContribute;
+}

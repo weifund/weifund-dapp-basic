@@ -1,5 +1,8 @@
+// export method
+module.exports = handleConfirmOnPageExit;
+
 // confirm on page exit
-const handleConfirmOnPageExit = function (e) {
+function handleConfirmOnPageExit(e) {
   // If we haven't been passed the event get the window.event
   e = e || window.event;
 
@@ -23,6 +26,4 @@ const handleConfirmOnPageExit = function (e) {
 
     return message;
   }
-};
-
-module.exports = handleConfirmOnPageExit;
+}

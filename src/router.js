@@ -1,69 +1,72 @@
 // router, href and history
-const sheetRouter = require('sheet-router');
-const href = require('sheet-router/href');
-const history = require('sheet-router/history');
+import sheetRouter from 'sheet-router';
+const href = require('sheet-router/href'); // eslint-disable-line
+const history = require('sheet-router/history'); // eslint-disable-line
 
 // view handling
-const views = require('./views');
-const closeAllViews = views.closeAllViews;
-const openView = views.openView;
-const openSubView = views.openSubView;
+import { closeAllViews, openView, openSubView } from './views';
 
 // router instance
-var router;
-
 // campaign is loaded
+var router;
 var campaignIdOfLoadedFocus = false;
 var campaignContributeIdOfLoadedFocus = false;
 
 // get router instance
-const getRouter = function() {
+function getRouter() {
   return router;
-};
+}
 
 // open campaign helper
-const openCampaign = function(options, params, callback) {
-  if (campaignIdOfLoadedFocus === parseInt(params.campaignID)) {
+function openCampaign(options, params, callback) {
+  if (campaignIdOfLoadedFocus === parseInt(params.campaignID, 10)) {
     callback(null, true);
     return;
   }
 
   openView('view-focus');
-  options.loadAndDrawCampaign(parseInt(params.campaignID), callback);
-  campaignIdOfLoadedFocus = parseInt(params.campaignID);
+  options.loadAndDrawCampaign(parseInt(params.campaignID, 10), callback);
+  campaignIdOfLoadedFocus = parseInt(params.campaignID, 10);
   campaignContributeIdOfLoadedFocus = false;
-};
+}
 
 // open campaign contribute
-const openCampaignContribute = function(options, params, callback) {
+function openCampaignContribute(options, params, callback) {
   // draw campaign
   openView('view-campaign-contribute');
 
-  if (campaignContributeIdOfLoadedFocus === parseInt(params.campaignID)) {
+  // if we are already focused on campaign
+  if (campaignContributeIdOfLoadedFocus === parseInt(params.campaignID, 10)) {
     callback(null, true);
     return;
   }
-  options.loadAndDrawCampaignContribute(parseInt(params.campaignID), callback);
+
+  // set campaign id
   campaignIdOfLoadedFocus = false;
-  campaignContributeIdOfLoadedFocus = parseInt(params.campaignID);
-};
+  campaignContributeIdOfLoadedFocus = parseInt(params.campaignID, 10);
+
+  // load and draw campaign
+  // something WRONG HERE..
+  options.loadAndDrawCampaignContribute(parseInt(params.campaignID, 10), callback);
+}
 
 // open campaign contribute
-const openCampaignRefund = function(options, params, callback) {
+function openCampaignRefund(options, params, callback) {
   // draw campaign
   openView('view-campaign-refund');
 
-  if (campaignContributeIdOfLoadedFocus === parseInt(params.campaignID)) {
+  if (campaignContributeIdOfLoadedFocus === parseInt(params.campaignID, 10)) {
     callback(null, true);
     return;
   }
-  options.loadAndDrawCampaignRefund(parseInt(params.campaignID), callback);
+
+  options.loadAndDrawCampaignRefund(parseInt(params.campaignID, 10), callback);
   campaignIdOfLoadedFocus = false;
-  campaignContributeIdOfLoadedFocus = parseInt(params.campaignID);
-};
+  campaignContributeIdOfLoadedFocus = parseInt(params.campaignID, 10);
+}
 
 // returns a setup router
-const setupRouter = function(options) {
+function setupRouter(options) {
 
   // default to `/404` if no path matches
   // router setup
@@ -89,7 +92,7 @@ const setupRouter = function(options) {
     ['/account', function(params){
       openView('view-account');
 
-      // options.loadAndDrawAccount();
+      options.loadAndDrawAccount();
     }],
     ['/campaign/:campaignID', function(params) {
       // draw campaign
@@ -172,7 +175,7 @@ const setupRouter = function(options) {
         // draw campaign
         campaignIdOfLoadedFocus = false;
         campaignContributeIdOfLoadedFocus = false;
-        options.loadAndDrawCampaignPayout(parseInt(params.campaignID));
+        options.loadAndDrawCampaignPayout(parseInt(params.campaignID, 10));
         openView('view-campaign-payout');
       }, [
         ['/receipt', function(params) {
@@ -205,20 +208,20 @@ const setupRouter = function(options) {
   history(function (href) {
     router(href);
   });
-};
+}
 
 // refresh all view page buttons
-const refreshPageButtons = function() {
+function refreshPageButtons() {
   // enable routing history
   href(function (href) {
     getRouter()(href);
   });
-};
+}
 
 // router exports
 module.exports = {
-  router: router,
-  getRouter: getRouter,
-  setupRouter: setupRouter,
-  refreshPageButtons: refreshPageButtons,
+  router,
+  getRouter,
+  setupRouter,
+  refreshPageButtons,
 };

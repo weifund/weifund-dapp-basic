@@ -1,4 +1,6 @@
-const accountView = function(options) {
+module.exports = accountView;
+
+function accountView(options) {
   return `
     <div class="container" style="height: 600px;">
       <div class="row">
@@ -12,7 +14,5 @@ const accountView = function(options) {
         </div>
       </div>
     </div>
-  `
-};
-
-module.exports = accountView;
+  `;
+}

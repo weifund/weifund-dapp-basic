@@ -1,34 +1,34 @@
-const campaignFocusView = require('./campaignFocusView');
-const campaignsView = require('./campaignsView');
-const campaignMedium = require('./campaignMedium');
-const campaignHighlightMedium = require('./campaignHighlightMedium');
-const campaignContributeView = require('./campaignContributeView');
-const campaignPayoutView = require('./campaignPayoutView');
-const campaignContributeReceipt = require('./campaignContributeReceipt');
+import campaignFocusView from './campaignFocusView';
+import campaignsView from './campaignsView';
+import campaignMedium from './campaignMedium';
+import campaignHighlightMedium from './campaignHighlightMedium';
+import campaignContributeView from './campaignContributeView';
+import campaignPayoutView from './campaignPayoutView';
+import campaignContributeReceipt from './campaignContributeReceipt';
 
-const campaignRefundForm = require('./campaignRefundForm');
-const campaignRefundReview = require('./campaignRefundReview');
+import campaignRefundForm from './campaignRefundForm';
+import campaignRefundReview from './campaignRefundReview';
 
-const viewLoader = require('./viewLoader');
-const navBar = require('./navBar');
-const footer = require('./footer');
-const startCampaignView = require('./startCampaignView');
-const accountView = require('./accountView');
+import viewLoader from './viewLoader';
+import navBar from './navBar';
+import footer from './footer';
+import startCampaignView from './startCampaignView';
+import accountView from './accountView';
 
 module.exports = {
-  campaignRefundReview: campaignRefundReview,
-  campaignRefundForm: campaignRefundForm,
+  campaignRefundReview,
+  campaignRefundForm,
 
-  campaignHighlightMedium: campaignHighlightMedium,
-  campaignMedium: campaignMedium,
-  campaignsView: campaignsView,
-  campaignPayoutView: campaignPayoutView,
-  campaignContributeView: campaignContributeView,
-  campaignFocusView: campaignFocusView,
-  campaignContributeReceipt: campaignContributeReceipt,
-  viewLoader: viewLoader,
-  startCampaignView: startCampaignView,
-  accountView: accountView,
-  navBar: navBar,
-  footer: footer,
+  campaignHighlightMedium,
+  campaignMedium,
+  campaignsView,
+  campaignPayoutView,
+  campaignContributeView,
+  campaignFocusView,
+  campaignContributeReceipt,
+  viewLoader,
+  startCampaignView,
+  accountView,
+  navBar,
+  footer,
 };

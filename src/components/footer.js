@@ -1,4 +1,8 @@
-const footer = function(options) {
+// export method
+module.exports = footer;
+
+// main export
+function footer(options) {
   const t = options.t;
 
   return `<footer class="row text-light-gray no-padding-xs no-padding-sm">
@@ -54,6 +58,4 @@ const footer = function(options) {
     </div>
   </div>
 </footer>`;
-};
-
-module.exports = footer;
+}

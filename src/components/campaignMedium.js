@@ -1,6 +1,10 @@
-const oneDay = require('weifund-util').oneDay;
+import oneDay from 'weifund-util';
 
-const campaignMedium = function(options) {
+// export method
+module.exports = campaignMedium;
+
+// main export
+function campaignMedium(options) {
   const campaignObject = options.campaignObject;
   const web3 = options.web3;
   const getLocale = options.getLocale;
@@ -68,6 +72,4 @@ const campaignMedium = function(options) {
       </div>
     </div>
   </div>`;
-};
-
-module.exports = campaignMedium;
+}

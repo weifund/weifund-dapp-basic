@@ -1,40 +1,36 @@
 // utils
-const utils = require('weifund-util');
-const log = utils.log;
-const etherScanAddressUrl = utils.etherScanAddressUrl;
-const etherScanTxHashUrl = utils.etherScanTxHashUrl;
+import { log, etherScanAddressUrl, etherScanTxHashUrl } from 'weifund-util';
+
+// document helper
+import { el } from '../document';
 
 // environment
-const environment = require('../environment');
-const getNetwork = environment.getNetwork;
-const getLocale = environment.getLocale;
-const txObject = environment.txObject;
-const getDefaultAccount = environment.getDefaultAccount;
-const setDefaultAccount = environment.setDefaultAccount;
-
-// campaign environment methods
-const getCampaign = environment.getCampaign;
-const setCampaign = environment.setCampaign;
+import { setDefaultAccount, getDefaultAccount, getCampaign, setCampaign,
+  getNetwork, getLocale, getContractEnvironment, txObject } from '../environment';
 
 // web3
-const web3 = require('../web3').web3;
+import { web3 } from '../web3';
 
 // require contracts
 // setup campaign and data registries
 // Campaign/token contracts
-const contracts = require('weifund-contracts');
-const campaign = contracts.factories.Campaign(web3);
+import Contracts from 'weifund-contracts';
+const contracts = new Contracts('ropsten', web3.currentProvider);
+const campaign = contracts.Campaign.factory;
 
 // require i18n
-const t = require('../i18n').t;
+import { t } from '../i18n';
+
+// export method
+module.exports = handleCampaignPayout;
 
 // handle payout
-const handleCampaignPayout = function(event){
+function handleCampaignPayout(event){
   // payout awaiting approval
-  document.querySelector('#payout_response').innerHTML = `Your campaign payout transaction is awaiting approval..`;
+  el('#payout_response').innerHTML = `Your campaign payout transaction is awaiting approval..`;
 
   // get campaign for payout
-  const selectedCampaignIdInput = parseInt( document.querySelector('#campaign_id').value);
+  const selectedCampaignIdInput = parseInt( el('#campaign_id').value);
   const selectedCampaign = getCampaign(selectedCampaignIdInput);
 
   // build contract factory, instance
@@ -50,17 +46,15 @@ const handleCampaignPayout = function(event){
   payoutParams.push(txObject());
   payoutParams.push(function(payoutError, payoutResultTxHash){
     if (payoutError) {
-      document.querySelector('#payout_response').innerHTML = `There was an error while paying out your campaign:  ${String(JSON.stringify(payoutError, null, 2))}`;
+      el('#payout_response').innerHTML = `There was an error while paying out your campaign:  ${String(JSON.stringify(payoutError, null, 2))}`;
     }
 
     // if tx hash present
     if (payoutResultTxHash) {
-      document.querySelector('#payout_response').innerHTML = `Your payout transaction is processing with transaction hash:  ${payoutResultTxHash}`;
+      el('#payout_response').innerHTML = `Your payout transaction is processing with transaction hash:  ${payoutResultTxHash}`;
     }
   });
 
   // contribute to campaign instance
   campaignContractInstance[payoutMethodName].apply(campaignContractInstance, payoutParams);
-};
-
-module.exports = handleCampaignPayout;
+}

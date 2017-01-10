@@ -4,8 +4,8 @@
   "description": "A basic limited JS framework high preformance WeiFund client",
   "main": "index.js",
   "scripts": {
-    "start": "node ./node_modules/budo/bin/cmd.js src/app.js:bundle.js -P --cors --open",
-    "browserify": "browserify src/app.js -o bundle.js",
+    "start": "node ./node_modules/budo/bin/cmd.js src/app.js:bundle.js -P --cors --open -- -t [ babelify --presets [ es2015 ] ]",
+    "browserify": "browserify src/app.js -o bundle.js -t [ babelify --presets [ es2015 ] ]",
     "surge": "npm run browserify && cp index.html 200.html && surge --domain weifund-basic.surge.sh && rm 200.html && rm bundle.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -23,18 +23,25 @@
   },
   "homepage": "https://github.com/weifund/weifund-dapp-basic#readme",
   "dependencies": {
+    "babel-cli": "6.10.1",
+    "babel-core": "6.7.7",
+    "babel-eslint": "6.0.4",
+    "babel-preset-es2015": "6.6.0",
+    "babel-preset-stage-0": "6.5.0",
+    "babelify": "7.3.0",
+    "eth-lightwallet": "2.5.3",
     "ipfs-js": "0.0.11",
-    "node-polyglot": "^2.0.0",
-    "qrious": "^2.0.2",
-    "sheet-router": "^4.0.0-0",
-    "store": "^1.3.20",
+    "node-polyglot": "2.0.0",
+    "qrious": "2.0.2",
+    "sheet-router": "4.0.0-0",
+    "store": "1.3.20",
     "web3": "0.15.3",
-    "web3-network-detective": "^0.1.1",
-    "weifund-contracts": "git+https://github.com/weifund/weifund-contracts",
+    "web3-network-detective": "0.1.1",
+    "weifund-contracts": "2.0.0",
     "weifund-lib": "git+https://github.com/weifund/weifund-lib",
     "weifund-util": "git+https://github.com/weifund/weifund-util"
   },
   "devDependencies": {
-    "budo": "^9.2.0"
+    "budo": "9.2.0"
   }
 }

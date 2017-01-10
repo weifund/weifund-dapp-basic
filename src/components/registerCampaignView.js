@@ -1,4 +1,7 @@
-const registerCampaignView = function(options) {
+module.exports = registerCampaignView;
+
+// main export
+function registerCampaignView(options) {
   const t = options.t;
 
   return `
@@ -29,6 +32,4 @@ const registerCampaignView = function(options) {
     <button id="registerCampaignData">Register Campaign Data!</button>
 
     <div id="registerCampaignData_response"></div>`;
-};
-
-module.exports = registerCampaignView;
+}

@@ -1,7 +1,10 @@
-const oneDay = require('weifund-util').oneDay;
+import { oneDay } from 'weifund-util';
+
+// export highlight medium
+module.exports = campaignHighlightMedium;
 
 // draw highlight campaign
-const campaignHighlightMedium = function(options) {
+function campaignHighlightMedium(options) {
   const t = options.t;
   const campaignObject = options.campaignObject;
   const web3 = options.web3;
@@ -27,8 +30,8 @@ const campaignHighlightMedium = function(options) {
 overflow: hidden;
 text-overflow: ellipsis;">
               ${(campaignObject.hasValidData
-                && typeof campaignObject.data.i18n[getLocale()] !== "undefined"
-                && campaignObject.data.i18n[getLocale()].description
+                && typeof campaignObject.data.campaignSchema.i18n[getLocale()] !== "undefined"
+                && campaignObject.data.campaignSchema.i18n[getLocale()].description
                 || t('campaignHighlightMedium.defaultDescription'))}
             </p>
 
@@ -74,7 +77,4 @@ text-overflow: ellipsis;">
         </div>
     </div>
   </div>`;
-};
-
-// export highlight medium
-module.exports = campaignHighlightMedium;
+}

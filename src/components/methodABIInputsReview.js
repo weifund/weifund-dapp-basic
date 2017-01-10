@@ -1,7 +1,10 @@
-const parseMethodABIObject = require('weifund-util').parseMethodABIObject;
+import { parseMethodABIObject } from 'weifund-util';
+
+// export module
+module.exports = methodABIInputsReview;
 
 // review function
-const methodABIInputsReview = function(options) {
+function methodABIInputsReview(options) {
   // the output html
   var outputHTML = ``;
 
@@ -26,7 +29,4 @@ const methodABIInputsReview = function(options) {
 
   // output html
   return outputHTML;
-};
-
-// export module
-module.exports = methodABIInputsReview;
+}

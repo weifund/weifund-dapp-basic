@@ -1,7 +1,11 @@
 // object to html
-const objectView = require('./objectView');
+import objectView from './objectView';
 
-const campaignFocusDetailsView = function(options) {
+// export method
+module.exports = campaignFocusDetailsView;
+
+// main export
+function campaignFocusDetailsView(options) {
   const t = options.t;
 
   const campaignObject = options.campaignObject;
@@ -189,6 +193,4 @@ const campaignFocusDetailsView = function(options) {
     </div>
 
   </div>`;
-};
-
-module.exports = campaignFocusDetailsView;
+}

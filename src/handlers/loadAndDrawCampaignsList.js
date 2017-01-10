@@ -1,86 +1,79 @@
 // utils
-const utils = require('weifund-util');
-const log = utils.log;
-const etherScanAddressUrl = utils.etherScanAddressUrl;
-const etherScanTxHashUrl = utils.etherScanTxHashUrl;
+import { log, etherScanAddressUrl, etherScanTxHashUrl } from 'weifund-util';
+
+// document helper
+import { el } from '../document';
 
 // require components
-const components = require('../components');
+import { campaignHighlightMedium, viewLoader, campaignsView } from '../components';
 
 // environment
-const environment = require('../environment');
-const getNetwork = environment.getNetwork;
-const getLocale = environment.getLocale;
-const txObject = environment.txObject;
-const getDefaultAccount = environment.getDefaultAccount;
-const setDefaultAccount = environment.setDefaultAccount;
+import { setDefaultAccount, getDefaultAccount, getStoredCampaigns, setCampaign,
+  getNetwork, getLocale, getContractEnvironment, txObject } from '../environment';
 
-// campaign environment methods
-const getCampaign = environment.getCampaign;
-const getStoredCampaigns = environment.getCampaigns;
-const setCampaign = environment.setCampaign;
-
-// web3
-const web3 = require('../web3').web3;
-
-// web3
-const ipfs = require('../ipfs').ipfs;
+// require web3 i18n  router  loadCampaign method
+import { getCampaigns } from 'weifund-lib';
+import { refreshPageButtons } from '../router';
+import { t } from '../i18n';
+import { web3 } from '../web3';
 
 // require contracts
-// setup campaign and data registries
-// Campaign/token contracts
-const contracts = require('weifund-contracts');
-const campaignRegistry = contracts.CampaignRegistry(web3, getNetwork());
-const staffPicks = contracts.StaffPicks(web3, getNetwork());
+import Contracts from 'weifund-contracts';
+const contracts = new Contracts('ropsten', web3.currentProvider);
+const campaignRegistry = contracts.CampaignRegistry.instance();
+const curationRegistry = contracts.CurationRegistry.instance();
 
-// loadCampaign method
-const lib = require('weifund-lib');
-const getCampaigns = lib.getCampaigns;
-
-// router
-const refreshPageButtons = require('../router').refreshPageButtons;
-
-// require i18n
-const t = require('../i18n').t;
+// export method
+module.exports = loadAndDrawCampaignsList;
 
 // draw campaigns
-const drawCampaigns = function(campaignsToDraw) {
+function drawCampaigns(campaignsToDraw) {
   // reset inner html
-  document.querySelector('#staffpicks_list').innerHTML = ``;
-  document.querySelector('#campaigns_list').innerHTML = ``;
+  el('#staffpicks_list').innerHTML = ``;
+  el('#campaigns_list').innerHTML = ``;
 
   // draw campaigns in list
-  for(var campaignID = getStoredCampaigns().length; campaignID >= 0; campaignID--){
+  for(var campaignID = campaignsToDraw.length - 1; campaignID >= 0; campaignID--){
     var campaignToDraw = campaignsToDraw[campaignID];
     var campaignDrawTarget = 'campaigns_list';
 
     // if campaign to draw is no undefined
     if (typeof campaignToDraw !== 'undefined') {
-
       // campaign is a staff pick, change draw target
       if (campaignToDraw.staffPick === true) {
-        document.querySelector(`#staffpicks_list`).innerHTML += components.campaignHighlightMedium({campaignObject: campaignToDraw, web3: web3, getLocale: getLocale, t: t});
+        el(`#staffpicks_list`).innerHTML += campaignHighlightMedium({
+          campaignObject: campaignToDraw,
+          web3,
+          getLocale,
+          t,
+        });
       } else {
-        document.querySelector(`#campaigns_list`).innerHTML += components.campaignHighlightMedium({campaignObject: campaignToDraw, web3: web3, getLocale: getLocale, t: t});
+        el(`#campaigns_list`).innerHTML += campaignHighlightMedium({
+          campaignObject: campaignToDraw,
+          web3,
+          getLocale,
+          t,
+        });
       }
     }
   }
 
+  // refresh page buttons
   refreshPageButtons();
-};
+}
 
 // load all campaigns
-const loadAndDrawCampaignsList = function() {
+function loadAndDrawCampaignsList() {
   // the campaign id selector array
   var selectorArray = [];
 
   // draw loader
-  document.querySelector('#view-list').innerHTML = components.viewLoader({t: t});
+  el('#view-list').innerHTML = viewLoader({ t });
 
   // get the number of campaigns then load campaigns list accordingly
   campaignRegistry.numCampaigns(function(numCampaignsError, numCampaignsResult){
     if (numCampaignsError) {
-      document.querySelector('#campaigns_list').innerHTML = `Error while loading campaigns ${JSON.stringify(numCampaignsError)}`;
+      alert(`Error while loading campaigns ${numCampaignsError} ${JSON.stringify(numCampaignsError)}`);
       return;
     }
 
@@ -93,31 +86,26 @@ const loadAndDrawCampaignsList = function() {
     getCampaigns({
       // set network
       // or 'testnet'
-      network: getNetwork(),
+      network: getContractEnvironment(),
 
       // set campaign selector
       // array (i.e. array of campaignIDs)
-      selector: [28,29],
-
-      // set web3 provider
-      web3Provider: web3.currentProvider,
-
-      // set ipfs provider
-      ipfsProvider: ipfs.currentProvider,
+      selector: [0],
     }, function(loadCampaignsError, loadCampaignsResult){
 
       // handle errors
       if (loadCampaignsError) {
-        document.querySelector('#campaigns_list').innerHTML = `Error while loading campaigns ${JSON.stringify(loadCampaignsError)}`;
+        el('#campaigns_list').innerHTML = `
+          Error while loading campaigns ${JSON.stringify(loadCampaignsError)}
+        `;
         return;
       }
 
       // draw campaigns page
-      document.querySelector('#view-list').innerHTML = components.campaignsView({t: t});
+      el('#view-list').innerHTML = campaignsView({ t });
 
       // if load result is nice
       if (typeof loadCampaignsResult === 'object') {
-        console.log(loadCampaignsResult, Object.keys(loadCampaignsResult).length);
         Object.keys(loadCampaignsResult).forEach(function(campaignID){
           setCampaign(campaignID, loadCampaignsResult[campaignID]);
 
@@ -127,6 +115,4 @@ const loadAndDrawCampaignsList = function() {
       }
     });
   });
-};
-
-module.exports = loadAndDrawCampaignsList;
+}

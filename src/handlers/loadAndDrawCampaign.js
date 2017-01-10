@@ -1,52 +1,40 @@
 // requires
-const QRious = require('qrious');
+import QRious from 'qrious';
 
-// require components
-const components = require('../components');
+// environment and components
+import { setDefaultAccount, getDefaultAccount, getCampaign, setCampaign,
+  getNetwork, getLocale, getContractEnvironment, txObject } from '../environment';
+import { campaignFocusView, viewLoader } from '../components';
 
-// environment
-const environment = require('../environment');
-const getNetwork = environment.getNetwork;
-const getLocale = environment.getLocale;
-const getContractEnvironment = environment.getContractEnvironment;
-const txObject = environment.txObject;
-const getDefaultAccount = environment.getDefaultAccount;
-const setDefaultAccount = environment.setDefaultAccount;
+// document helper
+import { el } from '../document';
 
-// campaign environment methods
-const getCampaign = environment.getCampaign;
-const setCampaign = environment.setCampaign;
-
-// web3
-const web3 = require('../web3').web3;
-
-// web3
-const ipfs = require('../ipfs').ipfs;
+// web3, ipfs
+import { web3 } from '../web3';
+import { ipfs } from '../ipfs';
 
 // loadCampaign method
-const lib = require('weifund-lib');
-const getCampaigns = lib.getCampaigns;
+import { getCampaigns } from 'weifund-lib';
 
 // router instance
-var router = require('../router');
-const refreshPageButtons = router.refreshPageButtons;
+import { refreshPageButtons } from '../router';
 
 // require i18n
-const t = require('../i18n').t;
+import { t } from '../i18n';
 
-const handleCampaignContribution = require('./handleCampaignContribution');
+// export load and draw campaign
+module.exports = loadAndDrawCampaign;
 
 // draw campaign
-const loadAndDrawCampaign = function(campaignID, callback) {
+function loadAndDrawCampaign(campaignID, callback) {
   // draw loader
-  document.querySelector('#view-focus').innerHTML = components.viewLoader({t: t});
+  el('#view-focus').innerHTML = viewLoader({t: t});
 
   // load campaign fresh to draw
   getCampaigns({
-    network: getNetwork(),
+    network: 'ropsten',
+
     selector: [campaignID],
-    web3Provider: web3.currentProvider,
-    ipfsProvider: ipfs.currentProvider,
   }, function(campaignLoadError, campaignDataObject){
     if (campaignLoadError) {
       log('Campaign load while drawing...', campaignLoadError);
@@ -54,20 +42,29 @@ const loadAndDrawCampaign = function(campaignID, callback) {
       return;
     }
 
-    console.log(campaignDataObject);
-
     // campaign data
     const campaignData = campaignDataObject[campaignID];
 
     // save in campaigns
     setCampaign(campaignID, campaignData);
 
+    // a reload instance to be fired later if need be
+    function reload() {
+      loadAndDrawCampaign(campaignID);
+    }
+
     // draw campaign focus
-    document.querySelector('#view-focus').innerHTML = components.campaignFocusView({campaignObject: campaignData, web3: web3, getLocale: getLocale, t: t});
+    el('#view-focus').innerHTML = campaignFocusView({
+      campaignObject: campaignData,
+      reload,
+      web3,
+      getLocale,
+      t,
+    });
 
     // draw qr code
     const qr = new QRious({
-      element: document.querySelector('#campaign_qrcode'),
+      element: el('#campaign_qrcode'),
       size: 250,
       value: campaignData.addr,
     });
@@ -75,6 +72,4 @@ const loadAndDrawCampaign = function(campaignID, callback) {
     // refresh all page buttons after redraw
     refreshPageButtons();
   });
-};
-
-module.exports = loadAndDrawCampaign;
+}

@@ -282,6 +282,14 @@ footer {
   background-color: #FFF;
 }
 
+.list-campaign-feature {
+  height: 315px;
+}
+
+.list-campaign-feature-image {
+  height: 315px;
+}
+
 .list-feature-column {
   padding: 20px;
 }
@@ -306,14 +314,6 @@ footer {
   background-repeat: no-repeat;
   background-position: center center;
   background-size: contain;
-}
-
-.list-campaign-feature {
-  height: 300px;
-}
-
-.list-campaign-feature-image {
-  height: 300px;
 }
 
 .input-slider-lg {

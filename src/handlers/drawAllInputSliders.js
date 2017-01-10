@@ -1,14 +1,20 @@
+// document helper
+import { el } from '../document';
+
 // get outeriwdth of element
-const outerElWidth = function(el) {
+function outerElWidth(el) {
   var width = el.offsetWidth;
   var style = getComputedStyle(el);
 
   width += parseInt(style.marginLeft) + parseInt(style.marginRight);
   return width;
-};
+}
+
+// export method
+module.exports = drawAllInputSliders;
 
 // build all input sliders
-const drawAllInputSliders = function() {
+function drawAllInputSliders() {
   [].slice.call(document.querySelectorAll('.input-slider')).forEach(function(inputSliderElement){
     // setup rail and bar
     const inputSliderRailHighlight = inputSliderElement.querySelector('.input-slider-rail-highlight');
@@ -65,7 +71,7 @@ const drawAllInputSliders = function() {
 
       // handle input id
       if (typeof inputSliderElement.dataset.inputId === 'string') {
-        const dataInputElement = document.querySelector(`#${inputSliderElement.dataset.inputId}`);
+        const dataInputElement = el(`#${inputSliderElement.dataset.inputId}`);
 
         // if element exists
         if (dataInputElement !== null && dataInputElement.length !== 0) {
@@ -85,7 +91,7 @@ const drawAllInputSliders = function() {
 
     // handle input change
     if (typeof inputSliderElement.dataset.inputId === 'string') {
-      const dataInputElement = document.querySelector(`#${inputSliderElement.dataset.inputId}`);
+      const dataInputElement = el(`#${inputSliderElement.dataset.inputId}`);
 
       // handle input element change
       const handleInputElementChange = function(event) {
@@ -125,6 +131,4 @@ const drawAllInputSliders = function() {
     document.body.addEventListener('mouseup', handleInputSliderMouseUp, false);
 
   });
-};
-
-module.exports = drawAllInputSliders;
+}

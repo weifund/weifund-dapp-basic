@@ -1,73 +1,49 @@
 // requires
-const QRious = require('qrious');
+import QRious from 'qrious';
 
 // utils
-const utils = require('weifund-util');
-const log = utils.log;
-const etherScanAddressUrl = utils.etherScanAddressUrl;
-const etherScanTxHashUrl = utils.etherScanTxHashUrl;
-const parseSolidityMethodName = utils.parseSolidityMethodName;
-const oneDay = utils.oneDay;
+import { log, etherScanAddressUrl, parseSolidityMethodName,
+  etherScanTxHashUrl, oneDay, emptyWeb3Address } from 'weifund-util';
+
+// document helper
+import { el } from '../document';
 
 // require components
-const components = require('../components');
+import { campaignRefundForm, campaignRefundReview, viewLoader } from '../components';
 
 // environment
-const environment = require('../environment');
-const getNetwork = environment.getNetwork;
-const getLocale = environment.getLocale;
-const getContractEnvironment = environment.getContractEnvironment;
-const txObject = environment.txObject;
-const getDefaultAccount = environment.getDefaultAccount;
-const setDefaultAccount = environment.setDefaultAccount;
-
-// campaign environment methods
-const getCampaign = environment.getCampaign;
-const setCampaign = environment.setCampaign;
+import { setDefaultAccount, getDefaultAccount, getCampaign, setCampaign,
+  getNetwork, getLocale, getContractEnvironment, txObject } from '../environment';
 
 // web3
-const web3 = require('../web3').web3;
-
-// web3
-const ipfs = require('../ipfs').ipfs;
+import { web3 } from '../web3';
+import { t } from '../i18n';
 
 // loadCampaign method
-const lib = require('weifund-lib');
-const getCampaigns = lib.getCampaigns;
-
-// router instance
-var router = require('../router');
-const getRouter = router.getRouter;
-const refreshPageButtons = router.refreshPageButtons;
-
-// require i18n
-const t = require('../i18n').t;
+import { getCampaigns } from 'weifund-lib';
+import { getRouter, refreshPageButtons } from '../router';
 
 // build all input sliders
-const buildAllInputSliders = require('./drawAllInputSliders');
+import buildAllInputSliders from './drawAllInputSliders';
+import handleCampaignRefund from './handleCampaignRefund';
 
-const handleCampaignRefund = require('./handleCampaignRefund');
+// export module
+module.exports = loadAndDrawCampaignRefund;
 
 // draw campaign
-const loadAndDrawCampaignRefund = function(campaignID, callback) {
+function loadAndDrawCampaignRefund(campaignID, callback) {
   // draw loader
-  document.querySelector('#view-campaign-refund').innerHTML = components.viewLoader({t: t});
+  el('#view-campaign-refund').innerHTML = viewLoader({ t });
 
   // load campaign fresh to draw
   getCampaigns({
     // set network
     // or 'testnet'
-    network: getNetwork(),
+    network: getContractEnvironment(),
 
     // set campaign selector
     // array (i.e. array of campaignIDs)
     selector: [campaignID],
-
-    // set web3 provider
-    web3Provider: web3.currentProvider,
-
-    // set ipfs provider
-    ipfsProvider: ipfs.currentProvider,
   }, function(campaignLoadError, campaignDataObject){
     if (campaignLoadError) {
       log('Campaign load while drawing...', campaignLoadError);
@@ -82,10 +58,18 @@ const loadAndDrawCampaignRefund = function(campaignID, callback) {
     setCampaign(campaignID, campaignData);
 
     // draw campaign focus
-    document.querySelector('#view-campaign-refund').innerHTML = `
-    ${components.campaignRefundForm({campaignObject: campaignData, defaultAccount: getDefaultAccount, web3: web3})}
+    el('#view-campaign-refund').innerHTML = `
+    ${campaignRefundForm({
+      campaignObject: campaignData,
+      defaultAccount: getDefaultAccount,
+      web3,
+    })}
 
-    ${components.campaignRefundReview({campaignObject: campaignData, defaultAccount: getDefaultAccount, web3: web3})}
+    ${campaignRefundReview({
+      campaignObject: campaignData,
+      defaultAccount: getDefaultAccount,
+      web3,
+    })}
 
     <div id="view-campaign-refund-receipt"></div>
     `;
@@ -99,6 +83,4 @@ const loadAndDrawCampaignRefund = function(campaignID, callback) {
     // fire callback
     callback(null, 1);
   });
-};
-
-module.exports = loadAndDrawCampaignRefund;
+}

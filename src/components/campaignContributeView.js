@@ -1,10 +1,14 @@
-const campaignContributeQR = require('./campaignContributeQR');
-const campaignContributeReceipt = require('./campaignContributeReceipt');
-const campaignContributeForm = require('./campaignContributeForm');
-const campaignContributeReview = require('./campaignContributeReview');
-const campaignContributeNav = require('./campaignContributeNav');
+import campaignContributeQR from './campaignContributeQR';
+import campaignContributeReceipt from './campaignContributeReceipt';
+import campaignContributeForm from './campaignContributeForm';
+import campaignContributeReview from './campaignContributeReview';
+import campaignContributeNav from './campaignContributeNav';
 
-const campaignContributeView = function(options) {
+// export method
+module.exports = campaignContributeView;
+
+// main export
+function campaignContributeView(options) {
   const campaignObject = options.campaignObject;
   const t = options.t;
 
@@ -192,6 +196,4 @@ const campaignContributeView = function(options) {
 
   <div id="view-campaign-contribute-receipt"></div>
 `;
-};
-
-module.exports = campaignContributeView;
+}

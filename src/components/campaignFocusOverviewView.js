@@ -29,7 +29,7 @@ const campaignFocusOverviewView = function(options) {
 
       <div class="row">
         <div class="col-xs-12">
-          ${campaignObject.hasValidData && campaignObject.data.i18n[getLocale()].about || 'No about section was written for this campaign.'}
+          ${campaignObject.hasValidData && campaignObject.data.campaignSchema.i18n[getLocale()].about || 'No about section was written for this campaign.'}
         </div>
       </div>
 
@@ -68,7 +68,7 @@ const campaignFocusOverviewView = function(options) {
       <div class="row">
         <div class="col-xs-12">
           <h4>Address</h4>
-          <a href="http://etherscan.io/address/${campaignObject.addr}" class="text-break-all" style="width: 100%;">${campaignObject.addr}</a>
+          <a href="http://ropsten.etherscan.io/address/${campaignObject.addr}" class="text-break-all" style="width: 100%;">${campaignObject.addr}</a>
 
           <br /><br />
 
@@ -78,7 +78,7 @@ const campaignFocusOverviewView = function(options) {
           <br /><br />
 
           <h4>Website</h4>
-          ${campaignObject.hasValidData && `<a href="${campaignObject.data.url}">${campaignObject.data.url}</a>` || `No website was found`}</a>
+          ${campaignObject.hasValidData && `<a href="${campaignObject.data.campaignSchema.url}">${campaignObject.data.campaignSchema.url}</a>` || `No website was found`}</a>
         </div>
       </div>
 

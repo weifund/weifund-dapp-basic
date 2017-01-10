@@ -38,7 +38,7 @@ const subViews = [
 ];
 
 // close all views
-const closeAllSubViews = function() {
+function closeAllSubViews() {
   // set all views to hidden
   subViews.forEach(function(viewId) {
     if (document.querySelector(`#${viewId}`) === null) {
@@ -47,18 +47,18 @@ const closeAllSubViews = function() {
 
     document.querySelector(`#${viewId}`).style.display = 'none';
   });
-};
+}
 
 // close all views
-const closeAllViews = function() {
+function closeAllViews() {
   // set all views to hidden
   views.forEach(function(viewId) {
     document.querySelector(`#${viewId}`).style.display = 'none';
   });
-};
+}
 
 // open view
-const openView = function(openViewId) {
+function openView(openViewId) {
   window.scrollTo(0, 0);
   document.querySelector(`#footer-wrapper`).style.display = 'none';
 
@@ -68,22 +68,22 @@ const openView = function(openViewId) {
   // open selected view
   document.querySelector(`#${openViewId}`).style.display = '';
   document.querySelector(`#footer-wrapper`).style.display = '';
-};
+}
 
 // open view
-const openSubView = function(openViewId) {
+function openSubView(openViewId) {
   // clsoe all views
   closeAllSubViews();
 
   // open selected view
   document.querySelector(`#${openViewId}`).style.display = '';
-};
+}
 
 // export
 module.exports = {
-  views: views,
-  openView: openView,
-  closeAllViews: closeAllViews,
-  closeAllSubViews: closeAllSubViews,
-  openSubView: openSubView,
+  views,
+  openView,
+  closeAllViews,
+  closeAllSubViews,
+  openSubView,
 };

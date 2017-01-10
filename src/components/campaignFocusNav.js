@@ -1,4 +1,8 @@
-const campaignFocusNav = function(options) {
+// export method
+module.exports = campaignFocusNav;
+
+// main export
+function campaignFocusNav(options) {
   const campaignObject = options.campaignObject;
   const t = options.t;
 
@@ -25,6 +29,4 @@ const campaignFocusNav = function(options) {
   </div>
 
   <hr style="margin-bottom: 60px;" />`;
-};
-
-module.exports = campaignFocusNav;
+}

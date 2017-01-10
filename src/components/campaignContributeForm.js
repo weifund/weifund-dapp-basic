@@ -1,6 +1,10 @@
 const campaignContributeNav = require('./campaignContributeNav');
 
-const campaignContributeForm = function(options) {
+// export main
+module.exports = campaignContributeForm;
+
+// main export
+function campaignContributeForm(options) {
   const campaignObject = options.campaignObject;
   const defaultAccount = options.defaultAccount;
   const t = options.t;
@@ -105,6 +109,4 @@ WeiFund (A) expressly disclaims the accuracy, adequacy, or completeness of any d
     </div>
     ${campaignContributeNav({backURL: `/campaign/${options.campaignObject.id}/contribute/`, showNextButton: false})}
   </div>`;
-};
-
-module.exports = campaignContributeForm;
+}

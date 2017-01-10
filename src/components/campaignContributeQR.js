@@ -1,8 +1,12 @@
-const campaignContributeNav = require('./campaignContributeNav');
+import campaignContributeNav from './campaignContributeNav';
 
-const campaignContributeQR = function(options) {
+// export method
+module.exports = campaignContributeQR;
+
+// main export
+function campaignContributeQR(options) {
   const t = options.t;
-  
+
   return `<div id="view-campaign-contribute-ether-qrcode" class="row center-block container" style=" margin-bottom: 150px;">
     <div class="col-xs-12">
       <h3>Campaign QR Code</h3>
@@ -26,8 +30,4 @@ const campaignContributeQR = function(options) {
     ${campaignContributeNav({backURL: `/campaign/${options.campaignObject.id}/contribute/ether`, showNextButton: false})}
   </div>
   `;
-};
-
-
-
-module.exports = campaignContributeQR;
+}

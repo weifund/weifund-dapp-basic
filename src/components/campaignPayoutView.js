@@ -1,4 +1,8 @@
-const campaignPayoutView = function(options) {
+// export method
+module.exports = campaignPayoutView;
+
+// main export
+function campaignPayoutView(options) {
   const t = options.t;
   const campaignObject = options.campaignObject;
 
@@ -24,6 +28,4 @@ const campaignPayoutView = function(options) {
       </div>
     </div>
   </div>`;
-};
-
-module.exports = campaignPayoutView;
+}

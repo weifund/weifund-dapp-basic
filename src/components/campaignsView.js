@@ -1,4 +1,8 @@
-const campaignsView = function(options) {
+// export method
+module.exports = campaignsView;
+
+// main export
+function campaignsView(options) {
   const t = options.t;
 
   return `
@@ -24,6 +28,4 @@ const campaignsView = function(options) {
     </div>
   </div>
   `;
-};
-
-module.exports = campaignsView;
+}

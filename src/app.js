@@ -1,31 +1,21 @@
 // environment
-const setDefaultAccount = require('./environment').setDefaultAccount;
-
-// web3 instance and setup method
-const web3 = require('./web3').web3;
-const setupWeb3Provider = require('./web3').setupWeb3Provider;
+import { setDefaultAccount } from './environment';
 
 // ipfs instance and setup
-const setupIPFSProvider = require('./ipfs').setupIPFSProvider;
-const networkDetective = require('web3-network-detective');
+import networkDetective from 'web3-network-detective';
+
+// web3 instance and setup method, and ipfs
+import  { web3, setupWeb3Provider } from './web3';
+import  { setupIPFSProvider } from './ipfs';
 
 // router instance
-const router = require('./router');
-const setupRouter = router.setupRouter;
-const getRouter = router.getRouter;
+import { setupRouter, getRouter } from './router';
 
 // handlers draw
-const handlers = require('./handlers');
-const drawNavBar = handlers.drawNavBar;
-const drawFooter = handlers.drawFooter;
-const drawStartCampaignView = handlers.drawStartCampaignView;
-const loadAndDrawCampaign = handlers.loadAndDrawCampaign;
-const loadAndDrawCampaignsList = handlers.loadAndDrawCampaignsList;
-const loadAndDrawCampaignContribute = handlers.loadAndDrawCampaignContribute;
-const loadAndDrawCampaignPayout = handlers.loadAndDrawCampaignPayout;
-const loadAndDrawCampaignRefund = handlers.loadAndDrawCampaignRefund;
-const handleConfirmOnPageExit = handlers.handleConfirmOnPageExit;
-const loadAndDrawAccount = handlers.loadAndDrawAccount;
+import { drawNavBar, drawFooter, drawStartCampaignView, loadAndDrawCampaign,
+  loadAndDrawCampaignsList, loadAndDrawCampaignContribute,
+  loadAndDrawCampaignPayout, loadAndDrawCampaignRefund, handleConfirmOnPageExit,
+  loadAndDrawAccount } from './handlers';
 
 // draw navbar
 drawNavBar();
@@ -33,36 +23,24 @@ drawNavBar();
 // draw startcampaign page
 drawStartCampaignView();
 
+// setup provider
+// attempt conenction and run system
+window.addEventListener('load', loadApp);
+
 // load application
-const loadApp = function (loadAppEvent) {
+function loadApp(loadAppEvent) {
   // window warnign message
-  window.onunload = window.onbeforeunload = handleConfirmOnPageExit;
+  // window.onunload = window.onbeforeunload = handleConfirmOnPageExit;
 
   // setup the web3 provider
   if (loadAppEvent.bypassWeb3Provider !== true) {
     setupWeb3Provider();
   } else {
-    web3.setProvider(new web3.providers.HttpProvider('https://morden.infura.io/'));
+    web3.setProvider(new web3.providers.HttpProvider('https://ropsten.infura.io/'));
   }
 
+  // setup ipfs instance
   setupIPFSProvider();
-
-  // detect what network everything is on
-  networkDetective(web3.currentProvider, function(detectiveError, detectiveResut){
-    if (!detectiveError) {
-      if (detectiveResut.testnet !== true) {
-        if (confirm(`WARNING:
------------
-Your Web3 provider is not set to the Ethereum Morden Testnet.
-
-Please switch your provider to the Ethereum Morden testnet and refresh the page.`)) {
-
-          // load app
-          loadApp({bypassWeb3Provider: true});
-        }
-      }
-    }
-  });
 
   // setup the router
   setupRouter({
@@ -87,8 +65,4 @@ Please switch your provider to the Ethereum Morden testnet and refresh the page.
 
   // draw footer later
   drawFooter();
-};
-
-// setup provider
-// attempt conenction and run system
-window.addEventListener('load', loadApp);
+}

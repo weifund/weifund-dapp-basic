@@ -10,7 +10,6 @@
   </head>
 
   <body>
-
     <div id="nav-wrapper">
     </div>
 
@@ -43,32 +42,8 @@
             <hr />
 
             <div class="row" style="padding-left: 15px; padding-right: 15px;">
-              <div class="col-sm-12" style="padding: 20px; background: #F1F1F1; border-bottom: 2px solid #999;">
-                <h3>Braid Campaign <small>(BRD)</small></h3>
-                <div class="row">
-                  <div class="col-sm-6">
-                    <h4 style="text-overflow:ellipsis; overflow: hidden; width: 100px;">
-                      0x407d73d8a49eeb85d32cf465507dd71d507100c1
-                    </h4>
-                  </div>
-                  <div class="col-sm-6">
-                    <h4>
-                      total supply 4580000030003999
-                    </h4>
-                  </div>
-                </div>
+              <div id="tokens" class="col-sm-12" style="padding: 20px; background: #F1F1F1; border-bottom: 2px solid #999;">
 
-                <hr />
-
-                <div class="row">
-                  <div class="col-sm-6 text-left">
-                    <h4>4800000 <small>BRD</small><h4>
-                  </div>
-                  <div class="col-sm-6 text-right">
-                    <button class="btn btn-primary">Transfer</button>
-                    <button class="btn btn-primary">Debit</button>
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -95,17 +70,41 @@
                   <h4>Provider</h4>
                 </div>
                 <div class="col-sm-8 text-left">
-                  <h4 style="text-overflow:ellipsis; overflow: hidden;">0x407d73d8a49eeb85d32cf465507dd71d507100c1</h4>
-                  <h4>3294 ether (approx. $40,000 USD)
+                  <h4 id="accountAddress" style="text-overflow:ellipsis; overflow: hidden;">0x407d73d8a49eeb85d32cf465507dd71d507100c1</h4>
+                  <h4><span id="accountBalanceEther">3294</span> ether (approx. $0,000 USD)
                     <br />
-                    <small>450000000000000000000 wei</small>
+                    <small><span id="accountBalanceWei">0</span> wei</small>
                   </h4>
-                  <h4>Metamask <small><a href="https://metamask.io/">more</a></small></h4>
+                  <h4>Metamask <small><a href="https://metamask.io/" target="_blank">more</a></small></h4>
                 </div>
               </div>
             </div>
 
             <br />
+            <hr />
+
+            <div class="row" style="padding: 20px;">
+              <div style="border: 1px solid #aaa; padding: 20px;">
+                <h3 style="margin-top: 5px;">Send Ether</h3>
+
+                <div class="row">
+                  <div class="col-sm-6">
+                    <label>To Address</label>
+                    <input class="form-control" id="sendAddress" placeholder="0x..." />
+                  </div>
+                  <div class="col-sm-4">
+                    <label>Value</label>
+                    <input class="form-control" id="sendAmount" placeholder="30 ether" />
+                  </div>
+                  <div class="col-sm-2">
+                    <label>-</label>
+                    <button id="sendEther" class="btn btn-primary">Send Ether</button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
             <hr />
 
             <h3>Lightwallet</h3>
@@ -118,30 +117,24 @@
               <div class="col-sm-4 text-left">
                 <h4>Generated</h4>
                 <h4 alt="This means it has been backed up in your browsers local temporary storage">Localstore Backup</h4>
-                <h4>Address</h4>
-                <h4>Value</h4>
-                <h4>Total Tokens Held</h4>
               </div>
               <div class="col-sm-8 text-left">
                 <h4>True</h4>
                 <h4>True</h4>
-                <h4 style="text-overflow:ellipsis; overflow: hidden;">0x407d73d8a49eeb85d32cf465507dd71d507100c1</h4>
-                <h4>3294 ether (approx. $40,000 USD)</h4>
-                <h4>470000000</h4>
               </div>
             </div>
 
             <div class="row">
               <div class="col-sm-12">
-                <button class="btn btn-primary">Generate</button>
-                <button class="btn btn-primary">Backup Lightwallet</button>
+                <button class="btn btn-primary" id="generateLightWallet">Generate</button>
+                <a class="btn btn-primary" id="downloadLightWallet">Download Wallet</a>
               </div>
             </div>
 
             <div class="row">
               <div class="col-sm-12">
                 <br />
-                <p>Read more about lightwallet here: <a href="https://lightwallet.io/">
+                <p>Read more about lightwallet here: <a href="https://lightwallet.io/" target="_blank">
                 lightwallet.io</a></p>
               </div>
             </div>
@@ -189,6 +182,6 @@
     <div id="footer-wrapper">
     </div>
 
-    <script src="/bundle.js"></script>
+    <script type="text/javascript" src="/bundle.js"></script>
   </body>
 </html>

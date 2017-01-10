@@ -1,4 +1,8 @@
-const viewLoader = function(options) {
+// export module
+module.exports = viewLoader;
+
+// main component
+function viewLoader(options) {
   // handle no options
   if (typeof options === 'undefined') {
     options = {};
@@ -19,7 +23,4 @@ const viewLoader = function(options) {
       ${options.message && options.message || t('viewLoader.defaultLoadingMessage')}
     </h3>
   </div>`;
-};
-
-// export module
-module.exports = viewLoader;
+}

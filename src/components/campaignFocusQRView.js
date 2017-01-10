@@ -1,4 +1,8 @@
-const campaignFocusContractsView = function(options) {
+// export method
+module.exports = campaignFocusContractsView;
+
+// main export
+function campaignFocusContractsView(options) {
   const t = options.t;
 
   return `<div id="view-campaign-qr" class="bg-white container row center-block" style="display: none;">
@@ -22,6 +26,4 @@ const campaignFocusContractsView = function(options) {
       </div>
     </div>
   </div>`;
-};
-
-module.exports = campaignFocusContractsView;
+}

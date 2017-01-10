@@ -1,4 +1,8 @@
-const campaignContributeNav = function(options) {
+// export method
+module.exports = campaignContributeNav;
+
+// main export
+function campaignContributeNav(options) {
   const t = options.t;
 
   return `
@@ -15,6 +19,4 @@ const campaignContributeNav = function(options) {
     </div>
   </div>
   `;
-};
-
-module.exports = campaignContributeNav;
+}

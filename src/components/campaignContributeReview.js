@@ -1,6 +1,10 @@
 const campaignContributeNav = require('./campaignContributeNav');
 
-const campaignContributeReview = function(options) {
+// export method
+module.exports = campaignContributeReview;
+
+// main export
+function campaignContributeReview(options) {
   const t = options.t;
 
   return `<div id="view-campaign-contribute-review" class="center-block container" style="margin-top: 40px; margin-bottom: 150px;">
@@ -78,6 +82,4 @@ const campaignContributeReview = function(options) {
       </div>
     </div>
   </div>`;
-};
-
-module.exports = campaignContributeReview;
+}

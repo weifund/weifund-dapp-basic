@@ -1,19 +1,25 @@
+// document helper
+import { el } from '../document';
+
 // calculate outer height off an element
-const outerElHeight = function(el) {
+function outerElHeight(el) {
   var height = el.offsetHeight;
   var style = getComputedStyle(el);
 
   height += parseInt(style.marginTop) + parseInt(style.marginBottom);
   return height;
-};
+}
+
+// main export
+module.exports = drawAllNavToggles;
 
 // buidl all nav togglesbuildAllNavToggles
-const drawAllNavToggles = function() {
+function drawAllNavToggles() {
   [].slice.call(document.querySelectorAll('.navbar-toggle')).forEach(function(navBarToggle){
     navBarToggle.addEventListener('click', function(event){
 
       var toggleState = false;
-      const toggleTarget = document.querySelector(`#${navBarToggle.dataset.targetId}`);
+      const toggleTarget = el(`#${navBarToggle.dataset.targetId}`);
 
       const getToggleState = function() {
         return toggleState();
@@ -31,6 +37,4 @@ const drawAllNavToggles = function() {
       }
     });
   });
-};
-
-module.exports = drawAllNavToggles;
+}

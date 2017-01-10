@@ -1,6 +1,10 @@
-const methodABIInputsForm = require('./methodABIInputsForm');
+import methodABIInputsForm from './methodABIInputsForm';
 
-const campaignRefundForm = function(options) {
+// export method
+module.exports = campaignRefundForm;
+
+// main export
+function campaignRefundForm(options) {
   const campaignObject = options.campaignObject;
   const defaultAccount = options.defaultAccount;
   const t = options.t;
@@ -118,6 +122,4 @@ WeiFund (A) expressly disclaims the accuracy, adequacy, or completeness of any d
       <h5>--</h5>
     </div>
   </div>`;
-};
-
-module.exports = campaignRefundForm;
+}

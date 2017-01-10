@@ -9,7 +9,8 @@
     "discover": "Discover",
     "start": "Start A Campaign",
     "locale": "Locale",
-    "account": "My Account"
+    "docs": "Read The Docs",
+    "account": "Account"
   },
   "campaignFocusView": {
     "by": "by",

@@ -11,10 +11,8 @@ const navBar = function(options) {
       <a href="/"><img id="nav-logo" src="/styles/weifund-logo-small.png"></a>
     </div>
     <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 nav-right text-left-xs text-left-sm hidden-xs hidden-sm">
-      <!-- <select class="input-locale-toggle footer-locale-select">
-      </select>
-      <a href="/account">${t("navBar.account")}</a> -->
-      <a href="https://weifund.readthedocs.org/" target="_blank">Read The Docs</a>
+      <a href="/account" style="padding-right: 15px;">${t("navBar.account")} </a>
+      <a href="https://weifund.readthedocs.org/" target="_blank"> ${t("navBar.docs")}</a>
     </div>
 
     <div class="col-xs-6 visible-xs text-right hidden-lg">
@@ -33,10 +31,8 @@ const navBar = function(options) {
           <!-- <a href="/start" style="padding-left: 40px;">${t("navBar.start")}</a> -->
         </div>
         <div class="col-xs-6 col-sm-6 text-right">
-          <!--<select class="input-locale-toggle footer-locale-select">
-          </select>-->
-          <a href="https://weifund.readthedocs.org/" target="_blank">Read The Docs</a>
-          <!-- <a href="/account">${t("navBar.account")}</a> -->
+          <a href="/account" style="padding-right: 15px;">${t("navBar.account")}</a>
+          <a href="https://weifund.readthedocs.org/" target="_blank">${t("navBar.docs")}</a>
         </div>
       </div>
     </div>
@@ -55,12 +51,8 @@ const navBar = function(options) {
                 <!-- <a href="/start">${t("navBar.start")}</a> -->
               </li>
               <li class="list-group-item">
-                <!--<select class="input-locale-toggle footer-locale-select">
-                </select> -->
-              </li>
-              <li class="list-group-item">
-                <a href="https://weifund.readthedocs.org/" target="_blank">Read The Docs</a>
-                <!-- <a href="/account">${t("navBar.account")}</a> -->
+                <a href="/account" style="padding-right: 15px;">${t("navBar.account")}</a>
+                <a href="https://weifund.readthedocs.org/" target="_blank">${t("navBar.docs")}</a>
               </li>
             </ul>
           </h3>

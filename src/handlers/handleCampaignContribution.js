@@ -1,45 +1,40 @@
 // utils
-const utils = require('weifund-util');
-const log = utils.log;
-const etherScanAddressUrl = utils.etherScanAddressUrl;
-const etherScanTxHashUrl = utils.etherScanTxHashUrl;
-const oneDay = utils.oneDay;
+import { log, etherScanAddressUrl, etherScanTxHashUrl, oneDay } from 'weifund-util';
+
+// document helper
+import { el } from '../document';
 
 // require components
-const components = require('../components');
+import components from '../components';
 
 // environment
-const environment = require('../environment');
-const getNetwork = environment.getNetwork;
-const getLocale = environment.getLocale;
-const getContractEnvironment = environment.getContractEnvironment;
-const txObject = environment.txObject;
-
-// campaign environment methods
-const getCampaign = environment.getCampaign;
-const setCampaign = environment.setCampaign;
+import { setDefaultAccount, getDefaultAccount, getCampaign, setCampaign,
+  getNetwork, getLocale, getContractEnvironment, txObject } from '../environment';
 
 // web3
-const web3 = require('../web3').web3;
+import { web3 } from '../web3';
 
 // require contracts
-const contracts = require('weifund-contracts');
-const campaignRegistry = contracts.CampaignRegistry(web3, getNetwork());
-const campaign = contracts.factories.Campaign(web3);
+import Contracts from 'weifund-contracts';
+const contracts = new Contracts('ropsten', web3.currentProvider);
+const campaignRegistry = contracts.CampaignRegistry.instance();
+const campaign = contracts.Campaign.factory;
 
 // router instance
-var router = require('../router');
-const getRouter = router.getRouter;
+import { getRouter } from '../router';
 
 // require i18n
-const t = require('../i18n').t;
+import { t } from '../i18n';
+
+// export method
+module.exports = handleCampaignContribution;
 
 // handle a campaign contribution
-const handleCampaignContribution = function(event){
+function handleCampaignContribution(event){
   // get contribution value, and convert
-  const selectedCampaignIdInput = parseInt(document.querySelector('#campaign_id').value);
+  const selectedCampaignIdInput = parseInt(el('#campaign_id').value);
   const selectedCampaign = getCampaign(selectedCampaignIdInput);
-  const contributeValueInput =  document.querySelector('#campaign_contributeAmount').value;
+  const contributeValueInput =  el('#campaign_contributeAmount').value;
   const contributeValueWei = web3.toWei(contributeValueInput, 'ether');
   const campaignContractFactory = web3.eth.contract(selectedCampaign.abi);
   const campaignContractInstance = campaignContractFactory.at(selectedCampaign.addr);
@@ -52,7 +47,7 @@ const handleCampaignContribution = function(event){
   var contributionParams = [];
 
   // contribute to weifund
-  const weifundContributionAmount = document.querySelector('#campaign_weifundContributeAmount').value;
+  const weifundContributionAmount = el('#campaign_weifundContributeAmount').value;
   const weifundContributionAmountFloat = parseFloat(weifundContributionAmount);
   const weifundContributionAmountEther = web3.toWei(weifundContributionAmount, 'ether');
 
@@ -61,7 +56,7 @@ const handleCampaignContribution = function(event){
     contributeMethodInputParams.forEach(function(inputParam, inputParamIndex) {
         // get input type and value
         const inputType = inputParam.type;
-        const inputValue = document.querySelector(`#campaign_contributionInput_${inputParamIndex}`).value;
+        const inputValue = el(`#campaign_contributionInput_${inputParamIndex}`).value;
 
         // handle contribute input data
         // bool to parseInt, everything else as a string
@@ -84,32 +79,32 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
 
   // reset review responses
   const resetReviewResponses = function () {
-    document.querySelector('#campaign_contribute_info_response').style.display = 'none';
-    document.querySelector('#campaign_contribute_warning_response').style.display = 'none';
+    el('#campaign_contribute_info_response').style.display = 'none';
+    el('#campaign_contribute_warning_response').style.display = 'none';
   }
 
   // contribute to campaign instance
   if (confirm(confirmationMessage)) {
     // awaiting tx approval message
     resetReviewResponses();
-    document.querySelector('#campaign_contribute_info_response').style.display = '';
-    document.querySelector('#campaign_contribute_info_response').innerHTML = `Your contribution transaction is awaiting approval...`;
+    el('#campaign_contribute_info_response').style.display = '';
+    el('#campaign_contribute_info_response').innerHTML = `Your contribution transaction is awaiting approval...`;
 
     // build contribute params
     contributionParams.push(Object.assign({value: contributeValueWei}, txObject()));
     contributionParams.push(function(contributeError, contributeResultTxHash){
       if (contributeError) {
         resetReviewResponses();
-        document.querySelector('#campaign_contribute_warning_response').style.display = '';
-        document.querySelector('#campaign_contribute_warning_response').innerHTML = `There was an error while sending your contribution transaction: ${String(JSON.stringify(contributeError, null, 2))}`;
+        el('#campaign_contribute_warning_response').style.display = '';
+        el('#campaign_contribute_warning_response').innerHTML = `There was an error while sending your contribution transaction: ${String(JSON.stringify(contributeError, null, 2))}`;
         return;
       }
 
       // if tx hash present
       if (contributeResultTxHash) {
         resetReviewResponses();
-        document.querySelector('#campaign_contribute_info_response').style.display = '';
-        document.querySelector('#campaign_contribute_info_response').innerHTML = `
+        el('#campaign_contribute_info_response').style.display = '';
+        el('#campaign_contribute_info_response').innerHTML = `
         Your contribution transaction is processing with transaction hash:
 
         ${contributeResultTxHash}
@@ -122,8 +117,8 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
         web3.eth.getTransactionReceipt(contributeResultTxHash, function(receiptError, receiptResult){
           if (receiptError) {
             resetReviewResponses();
-            document.querySelector('#campaign_contribute_warning_response').style.display = '';
-            document.querySelector('#campaign_contribute_warning_response').innerHTML = `There was an error while getting your transaction receipt: ${String(JSON.stringify(receiptError, null, 2))} with transaction hash: ${contributeResultTxHash}`;
+            el('#campaign_contribute_warning_response').style.display = '';
+            el('#campaign_contribute_warning_response').innerHTML = `There was an error while getting your transaction receipt: ${String(JSON.stringify(receiptError, null, 2))} with transaction hash: ${contributeResultTxHash}`;
 
             // clear receipt interval
             clearInterval(receiptInterval);
@@ -135,10 +130,10 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
           if (receiptResult) {
             if (receiptResult.blockNumber !== null) {
               resetReviewResponses();
-              document.querySelector('#campaign_contribute_info_response').style.display = '';
-              document.querySelector('#campaign_contribute_info_response').innerHTML = `Your transaction was processed: ${JSON.stringify(receiptResult, null, 2)} with transaction hash: ${contributeResultTxHash}`;
+              el('#campaign_contribute_info_response').style.display = '';
+              el('#campaign_contribute_info_response').innerHTML = `Your transaction was processed: ${JSON.stringify(receiptResult, null, 2)} with transaction hash: ${contributeResultTxHash}`;
 
-              document.querySelector('#view-campaign-contribute-receipt').innerHTML = components.campaignContributeReceipt({receipt: receiptResult, from: txObject().from, to: selectedCampaign.addr, campaignObject: selectedCampaign, getLocale: getLocale, web3: web3});
+              el('#view-campaign-contribute-receipt').innerHTML = components.campaignContributeReceipt({receipt: receiptResult, from: txObject().from, to: selectedCampaign.addr, campaignObject: selectedCampaign, getLocale: getLocale, web3: web3});
 
               // clear receipt interval
               clearInterval(receiptInterval);
@@ -155,8 +150,8 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
         // if interval checking expires
         if (contributionIntervalTimer >= contributionIntervalTimeout) {
           resetReviewResponses();
-          document.querySelector('#campaign_contribute_warning_response').style.display = '';
-          document.querySelector('#campaign_contribute_warning_response').innerHTML = `Contribution transaction checking timed out with transaction hash: ${contributeResultTxHash}. Your contribution either did not process or is taking a very long time to mine.. Receipt interval polling has stopped.`;
+          el('#campaign_contribute_warning_response').style.display = '';
+          el('#campaign_contribute_warning_response').innerHTML = `Contribution transaction checking timed out with transaction hash: ${contributeResultTxHash}. Your contribution either did not process or is taking a very long time to mine.. Receipt interval polling has stopped.`;
 
           // clear receipt interval
           clearInterval(receiptInterval);
@@ -174,6 +169,4 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
     // contribute to campaign
     campaignContractInstance[contributeMethodName].apply(campaignContractInstance, contributionParams);
   }
-};
-
-module.exports = handleCampaignContribution;
+}

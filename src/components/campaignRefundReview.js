@@ -1,6 +1,10 @@
-const methodABIInputsReview = require('./methodABIInputsReview');
+import methodABIInputsReview from './methodABIInputsReview';
 
-const campaignRefundReview = function(options) {
+// export method
+module.exports = campaignRefundReview;
+
+// main export
+function campaignRefundReview(options) {
   const campaignObject = options.campaignObject;
   const defaultAccount = options.defaultAccount;
   const t = options.t;
@@ -79,5 +83,3 @@ const campaignRefundReview = function(options) {
       </div>
     </div>`;
 }
-
-module.exports = campaignRefundReview;

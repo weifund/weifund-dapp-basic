@@ -1,72 +1,49 @@
 // utils
-const utils = require('weifund-util');
-const log = utils.log;
-const etherScanAddressUrl = utils.etherScanAddressUrl;
-const etherScanTxHashUrl = utils.etherScanTxHashUrl;
+import { log, etherScanAddressUrl, parseSolidityMethodName,
+  etherScanTxHashUrl, oneDay, emptyWeb3Address } from 'weifund-util';
 
-// require components
-const components = require('../components');
+// document helper
+import { el } from '../document';
 
-// environment
-const environment = require('../environment');
-const getNetwork = environment.getNetwork;
-const getLocale = environment.getLocale;
-const txObject = environment.txObject;
-const getDefaultAccount = environment.getDefaultAccount;
-const setDefaultAccount = environment.setDefaultAccount;
-
-// campaign environment methods
-const getCampaign = environment.getCampaign;
-const setCampaign = environment.setCampaign;
+// environment and components
+import { setDefaultAccount, getDefaultAccount, getCampaign, setCampaign,
+  getNetwork, getLocale, getContractEnvironment, txObject } from '../environment';
+import components from '../components';
 
 // web3
-const web3 = require('../web3').web3;
-
-// web3
-const ipfs = require('../ipfs').ipfs;
-
-// require contracts
-// setup campaign and data registries
-// Campaign/token contracts
-const contracts = require('weifund-contracts');
+import { web3 } from '../web3';
+import { ipfs } from '../ipfs';
+import { t } from '../i18n';
 
 // loadCampaign method
-const lib = require('weifund-lib');
-const getCampaigns = lib.getCampaigns;
-
-// router
-const refreshPageButtons = require('../router').refreshPageButtons;
-
-// require i18n
-const t = require('../i18n').t;
+import { getCampaigns } from 'weifund-lib';
+import { refreshPageButtons } from '../router';
 
 // draw utils
-const buildAllInputSliders = require('./drawAllInputSliders');
+import buildAllInputSliders from './drawAllInputSliders';
 
-const loadAndDrawCampaignPayout = function(campaignID, callback) {
+// export single method
+module.exports = loadAndDrawCampaignPayout;
+
+// payout handler
+function loadAndDrawCampaignPayout(campaignID, callback) {
   // handle empty callback
   if (typeof callback !== 'function') {
     callback = function(e, r) {};
   }
 
   // draw loader
-  document.querySelector('#view-campaign-payout').innerHTML = components.viewLoader({t: t});
+  el('#view-campaign-payout').innerHTML = components.viewLoader({t: t});
 
   // load campaign fresh to draw
   getCampaigns({
     // set network
     // or 'testnet'
-    network: getNetwork(),
+    network: getContractEnvironment(),
 
     // set campaign selector
     // array (i.e. array of campaignIDs)
     selector: [campaignID],
-
-    // set web3 provider
-    web3Provider: web3.currentProvider,
-
-    // set ipfs provider
-    ipfsProvider: ipfs.currentProvider,
   }, function(campaignLoadError, campaignDataObject){
     if (campaignLoadError) {
       log('Campaign load while drawing...', campaignLoadError);
@@ -81,7 +58,10 @@ const loadAndDrawCampaignPayout = function(campaignID, callback) {
     setCampaign(campaignID, campaignData);
 
     // draw campaign focus
-    document.querySelector('#view-campaign-payout').innerHTML = components.campaignPayoutView({campaignObject: campaignData, getLocale: getLocale});
+    el('#view-campaign-payout').innerHTML = components.campaignPayoutView({
+      campaignObject: campaignData,
+      getLocale,
+    });
 
     // refresh all page buttons after redraw
     refreshPageButtons();
@@ -92,6 +72,4 @@ const loadAndDrawCampaignPayout = function(campaignID, callback) {
     // callback
     callback(null, true);
   });
-};
-
-module.exports = loadAndDrawCampaignPayout;
+}

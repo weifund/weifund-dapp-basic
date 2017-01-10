@@ -1,12 +1,12 @@
 // require Polyglot
-const Polyglot = require('node-polyglot');
+import Polyglot from 'node-polyglot';
 
 // environment
-const getLocale = require('./environment').getLocale;
+import { getLocale } from './environment';
 
 // english translation
-const enLocaleTranslation = require('./translations/en.json');
-const zhLocaleTranslation = require('./translations/zh.json');
+import enLocaleTranslation from './translations/en.json';
+import zhLocaleTranslation from './translations/zh.json';
 
 // all translations
 const localeTranslations = {
@@ -14,18 +14,18 @@ const localeTranslations = {
   zh: zhLocaleTranslation,
 };
 
-// translate utility
+// polyglot instance
 const polyglot = new Polyglot({
   locale: getLocale(),
   phrases: localeTranslations[getLocale()],
 });
 
 // translate function
-const t = function(phraseKey, phraseData) {
+function t(phraseKey, phraseData) {
   return polyglot.t(phraseKey, phraseData);
 };
 
 // export i18n functions
 module.exports = {
-  t: t,
+  t,
 };

@@ -1,62 +1,46 @@
-// requires
-const QRious = require('qrious');
-
 // utils
-const utils = require('weifund-util');
-const log = utils.log;
-const etherScanAddressUrl = utils.etherScanAddressUrl;
-const etherScanTxHashUrl = utils.etherScanTxHashUrl;
-const oneDay = utils.oneDay;
-const emptyWeb3Address = utils.emptyWeb3Address;
+import { log, etherScanAddressUrl, etherScanTxHashUrl, oneDay, emptyWeb3Address } from 'weifund-util';
 
-// require components
-const components = require('../components');
+// document helper
+import { el } from '../document';
 
-// environment
-const environment = require('../environment');
-const getNetwork = environment.getNetwork;
-const getLocale = environment.getLocale;
-const getContractEnvironment = environment.getContractEnvironment;
-const txObject = environment.txObject;
-
-// campaign environment methods
-const getCampaign = environment.getCampaign;
-const setCampaign = environment.setCampaign;
+// environment and components
+import { setDefaultAccount, getDefaultAccount, getCampaign, setCampaign,
+  getNetwork, getLocale, getContractEnvironment, txObject } from '../environment';
+import components from '../components';
 
 // web3
-const web3 = require('../web3').web3;
+import { web3 } from '../web3';
 
 // require contracts
-const contracts = require('weifund-contracts');
-const classes = contracts.classes;
-const campaignRegistry = contracts.CampaignRegistry(web3, getNetwork());
-const campaign = contracts.factories.Campaign(web3);
-const ownedContractFactory = contracts.factories.Owned(web3);
-const standardCampaignContractFactory = contracts.factories.StandardCampaign(web3);
-const standardCampaignFactory = contracts.StandardCampaignFactory(web3, getNetwork());
+import Contracts from 'weifund-contracts';
+const contracts = new Contracts('ropsten', web3.currentProvider);
+const campaignRegistry = contracts.CampaignRegistry.instance();
+const campaign = contracts.Campaign.factory;
+const ownedContractFactory = contracts.Owned.factory;
+const standardCampaignContractFactory = contracts.StandardCampaign.factory;
+const standardCampaignFactory = contracts.StandardCampaignFactory.instance();
 
 // router instance
-var router = require('../router');
-const getRouter = router.getRouter;
-const refreshPageButtons = router.refreshPageButtons;
+import { getRouter, refreshPageButtons } from '../router';
 
 // require i18n
-const t = require('../i18n').t;
+import { t } from '../i18n';
 
 // reset responses
 const resetStartCampaignResponses = function() {
-  document.querySelector('#startCampaign_info_response').style.display = 'none';
-  document.querySelector('#startCampaign_warning_response').style.display = 'none';
+  el('#startCampaign_info_response').style.display = 'none';
+  el('#startCampaign_warning_response').style.display = 'none';
 };
 
 // handle new campaign creation
 const handleStartCampaign = function(event){
   var newCampaignTransactionHash = '';
 
-  const name = document.querySelector('#startCampaign_name').value;
-  const beneficiary = document.querySelector('#startCampaign_beneficiary').value;
-  const expiry = Math.round((new Date()).getTime() / 1000) + (parseInt( document.querySelector('#startCampaign_expiry').value) * 86400);
-  const fundingGoal = web3.toWei(document.querySelector('#startCampaign_fundingGoal').value, 'ether');
+  const name = el('#startCampaign_name').value;
+  const beneficiary = el('#startCampaign_beneficiary').value;
+  const expiry = Math.round((new Date()).getTime() / 1000) + (parseInt(el('#startCampaign_expiry').value) * 86400, 10);
+  const fundingGoal = web3.toWei(el('#startCampaign_fundingGoal').value, 'ether');
   const confirmMessage = `
   Are you sure you want to create a StandardCampaign with these details:
 
@@ -78,8 +62,8 @@ const handleStartCampaign = function(event){
 
     // awaiting approval
     resetStartCampaignResponses();
-    document.querySelector('#startCampaign_info_response').style.display = '';
-    document.querySelector('#startCampaign_info_response_body').innerHTML = `
+    el('#startCampaign_info_response').style.display = '';
+    el('#startCampaign_info_response_body').innerHTML = `
 
     Your new StandardCampaign transaction is awaiting approval...
 
@@ -100,8 +84,8 @@ const handleStartCampaign = function(event){
             // handle register standard campaign error
             if (registerCampaignError) {
               resetStartCampaignResponses();
-              document.querySelector('#startCampaign_warning_response').style.display = '';
-              document.querySelector('#startCampaign_warning_response_body').innerHTML = `
+              el('#startCampaign_warning_response').style.display = '';
+              el('#startCampaign_warning_response_body').innerHTML = `
 
               There was an error while registering your new campaign: ${JSON.stringify(registerCampaignError, null, 2)}
 
@@ -110,8 +94,8 @@ const handleStartCampaign = function(event){
 
             // reset dialogs
             resetStartCampaignResponses();
-            document.querySelector('#startCampaign_info_response').style.display = '';
-            document.querySelector('#startCampaign_info_response_body').innerHTML = `
+            el('#startCampaign_info_response').style.display = '';
+            el('#startCampaign_info_response_body').innerHTML = `
 
             Your new WeiFund standard campaign contract was created at address:
             <br />
@@ -130,8 +114,8 @@ const handleStartCampaign = function(event){
           });
         } else {
           resetStartCampaignResponses();
-          document.querySelector('#startCampaign_info_response').style.display = '';
-          document.querySelector('#startCampaign_info_response').innerHTML = `
+          el('#startCampaign_info_response').style.display = '';
+          el('#startCampaign_info_response').innerHTML = `
 
           Your WeiFund standard campaign is being created...
           <br />
@@ -145,15 +129,13 @@ const handleStartCampaign = function(event){
       });
     });
 
-    console.log(standardCampaignFactory);
-
     // new standard campaign tx
     standardCampaignFactory.newStandardCampaign(name, expiry, fundingGoal, beneficiary, txObject(), function(newStandardCampaignError, newStandardCampaignTxHash){
       // handle new standard campaign error
       if (newStandardCampaignError) {
         resetStartCampaignResponses();
-        document.querySelector('#startCampaign_warning_response').style.display = '';
-        document.querySelector('#startCampaign_warning_response_body').innerHTML = `
+        el('#startCampaign_warning_response').style.display = '';
+        el('#startCampaign_warning_response_body').innerHTML = `
 
         There was an error while creating your new campaign: ${JSON.stringify(newStandardCampaignError, null, 2)}
 
@@ -166,8 +148,8 @@ const handleStartCampaign = function(event){
       // handle new standard campaign error
       if (newCampaignTransactionHash) {
         resetStartCampaignResponses();
-        document.querySelector('#startCampaign_info_response').style.display = '';
-        document.querySelector('#startCampaign_info_response_body').innerHTML = `
+        el('#startCampaign_info_response').style.display = '';
+        el('#startCampaign_info_response_body').innerHTML = `
         Your new campaign is being created...
         <br />
         <br />
