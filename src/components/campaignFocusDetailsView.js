@@ -11,6 +11,8 @@ function campaignFocusDetailsView(options) {
   const campaignObject = options.campaignObject;
   const web3 = options.web3;
 
+  console.log(campaignObject);
+
   return `<div id="view-campaign-details" class="bg-white container row center-block" style="display: none; margin-top: 20px;">
     <div class="col-xs-12">
 
@@ -41,8 +43,9 @@ function campaignFocusDetailsView(options) {
           <br />
 
           <h4>Expiry</h4>
-          ${(new Date(campaignObject.expiry * 1000))}.
-          <small>unix. ${campaignObject.expiry}</small>
+          ${campaignObject.expiry.minus(campaignObject.blockNumber).dividedBy(17).floor()} in seconds
+          <br />
+          <small>current. ${campaignObject.blockNumber} unix. ${campaignObject.expiry}</small>
 
           <br />
           <br />
