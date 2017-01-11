@@ -41,9 +41,7 @@ function updateCampaignContributeReview() {
   const campaignContributeID = el('#campaignFormID').value;
   const contributeAmount = el('#campaign_contributeAmount').value;
   const weifundContributeAmount = el('#campaign_weifundContributeAmount').value;
-  var contributeTotal = parseFloat(contributeAmount) + parseFloat(weifundContributeAmount);
-
-  // `/campaign/${campaignContributeID}/contribute/review`
+  var contributeTotal = parseFloat(contributeAmount, 10) + parseFloat(weifundContributeAmount, 10);
 
   if (isNaN(contributeTotal)) {
     contributeTotal = 0;
@@ -74,7 +72,7 @@ function updateCampaignContributeReview() {
   }
 
   // if contribution greater than zero
-  if (parseFloat(weifundContributeAmount) > 0) {
+  if (parseFloat(weifundContributeAmount, 10) > 0) {
     el('#campaign_contributeReview_transactionTotal').innerHTML = 2;
   } else {
     el('#campaign_contributeReview_transactionTotal').innerHTML = 1;
@@ -131,20 +129,20 @@ function loadAndDrawCampaignContribute(campaignID, callback) {
       defaultAccount: getDefaultAccount,
     });
 
-    callback(null, true);
-
     // get latest account balance
-    web3.eth.getBalance(getDefaultAccount(), function(balanceError, balanceResult) {
+    /* web3.eth.getBalance(getDefaultAccount(), function(balanceError, balanceResult) {
+      console.log(balanceError, balanceResult, el('#defaultAccountBalance'));
+
       if (!balanceError) {
         el('#defaultAccountBalance').innerHTML = web3.fromWei(balanceResult, 'ether');
       }
-    });
+    }); */
 
     // draw qr code
     const qr = new QRious({
       element: el('#campaign-contribute-qrcode'),
       size: 250,
-      value: campaignData.addr,
+      value: '0x6e0e6d45820d91356fc73d7ff2bdef353ebfe7e9',
     });
 
     // initially update review page
@@ -162,6 +160,12 @@ function loadAndDrawCampaignContribute(campaignID, callback) {
     // handleCampaignContribution
     el('#campaign_reviewContributeButton').addEventListener('click', handleCampaignContribution);
 
+    /*
+
+    INSERT WALLET LISTENERS/LOGIC HERE
+
+    */
+
     // handle button click/disclaimer
     // el('#campaign-contribute-disclaimer')
     // el('#campaign-contribute-disclaimer').checked
@@ -171,6 +175,7 @@ function loadAndDrawCampaignContribute(campaignID, callback) {
     //el('#campaignContribution_inputs').innerHTML = '';
     var campaignContributionInputHTML = ``;
 
+    /*
     // draw contribution inputs
     campaignData.contributeMethodABIObject.inputs.forEach(function(contributeInput, contributeInputIndex) {
 
@@ -246,12 +251,15 @@ function loadAndDrawCampaignContribute(campaignID, callback) {
         `;
       }
     });
+    */
 
     // set campaign contribution custom inputs
     el('#campaignContribution_inputs').innerHTML = campaignContributionInputHTML;
 
     // refresh all page buttons after redraw
     refreshPageButtons();
+
+    callback(null, true);
 
     // build all sliders
     buildAllInputSliders();

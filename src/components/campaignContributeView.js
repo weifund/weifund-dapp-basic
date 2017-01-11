@@ -3,6 +3,7 @@ import campaignContributeReceipt from './campaignContributeReceipt';
 import campaignContributeForm from './campaignContributeForm';
 import campaignContributeReview from './campaignContributeReview';
 import campaignContributeNav from './campaignContributeNav';
+import campaignContributeWallet from './campaignContributeWallet';
 
 // export method
 module.exports = campaignContributeView;
@@ -24,14 +25,6 @@ function campaignContributeView(options) {
   </div>
 
   <div id="view-campaign-contribute-method" class="row center-block container" style="display: none;">
-    <!--<div class="row">
-      <div class="col-xs-12">
-        <h3>Warning</h3>
-        <h4>This is experimental software. Please ensure your device, browser and wallets are secure.</h4>
-      </div>
-    </div>
-
-    <br />-->
 
     <div class="row col-xs-12">
       <div class="col-xs-12">
@@ -61,42 +54,6 @@ function campaignContributeView(options) {
       </div>
     </div>
     ${campaignContributeNav({backURL: `/campaign/${options.campaignObject.id}/`, showNextButton: false})}
-  </div>
-
-  <div id="view-campaign-contribute-wallet" class="row center-block container" style="margin-top: 40px; display: none;">
-    <div class="col-xs-12">
-      <h3>No Address Found</h3>
-      <br />
-      <h4>Looks like you dont have any Ethereum wallet, create one, by using one of these tools.</h4>
-      <br />
-      <div class="row">
-        <div class="col-xs-12 bg-white">
-          <h3>Wallet Options</h3>
-          <br />
-          <ul class="list-group list-inline list-group-naked">
-            <li class="list-group-item">
-              <a href="https://github.com/ethereum/mist/releases" target="_blank">
-                <button class="btn btn-primary btn-lg">Mist* Browser</button>
-              </a>
-            </li>
-            <li class="list-group-item">
-              <a href="https://metamask.io/" target="_blank">
-                <button class="btn btn-primary btn-lg">MetaMask</button>
-              </a>
-            </li>
-            <li class="list-group-item">
-              <a href="https://ethcore.io/parity.html" target="_blank">
-                <button class="btn btn-primary btn-lg">Parity</button>
-              </a>
-            </li>
-          </ul>
-          <br />
-          <br />
-          <h4>Here are some Ethereum wallet options. Note, if you feel these links are not correct or compromised, stop using this service immediatly, and report it to mail@weifund.io.</h4>
-        </div>
-      </div>
-    </div>
-    ${campaignContributeNav({backURL: `/campaign/${options.campaignObject.id}/contribute`, showNextButton: false})}
   </div>
 
   <div id="view-campaign-contribute-exchanges" class="row center-block container" style="margin-top: 40px; display: none;">
@@ -188,11 +145,13 @@ function campaignContributeView(options) {
     ${campaignContributeNav({backURL: `/campaign/${options.campaignObject.id}/contribute`, showNextButton: false})}
   </div>
 
-  ${campaignContributeQR({campaignObject: options.campaignObject, getLocale: options.getLocale})}
+  ${campaignContributeWallet({campaignObject: options.campaignObject, t, getLocale: options.getLocale})}
 
-  ${campaignContributeForm({campaignObject: options.campaignObject, getLocale: options.getLocale, defaultAccount: options.defaultAccount, web3: options.web3})}
+  ${campaignContributeQR({campaignObject: options.campaignObject, t, getLocale: options.getLocale})}
 
-  ${campaignContributeReview({campaignObject: options.campaignObject, getLocale: options.getLocale, defaultAccount: options.defaultAccount, web3: options.web3})}
+  ${campaignContributeForm({campaignObject: options.campaignObject, t, getLocale: options.getLocale, defaultAccount: options.defaultAccount, web3: options.web3})}
+
+  ${campaignContributeReview({campaignObject: options.campaignObject, t, getLocale: options.getLocale, defaultAccount: options.defaultAccount, web3: options.web3})}
 
   <div id="view-campaign-contribute-receipt"></div>
 `;

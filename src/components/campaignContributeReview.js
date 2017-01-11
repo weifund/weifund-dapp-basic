@@ -1,4 +1,4 @@
-const campaignContributeNav = require('./campaignContributeNav');
+import campaignContributeNav from './campaignContributeNav';
 
 // export method
 module.exports = campaignContributeReview;

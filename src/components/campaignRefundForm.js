@@ -10,7 +10,6 @@ function campaignRefundForm(options) {
   const t = options.t;
 
   return `
-
   <div id="view-campaign-refund-form" class="row center-block container" style="margin-top: 80px; margin-bottom: 150px; display: none;">
 
     <div class="row center-block container">

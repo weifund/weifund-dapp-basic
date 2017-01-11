@@ -41,6 +41,8 @@ function openCampaignContribute(options, params, callback) {
     return;
   }
 
+  console.log(parseInt(params.campaignID, 10), campaignContributeIdOfLoadedFocus);
+
   // set campaign id
   campaignIdOfLoadedFocus = false;
   campaignContributeIdOfLoadedFocus = parseInt(params.campaignID, 10);
@@ -71,23 +73,12 @@ function setupRouter(options) {
   // default to `/404` if no path matches
   // router setup
   router = sheetRouter({ default: '/404' }, [
-    /* ['/', function(params) {
-      options.loadAndDrawCampaignsList();
-
-      openView('view-landing');
-    }], */
     ['/', function(params) {
       campaignIdOfLoadedFocus = false;
       campaignContributeIdOfLoadedFocus = false;
       options.loadAndDrawCampaignsList();
 
       openView('view-list');
-    }],
-    ['/start', function(params){
-      openView('view-start-campaign');
-    }],
-    ['/register', function(params){
-      openView('view-register');
     }],
     ['/account', function(params){
       openView('view-account');
@@ -122,7 +113,7 @@ function setupRouter(options) {
       }],
       ['/contribute', function(params) {
         openCampaignContribute(options, params, function(err, result){
-          openSubView('view-campaign-contribute-method');
+          openSubView('view-campaign-contribute-wallet');
         });
       }, [
         ['/method', function(params) {
@@ -134,7 +125,40 @@ function setupRouter(options) {
           openCampaignContribute(options, params, function(err, result){
             openSubView('view-campaign-contribute-wallet');
           });
-        }],
+        },
+        [
+          ['/restore', function(params) {
+            openCampaignContribute(options, params, function(err, result){
+              openSubView('view-campaign-contribute-wallet-restore');
+            });
+          }],
+          ['/entropy', function(params) {
+            openCampaignContribute(options, params, function(err, result){
+              openSubView('view-campaign-contribute-wallet-entropy');
+            });
+          }],
+          ['/confirm', function(params) {
+            openCampaignContribute(options, params, function(err, result){
+              openSubView('view-campaign-contribute-wallet-confirm');
+            });
+          }],
+          ['/password', function(params) {
+            openCampaignContribute(options, params, function(err, result){
+              openSubView('view-campaign-contribute-wallet-password');
+            });
+          }],
+          ['/balance', function(params) {
+            openCampaignContribute(options, params, function(err, result){
+              openSubView('view-campaign-contribute-wallet-balance');
+            });
+          }],
+          ['/download', function(params) {
+            openCampaignContribute(options, params, function(err, result){
+              openSubView('view-campaign-contribute-wallet-download');
+            });
+          }],
+        ]
+        ],
         ['/exchanges', function(params) {
           openCampaignContribute(options, params, function(err, result){
             openSubView('view-campaign-contribute-exchanges');
@@ -169,17 +193,6 @@ function setupRouter(options) {
           openCampaignContribute(options, params, function(err, result){
             openSubView('view-campaign-contribute-receipt');
           });
-        }]
-      ]],
-      ['/payout', function(params) {
-        // draw campaign
-        campaignIdOfLoadedFocus = false;
-        campaignContributeIdOfLoadedFocus = false;
-        options.loadAndDrawCampaignPayout(parseInt(params.campaignID, 10));
-        openView('view-campaign-payout');
-      }, [
-        ['/receipt', function(params) {
-          openView('view-campaign-payout-receipt');
         }]
       ]],
       ['/refund', function(params) {

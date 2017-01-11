@@ -12,16 +12,12 @@ import  { setupIPFSProvider } from './ipfs';
 import { setupRouter, getRouter } from './router';
 
 // handlers draw
-import { drawNavBar, drawFooter, drawStartCampaignView, loadAndDrawCampaign,
-  loadAndDrawCampaignsList, loadAndDrawCampaignContribute,
-  loadAndDrawCampaignPayout, loadAndDrawCampaignRefund, handleConfirmOnPageExit,
+import { drawNavBar, drawFooter, loadAndDrawCampaign,
+  loadAndDrawCampaignsList, loadAndDrawCampaignContribute, loadAndDrawCampaignRefund, handleConfirmOnPageExit,
   loadAndDrawAccount } from './handlers';
 
 // draw navbar
 drawNavBar();
-
-// draw startcampaign page
-drawStartCampaignView();
 
 // setup provider
 // attempt conenction and run system
@@ -44,7 +40,6 @@ function loadApp(loadAppEvent) {
 
   // setup the router
   setupRouter({
-    loadAndDrawCampaignPayout: loadAndDrawCampaignPayout,
     loadAndDrawCampaignContribute: loadAndDrawCampaignContribute,
     loadAndDrawCampaignRefund: loadAndDrawCampaignRefund,
 

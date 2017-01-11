@@ -2,12 +2,9 @@
 const views = [
   'view-campaign-contribute',
   'view-campaign-contribute-receipt',
-  'view-campaign-payout',
   'view-campaign-payout-receipt',
   'view-campaign-refund',
   'view-landing',
-  'view-start-campaign',
-  'view-register',
   'view-list',
   'view-focus',
   'view-receipt',
@@ -25,6 +22,14 @@ const subViews = [
   'view-campaign-refund-form',
   'view-campaign-refund-review',
   'view-campaign-refund-receipt',
+
+  'view-campaign-contribute-wallet',
+  'view-campaign-contribute-wallet-restore',
+  'view-campaign-contribute-wallet-download',
+  'view-campaign-contribute-wallet-entropy',
+  'view-campaign-contribute-wallet-confirm',
+  'view-campaign-contribute-wallet-balance',
+  'view-campaign-contribute-wallet-password',
 
   'view-campaign-contribute-method',
   'view-campaign-contribute-wallet',
