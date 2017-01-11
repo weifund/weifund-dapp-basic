@@ -1,6 +1,3 @@
-// requires
-import QRious from 'qrious';
-
 // utils
 import { log, etherScanAddressUrl, parseSolidityMethodName,
   parseSolidityMethodInterface, etherScanTxHashUrl, oneDay, emptyWeb3Address } from 'weifund-util';
@@ -31,6 +28,7 @@ const campaignRegistry = contracts.CampaignRegistry.instance();
 // handle cmapaign contribution
 // build all input sliders
 import handleCampaignContribution from './handleCampaignContribution';
+import handleGenerateWallet from './handleGenerateWallet';
 import buildAllInputSliders from './drawAllInputSliders';
 
 // export method
@@ -138,13 +136,6 @@ function loadAndDrawCampaignContribute(campaignID, callback) {
       }
     }); */
 
-    // draw qr code
-    const qr = new QRious({
-      element: el('#campaign-contribute-qrcode'),
-      size: 250,
-      value: '0x6e0e6d45820d91356fc73d7ff2bdef353ebfe7e9',
-    });
-
     // initially update review page
     updateCampaignContributeReview();
 
@@ -159,6 +150,8 @@ function loadAndDrawCampaignContribute(campaignID, callback) {
 
     // handleCampaignContribution
     el('#campaign_reviewContributeButton').addEventListener('click', handleCampaignContribution);
+
+    el('#view-campaign-contribute-wallet-entropy a').addEventListener('click', handleGenerateWallet);
 
     /*
 

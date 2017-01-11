@@ -22,7 +22,7 @@ function campaignContributeWallet(options) {
         <div class="col-xs-12 col-sm-6 col-md-8">
           <h2 class="text-break-all">
             <label>Address</label><br />
-            0x6e0e6d45820d91356fc73d7ff2bdef353ebfe7e9
+            <span class="user-address">0x0</span>
           </h2>
 
           <hr />
@@ -36,7 +36,7 @@ function campaignContributeWallet(options) {
           <div class="row">
             <div class="col-sm-6">
               <h4 style="margin-top: 0px;"><b>Balance</b></h4>
-              <h3 style="margin-top: 0px;">0 ether</h3>
+              <h3 style="margin-top: 0px;"><span class="account-balance">0</span> ether</h3>
             </div>
             <div class="col-sm-6"><br />
               <a href="/campaign/${campaignObject.id}/contribute/form" disabled class="btn btn-primary">CONTRIBUTE TO CAMPAIGN</a>
@@ -75,7 +75,7 @@ function campaignContributeWallet(options) {
       <h4>Your seed is:</h4>
 
       <div class="alert alert-warning text-center">
-        <h3 style="margin-top: 0px; margin-bottom: 0px;">maze broom course magnet lady abandon put stove rhythm bag short speed</h3>
+        <h3 class="seed" style="margin-top: 0px; margin-bottom: 0px;">Loading...</h3>
       </div>
 
       <h4>
