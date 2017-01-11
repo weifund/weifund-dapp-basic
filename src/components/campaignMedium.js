@@ -1,3 +1,5 @@
+import yo from 'yo-yo';
+
 import oneDay from 'weifund-util';
 
 // export method
@@ -16,7 +18,7 @@ function campaignMedium(options) {
   }
 
   // return campaign
-  return `<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+  return yo`<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
     <div class="list-campaign-medium">
       <a href="/campaign/${campaignObject.id}">
         <div class="list-campaign-image-wrapper">

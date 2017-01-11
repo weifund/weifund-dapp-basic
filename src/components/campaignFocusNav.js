@@ -1,3 +1,5 @@
+import yo from 'yo-yo';
+
 // export method
 module.exports = campaignFocusNav;
 
@@ -6,7 +8,7 @@ function campaignFocusNav(options) {
   const campaignObject = options.campaignObject;
   const t = options.t;
 
-  return `<hr style="margin-top: 0px;" />
+  return yo`<div><hr style="margin-top: 0px;" />
 
   <div class="container row center-block campaign-focus-nav" style="height: 28px; margin-top: 20px;">
     <div class="col-xs-12 col-sm-8">
@@ -28,5 +30,5 @@ function campaignFocusNav(options) {
     </div>
   </div>
 
-  <hr style="margin-bottom: 60px;" />`;
+  <hr style="margin-bottom: 60px;" /></div>`;
 }

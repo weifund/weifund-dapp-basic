@@ -1,3 +1,5 @@
+import yo from 'yo-yo';
+
 // export method
 module.exports = campaignContributeReceipt;
 
@@ -7,7 +9,7 @@ function campaignContributeReceipt(options){
   const to = options.to;
   const from = options.from;
 
-  return `
+  return yo`<div>
   <div class="row center-block container" style="margin-top: 40px; margin-bottom: 150px;">
     <div class="col-xs-12">
       <h3>Contribution Receipt
@@ -36,11 +38,13 @@ function campaignContributeReceipt(options){
       <br /> <br />
 
       <h4>Block Number</h4>
-      ${options.receipt.blockNumber !== null && options.receipt.blockNumber.toString(10) || 'pending'}
+      ${options.receipt.blockNumber !== null
+        && options.receipt.blockNumber.toString(10) || 'pending'}
 
       <br /> <br />
       <h4>Cumulative Gas Used</h4>
-      ${options.receipt.cumulativeGasUsed !== null && options.receipt.cumulativeGasUsed.toString(10) || 'pending'} wei
+      ${options.receipt.cumulativeGasUsed !== null
+        && options.receipt.cumulativeGasUsed.toString(10) || 'pending'} wei
 
       <br /> <br /> <br />
 
@@ -48,5 +52,5 @@ function campaignContributeReceipt(options){
         Save Receipt
       </a>
     </div>
-  </div>`;
+  </div></div>`;
 }

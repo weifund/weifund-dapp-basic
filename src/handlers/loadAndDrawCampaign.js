@@ -28,7 +28,8 @@ module.exports = loadAndDrawCampaign;
 // draw campaign
 function loadAndDrawCampaign(campaignID, callback) {
   // draw loader
-  el('#view-focus').innerHTML = viewLoader({t: t});
+  el('#view-focus').innerHTML = '';
+  el('#view-focus').appendChild(viewLoader({ t }));
 
   // load campaign fresh to draw
   getCampaigns({
@@ -54,13 +55,14 @@ function loadAndDrawCampaign(campaignID, callback) {
     }
 
     // draw campaign focus
-    el('#view-focus').innerHTML = campaignFocusView({
+    el('#view-focus').innerHTML = '';
+    el('#view-focus').appendChild(campaignFocusView({
       campaignObject: campaignData,
       reload,
       web3,
       getLocale,
       t,
-    });
+    }));
 
     // draw qr code
     const qr = new QRious({

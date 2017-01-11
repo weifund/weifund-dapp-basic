@@ -1,3 +1,4 @@
+import yo from 'yo-yo';
 import campaignContributeNav from './campaignContributeNav';
 
 // export method
@@ -7,7 +8,8 @@ module.exports = campaignContributeReview;
 function campaignContributeReview(options) {
   const t = options.t;
 
-  return `<div id="view-campaign-contribute-review" class="center-block container" style="margin-top: 40px; margin-bottom: 150px;">
+  return yo`<div id="view-campaign-contribute-review"
+    class="center-block container" style="display: none; margin-top: 40px; margin-bottom: 150px;">
     <div class="row">
       <div class="col-xs-12">
         <h3>Review Contribution
@@ -22,17 +24,22 @@ function campaignContributeReview(options) {
         <br />
       </div>
     </div>
+
     <div class="row">
       <div class="col-xs-12 col-sm-6">
-        <div id="campaign_contributeReviewInputs">
-        </div>
-
         <h4>Campaign Contribution</h4>
-        <h4><b><span id="campaign_contributeReview_contributeAmount"><span> Ether</b> <small>(ETH)</small></h4>
+        <h4>
+          <b><span id="campaign_contributeReview_contributeAmount"><span> Ether</b>
+          <small>(ETH)</small>
+        </h4>
+
         <br />
 
         <h4>WeiFund Contribution</h4>
-        <h4><b><span id="campaign_contributeReview_weifundContributeAmount"><span> Ether</b> <small>(ETH)</small></h4>
+        <h4>
+          <b><span id="campaign_contributeReview_weifundContributeAmount"><span> Ether</b>
+          <small>(ETH)</small>
+        </h4>
         <small>Note, this will create a small second transaction for the amount specified.</small>
 
       </div>
@@ -47,7 +54,9 @@ function campaignContributeReview(options) {
 
         <h4>Campaign Contract</h4>
         <h4><b>${options.campaignObject.addr}</b> </h4>
-        <small><i>Balance: <b>${options.web3.fromWei(options.campaignObject.balance, 'ether').toString(10)}</b> Ether (ETH)</i></small>
+        <small><i>Balance: <b>${
+          options.web3.fromWei(options.campaignObject.balance, 'ether').toString(10)
+        }</b> Ether (ETH)</i></small>
       </div>
     </div>
     <div class="row">
@@ -59,12 +68,17 @@ function campaignContributeReview(options) {
         <hr />
 
         <h4>Contribution Total</h4>
-        <h4><b id="campaign_contributeReview_totalContributeAmount">0</b> Ether <small>(ETH)</small></h4>
+        <h4>
+          <b id="campaign_contributeReview_totalContributeAmount">0</b> Ether
+          <small>(ETH)</small>
+        </h4>
 
         <br />
         <br />
 
-        <button id="campaign_reviewContributeButton" class="btn btn-primary btn-lg">Make Contribution</button>
+        <button id="campaign_reviewContributeButton" class="btn btn-primary btn-lg">
+          Make Contribution
+        </button>
 
         <br />
         <br />

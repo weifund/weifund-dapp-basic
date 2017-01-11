@@ -1,3 +1,4 @@
+import yo from 'yo-yo';
 import { oneDay } from 'weifund-util';
 
 // export highlight medium
@@ -15,7 +16,7 @@ function campaignHighlightMedium(options) {
     return ``;
   }
 
-  return `
+  return yo`<div>
   <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 list-feature-column">
     <div class="list-campaign-feature">
       <div class="row">
@@ -76,5 +77,5 @@ text-overflow: ellipsis;">
           </div>
         </div>
     </div>
-  </div>`;
+  </div></div>`;
 }

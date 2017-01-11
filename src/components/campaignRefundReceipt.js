@@ -1,3 +1,5 @@
+import yo from 'yo-yo';
+
 // export method
 module.exports = campaignRefundReceipt;
 
@@ -5,8 +7,8 @@ module.exports = campaignRefundReceipt;
 function campaignRefundReceipt(options){
   const t = options.t;
 
-  return `
-  <div class="row center-block container" style="margin-top: 40px; margin-bottom: 150px;">
+  return yo`<div class="row center-block container"
+    style="margin-top: 40px; margin-bottom: 150px;">
     <div class="col-xs-12">
       <h3>Refund Receipt
         <a href="javascript:window.print()">

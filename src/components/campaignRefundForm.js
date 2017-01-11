@@ -1,7 +1,12 @@
+import yo from 'yo-yo';
 import methodABIInputsForm from './methodABIInputsForm';
 
 // export method
 module.exports = campaignRefundForm;
+
+/* <div id="campaignContribution_inputs">
+  ${methodABIInputsForm({campaignObject: campaignObject, methodType: 'refund'})}
+</div> */
 
 // main export
 function campaignRefundForm(options) {
@@ -9,7 +14,7 @@ function campaignRefundForm(options) {
   const defaultAccount = options.defaultAccount;
   const t = options.t;
 
-  return `
+  return yo`
   <div id="view-campaign-refund-form" class="row center-block container" style="margin-top: 80px; margin-bottom: 150px; display: none;">
 
     <div class="row center-block container">
@@ -24,29 +29,8 @@ function campaignRefundForm(options) {
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-8 no-border-xs no-border-sm" style="border-right: 3px solid #E1E1E1; padding-right: 50px;">
-      <!--
-      <h3>Contribution Amount</h3>
-      <h4>Please select the amount you want to contribute to this campaign.</h4>
-      <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-8">
-          <div class="input-slider input-slider-lg" data-input-id="campaign_contributeAmount">
-            <div class="input-slider-rail">
-              <div class="input-slider-rail-highlight"></div>
-              <div class="input-slider-bar"></div>
-            </div>
-          </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-4">
-          <div class="input-group">
-            <input type="text" id="campaign_contributeAmount" value="1.5" class="form-control input-lg" placeholder="i.e. 1" aria-describedby="basic-addon2" />
-            <span class="input-group-addon" id="basic-addon2">ether</span>
-          </div>
-        </div>
-      </div> -->
 
-      <div id="campaignContribution_inputs">
-        ${methodABIInputsForm({campaignObject: campaignObject, methodType: 'refund'})}
-      </div>
+
 
       <br />
 

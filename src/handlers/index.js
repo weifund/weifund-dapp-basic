@@ -21,11 +21,11 @@ function buildLocaleToggles() {
     }
 
     // add supported locales
-    inputToggleElement.innerHTML = `
+    inputToggleElement.appendChild(yo`
       <option>Locale</option>
       <option value="en">en</option>
       <option value="zh">zh</option>
-    `;
+    `);
 
     // input is now listening
     inputToggleElement.dataset.listening = true;
@@ -45,12 +45,14 @@ function buildLocaleToggles() {
 }
 
 function drawFooter() {
-  document.body.querySelector('#footer-wrapper').innerHTML = footer({t: t});
+  el('#footer-wrapper').innerHTML = '';
+  el('#footer-wrapper').appendChild(footer({ t }));
   buildLocaleToggles();
 }
 
 function drawNavBar() {
-  document.body.querySelector('#nav-wrapper').innerHTML = navBar({t: t});
+  el('#nav-wrapper').innerHTML = '';
+  el('#nav-wrapper').appendChild(navBar({ t }));
   buildAllNavToggles();
   buildLocaleToggles();
 }

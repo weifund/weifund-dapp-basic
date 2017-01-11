@@ -4,8 +4,8 @@ import { log, etherScanAddressUrl, etherScanTxHashUrl, oneDay } from 'weifund-ut
 // document helper
 import { el } from '../document';
 
-// require components
-import components from '../components';
+// require compocomnents
+import { campaignContributeReceipt } from '../components';
 
 // environment
 import { setDefaultAccount, getDefaultAccount, getCampaign, setCampaign,
@@ -39,8 +39,8 @@ function handleCampaignContribution(event){
   const campaignContractFactory = web3.eth.contract(selectedCampaign.abi);
   const campaignContractInstance = campaignContractFactory.at(selectedCampaign.addr);
   const contributeMethodName = selectedCampaign.contributeMethodABIObject.name;
-  const contributeMethodInputParams = selectedCampaign.contributeMethodABIObject.inputs;
-  const numContributeMethodInputParams = selectedCampaign.contributeMethodABIObject.inputs.length;
+  const contributeMethodInputParams = selectedCampaign.contributeMethodABIObject.inputs || [];
+  const numContributeMethodInputParams = contributeMethodInputParams.length;
   const contributionIntervalTimeout = 180000; // 15 seconds
   const contributionReceiptIntervalLength = 1000;
   var contributionIntervalTimer = 0;
@@ -88,7 +88,10 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
     // awaiting tx approval message
     resetReviewResponses();
     el('#campaign_contribute_info_response').style.display = '';
-    el('#campaign_contribute_info_response').innerHTML = `Your contribution transaction is awaiting approval...`;
+    el('#campaign_contribute_info_response').innerHTML = '';
+    el('#campaign_contribute_info_response').appendChild(yo`<span>
+      Your contribution transaction is awaiting approval...
+    </span>`);
 
     // build contribute params
     contributionParams.push(Object.assign({value: contributeValueWei}, txObject()));
@@ -96,7 +99,11 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
       if (contributeError) {
         resetReviewResponses();
         el('#campaign_contribute_warning_response').style.display = '';
-        el('#campaign_contribute_warning_response').innerHTML = `There was an error while sending your contribution transaction: ${String(JSON.stringify(contributeError, null, 2))}`;
+        el('#campaign_contribute_warning_response').innerHTML = '';
+        el('#campaign_contribute_warning_response').appendChild(yo`<span>
+          There was an error while sending your contribution transaction:
+          ${String(JSON.stringify(contributeError, null, 2))}
+        </span>`);
         return;
       }
 
@@ -104,12 +111,17 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
       if (contributeResultTxHash) {
         resetReviewResponses();
         el('#campaign_contribute_info_response').style.display = '';
-        el('#campaign_contribute_info_response').innerHTML = `
+        el('#campaign_contribute_info_response').innerHTML = '';
+        el('#campaign_contribute_info_response').appendChild(yo`<span>
         Your contribution transaction is processing with transaction hash:
 
         ${contributeResultTxHash}
 
-        -- checkout on <a target="_blank" href="${etherScanTxHashUrl(contributeResultTxHash, getNetwork())}">etherscan</a>`;
+        -- checkout on
+          <a target="_blank" href=${etherScanTxHashUrl(contributeResultTxHash, getNetwork())}>
+            etherscan
+          </a>
+        </span>`);
       }
 
       // check transaction receipt
@@ -118,22 +130,39 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
           if (receiptError) {
             resetReviewResponses();
             el('#campaign_contribute_warning_response').style.display = '';
-            el('#campaign_contribute_warning_response').innerHTML = `There was an error while getting your transaction receipt: ${String(JSON.stringify(receiptError, null, 2))} with transaction hash: ${contributeResultTxHash}`;
+            el('#campaign_contribute_warning_response').innerHTML = '';
+            el('#campaign_contribute_warning_response').appendChild(yo`<span>
+              There was an error while getting your transaction receipt:
+                ${String(JSON.stringify(receiptError, null, 2))}
+                with transaction hash:
+                ${contributeResultTxHash}
+            </span>`);
 
             // clear receipt interval
             clearInterval(receiptInterval);
           }
-
-          console.log('Transaction Receipt', contributeResultTxHash, receiptResult, receiptError);
 
           // display transaction receipt
           if (receiptResult) {
             if (receiptResult.blockNumber !== null) {
               resetReviewResponses();
               el('#campaign_contribute_info_response').style.display = '';
-              el('#campaign_contribute_info_response').innerHTML = `Your transaction was processed: ${JSON.stringify(receiptResult, null, 2)} with transaction hash: ${contributeResultTxHash}`;
+              el('#campaign_contribute_info_response').innerHTML = '';
+              el('#campaign_contribute_info_response').appendChild(`<span>
+                Your transaction was processed:
+                ${JSON.stringify(receiptResult, null, 2)}
+                with transaction hash:
+                ${contributeResultTxHash}
+              </span>`);
 
-              el('#view-campaign-contribute-receipt').innerHTML = components.campaignContributeReceipt({receipt: receiptResult, from: txObject().from, to: selectedCampaign.addr, campaignObject: selectedCampaign, getLocale: getLocale, web3: web3});
+              el('#view-campaign-contribute-receipt').innerHTML = '';
+              el('#view-campaign-contribute-receipt').appendChild(campaignContributeReceipt({
+                receipt: receiptResult,
+                from: txObject().from,
+                to: selectedCampaign.addr,
+                campaignObject: selectedCampaign,
+                getLocale, web3,
+              }));
 
               // clear receipt interval
               clearInterval(receiptInterval);
@@ -151,7 +180,13 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
         if (contributionIntervalTimer >= contributionIntervalTimeout) {
           resetReviewResponses();
           el('#campaign_contribute_warning_response').style.display = '';
-          el('#campaign_contribute_warning_response').innerHTML = `Contribution transaction checking timed out with transaction hash: ${contributeResultTxHash}. Your contribution either did not process or is taking a very long time to mine.. Receipt interval polling has stopped.`;
+          el('#campaign_contribute_warning_response').innerHTML = '';
+          el('#campaign_contribute_warning_response').appendChild(yo`<span>
+            Contribution transaction checking timed out with transaction hash:
+            ${contributeResultTxHash}.
+            Your contribution either did not process or is taking a very long time to mine..
+            Receipt interval polling has stopped.
+          </span>`);
 
           // clear receipt interval
           clearInterval(receiptInterval);
