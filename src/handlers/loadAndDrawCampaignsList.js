@@ -91,7 +91,7 @@ function loadAndDrawCampaignsList() {
 
       // set campaign selector
       // array (i.e. array of campaignIDs)
-      selector: [1],
+      selector: [0],
     }, function(loadCampaignsError, loadCampaignsResult){
 
       // handle errors

@@ -27,7 +27,7 @@ function campaignFocusDetailsView(options) {
           <br />
 
           <h4>Amount Raised</h4>
-          ${web3.fromWei(campaignObject.amountRaised, 'ether').toString(10)} ether (ETH)
+          ${web3.fromWei(campaignObject.amountRaised, 'ether').round(4).toString(10)} ether (ETH)
 
           <br />
           <br />
@@ -43,15 +43,15 @@ function campaignFocusDetailsView(options) {
           <br />
 
           <h4>Expiry</h4>
-          ${campaignObject.expiry.minus(campaignObject.blockNumber).dividedBy(17).floor().toString(10)} in seconds
+          approx. ${campaignObject.approximateExpiryDate.toISOString()}
           <br />
-          <small>current. ${campaignObject.blockNumber.toString(10)} unix. ${campaignObject.expiry.toString(10)}</small>
+          <small>current. block ${campaignObject.blockNumber.toString(10)} exp. block ${campaignObject.expiry.toString(10)}</small>
 
           <br />
           <br />
 
           <h4>Current Contract Balance</h4>
-          ${web3.fromWei(campaignObject.balance, 'ether').toString(10)} ether (ETH)
+          ${web3.fromWei(campaignObject.balance, 'ether').round(4).toString(10)} ether (ETH)
         </div>
       </div>
 

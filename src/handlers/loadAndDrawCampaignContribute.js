@@ -32,6 +32,7 @@ import handleGenerateWallet from './handleGenerateWallet';
 import handleRestoreSeed from './handleRestoreSeed';
 import handleVerifySeed from './handleVerifySeed';
 import buildAllInputSliders from './drawAllInputSliders';
+import handleConfirmOnPageExit from './handleConfirmOnPageExit';
 
 // export method
 module.exports = loadAndDrawCampaignContribute;

@@ -26,7 +26,12 @@ window.addEventListener('load', loadApp);
 // load application
 function loadApp(loadAppEvent) {
   // window warnign message
-  // window.onunload = window.onbeforeunload = handleConfirmOnPageExit;
+  window.onunload = window.onbeforeunload = handleConfirmOnPageExit;
+
+  // fix mac focus
+  if (navigator.userAgent.toLowerCase().indexOf('mac') !== -1) {
+    document.body.style.zoom = '0.8';
+  }
 
   // setup the web3 provider
   if (loadAppEvent.bypassWeb3Provider !== true) {

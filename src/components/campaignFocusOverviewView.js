@@ -83,7 +83,7 @@ const campaignFocusOverviewView = function(options) {
           <br /><br />
 
           <h4>Expires</h4>
-          <span>${(new Date(campaignObject.expiry * 1000)).toString()}</span>
+          <span>${campaignObject.approximateExpiryDate.toISOString()}</span>
 
           <br /><br />
 

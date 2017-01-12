@@ -9,10 +9,10 @@ function setupWeb3Provider() {
   // window provider support (metamask)
   // set provider later
   if (window.hasOwnProperty('web3') && typeof window.web3.currentProvider !== 'undefined') {
-    web3.setProvider(window.web3.currentProvider);
+    // web3.setProvider(window.web3.currentProvider);
   } else {
     // set default provider to local 8545
-    web3.setProvider(new Web3.providers.HttpProvider('https://ropsten.infura.io/'));
+    // web3.setProvider(new Web3.providers.HttpProvider('https://ropsten.infura.io/'));
   }
 }
 

@@ -83,8 +83,18 @@ function setupRouter(options) {
     ['/account', function(params){
       openView('view-account');
 
-      options.loadAndDrawAccount();
-    }],
+      options.loadAndDrawAccount(() => {
+        openSubView('view-account-restore');
+      });
+    }, [
+      ['/panel', function(params) {
+        openView('view-account');
+
+        options.loadAndDrawAccount(() => {
+          openSubView('view-account-panel');
+        });
+      }],
+    ]],
     ['/campaign/:campaignID', function(params) {
       // draw campaign
       openCampaign(options, params, function(e, r){

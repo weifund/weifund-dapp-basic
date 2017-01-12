@@ -57,10 +57,10 @@ text-overflow: ellipsis;">
                 <h4>${campaignObject.progress}%</h4>
               </div>
               <div class="col-xs-4">
-                <h4>${web3.fromWei(campaignObject.amountRaised, 'ether')} ETH</h4>
+                <h4>${web3.fromWei(campaignObject.amountRaised, 'ether').round(4).toString(10)} ETH</h4>
               </div>
               <div class="col-xs-4">
-                <h4>${web3.fromWei(campaignObject.fundingGoal, 'ether')} ETH</h4>
+                <h4>${web3.fromWei(campaignObject.fundingGoal, 'ether').round(4).toString(10)} ETH</h4>
               </div>
             </div>
             <div class="row">

@@ -19,6 +19,9 @@ const subViews = [
   'view-campaign-contracts',
   'view-campaign-qr',
 
+  'view-account-panel',
+  'view-account-restore',
+
   'view-campaign-refund-form',
   'view-campaign-refund-review',
   'view-campaign-refund-receipt',

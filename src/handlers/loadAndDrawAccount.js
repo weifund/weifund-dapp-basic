@@ -16,12 +16,12 @@ import { setDefaultAccount, getDefaultAccount, getCampaign, setCampaign,
   getNetwork, getLocale, getContractEnvironment, txObject } from '../environment';
 
 // components
-import { viewLoader } from '../components';
+import { viewLoader, accountView } from '../components';
 
 // web3
 import { web3 } from '../web3';
 import { ipfs } from '../ipfs';
-import { refreshPageButtons } from '../router';
+import { refreshPageButtons, getRouter } from '../router';
 import { t } from '../i18n';
 
 // Contracts
@@ -32,12 +32,15 @@ const IssuedToken = contracts.IssuedToken.factory;
 // export module
 module.exports = loadAndDrawAccount;
 
-// draw account page
-function loadAndDrawAccount(callback) {
-  // draw loader
-  el('#view-focus').innerHTML = '';
-  el('#view-focus').appendChild(viewLoader({ t }));
+// load wallet
+function loadWallet() {
+  // handle wallet seed
+  const walletSeed = el('#account-wallet-seed').value;
 
+  // route to panel page
+  getRouter()('/account/panel');
+
+  // get accounts
   web3.eth.getAccounts((err, accounts) => {
     if (!accounts) {
       accounts = ['0xc5b14f77554e4d6f1060b2d95f26a31191bd46c9'];
@@ -46,14 +49,17 @@ function loadAndDrawAccount(callback) {
     el('#accountAddress').innerHTML = '';
     el('#accountAddress').appendChild(yo`<span>${accounts[0]}</span>`);
 
-    web3.eth.getBalance(accounts[0], (err, balance) => {
+    web3.eth.getBalance(accounts[0], (err, accountBalance) => {
+      const balance = accountBalance || '0';
       el('#accountBalanceEther').innerHTML = '';
       el('#accountBalanceWei').innerHTML = '';
-      el('#accountBalanceEther').appendChild(yo`<span>${web3.fromWei(balance, 'ether')}</span>`);
-      el('#accountBalanceWei').appendChild(yo`<span>${web3.fromWei(balance, 'wei')}</span>`);
+      el('#accountBalanceEther').appendChild(yo`<span>${web3.fromWei(balance, 'ether').toString(10)}</span>`);
+      el('#accountBalanceWei').appendChild(yo`<span>${web3.fromWei(balance, 'wei').toString(10)}</span>`);
     });
 
     loadToken('0x1c79ee86aa0720eb7a5a77d0cb715c489850f421');
+
+    refreshPageButtons();
 
     function loadToken(addr) {
       const token = IssuedToken.at(addr);
@@ -87,7 +93,7 @@ function loadAndDrawAccount(callback) {
 
                     <div class="row">
                       <div class="col-sm-6 text-left">
-                        <h4>${accountTokenBalance.toString(10)} <small>${symbol}</small><h4>
+                        <h4>${accountTokenBalance.toString(10)} <small>${symbol}</small></h4>
                       </div>
                       <div class="col-sm-6 text-right">
                         <button id="openTransferBriad" class="btn btn-primary">Transfer</button>
@@ -102,15 +108,17 @@ function loadAndDrawAccount(callback) {
                       </div>
 
                       <div class="col-sm-5">
-                        <input type="text" id="braidDebitAccount" placeholder="address" class="form-control"  />
+                        <input type="text" id="braidDebitAccount" placeholder="address"
+                          class="form-control"  />
                       </div>
 
                       <div class="col-sm-4 col-md-4 col-lg-4">
-                        <input type="number" id="braidDebitAmount" placeholder="token amount" class="form-control" />
+                        <input type="number" id="braidDebitAmount" placeholder="token amount"
+                          class="form-control" />
                       </div>
 
                       <div class="col-sm-3 text-right">
-                        <button id="debitBriad" class="btn btn-primary">Debit Amount</butto>
+                        <button id="debitBriad" class="btn btn-primary">Debit Amount</button>
                       </div>
                     </div>
 
@@ -120,15 +128,17 @@ function loadAndDrawAccount(callback) {
                       </div>
 
                       <div class="col-sm-5">
-                        <input type="text" id="braidTransferAccount" placeholder="address" class="form-control"  />
+                        <input type="text" id="braidTransferAccount" placeholder="address"
+                          class="form-control"  />
                       </div>
 
                       <div class="col-sm-4 col-md-4 col-lg-4">
-                        <input type="number" id="braidTransferAmount" placeholder="token amount" class="form-control" />
+                        <input type="number" id="braidTransferAmount" placeholder="token amount"
+                          class="form-control" />
                       </div>
 
                       <div class="col-sm-3 text-right">
-                        <button id="transferBriad" class="btn btn-primary">Transfer Amount</butto>
+                        <button id="transferBriad" class="btn btn-primary">Transfer Amount</button>
                       </div>
                     </div>
                   </div>
@@ -188,24 +198,19 @@ function loadAndDrawAccount(callback) {
       });
     }
   });
+}
 
-  var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(store.get('lightwallet'));
-  var dlAnchorElem = document.getElementById('downloadLightWallet');
-  dlAnchorElem.setAttribute("href", dataStr);
-  dlAnchorElem.setAttribute("download", "weifund-eth-lightwallet.json");
+// draw account page
+function loadAndDrawAccount(callback) {
+  // draw loader
+  el('#view-focus').innerHTML = '';
+  el('#view-focus').appendChild(viewLoader({ t }));
 
-  // the seed is stored encrypted by a user-defined password
-  el('#generateLightWallet').onclick = () => {
-    var password = prompt('Enter password for encryption', 'password');
+  el('#view-account').innerHTML = '';
+  el('#view-account').appendChild(accountView({}));
 
-    keyStore.createVault({
-      password: password,
-      // seedPhrase: seedPhrase, // Optionally provide a 12-word seed phrase
-      // salt: fixture.salt,     // Optionally provide a salt.
-                                 // A unique salt will be generated otherwise.
-      // hdPathString: hdPath    // Optional custom HD Path String
-    }, function (err, ks) {
-      store.set('lightwallet', ks.serialize());
-    });
-  };
+  el('#account-wallet-restore').addEventListener('click', loadWallet);
+  el('#account-wallet-upload').addEventListener('click', loadWallet);
+
+  callback(null, true);
 }
