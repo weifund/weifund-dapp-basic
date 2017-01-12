@@ -160,7 +160,7 @@ function campaignContributeWallet(options) {
 
       <br />
 
-      <a disabled href="/campaign/${campaignObject.id}/contribute/wallet/download" class="confirm btn btn-primary">
+      <a disabled href="/campaign/${campaignObject.id}/contribute/wallet/balance" class="confirm btn btn-primary">
         CONFIRM SEED PHRASE
       </a>
 
