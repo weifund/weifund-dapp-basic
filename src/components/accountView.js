@@ -5,7 +5,32 @@ module.exports = accountView;
 
 // main export
 function accountView(options) {
-  return yo`<div class="container-fluid" style="padding-left: 3%; padding-right: 3%;">
+  return yo`<div>
+    <div id="view-account-restore" class="row center-block container"
+      style=" display: none; margin-top: 8%;">
+      <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 text-center">
+        <h2>USING LIGHTWALLET</h2>
+
+        <br />
+        <br />
+
+        <p>Please restore your wallet in order to manage your account.</p>
+
+        <br />
+
+        <input type="text" class="form-control" placeholder="WALLET SEED PHRASE" />
+
+        <br /><br />
+
+        <a href="/account/panel" class="btn btn-primary">RESTORE FROM SEED</a>
+          or
+        <a href="/account/panel" class="btn btn-primary">UPLOAD WALLET FILE</a>
+      </div>
+    </div>
+
+  <div id="view-account-panel" class="container-fluid"
+    style="padding-left: 3%; padding-right: 3%; display: none;">
+
     <div class="row">
       <div class="col-sm-12 col-md-6" style="padding-right: 40px;">
         <h3>Token Holdings</h3>
@@ -101,5 +126,5 @@ function accountView(options) {
     </div>
 
   </div>
-  `;
+</div>`;
 }

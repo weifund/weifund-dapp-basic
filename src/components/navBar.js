@@ -12,13 +12,15 @@ function navBar(options) {
     <div class="col-xs-6 col-sm-12 col-md-4 col-lg-4 text-center">
       <a href="/"><img id="nav-logo" src="/styles/weifund-logo-small.png"></a>
     </div>
-    <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 nav-right text-left-xs text-left-sm hidden-xs hidden-sm">
-      <a href="/account" style="padding-right: 15px;">${t("navBar.account")} </a>
+    <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 nav-right text-left-xs
+      text-left-sm hidden-xs hidden-sm">
+      <a href="/account" style="padding-right: 30px;">${t("navBar.account")} </a>
       <a href="https://weifund.readthedocs.org/" target="_blank"> ${t("navBar.docs")}</a>
     </div>
 
     <div class="col-xs-6 visible-xs text-right hidden-lg">
-      <button type="button" class="navbar-toggle visible-sm visible-xs" style="padding: 0px;" data-target-id="nav-mobile-toggle">
+      <button type="button" class="navbar-toggle visible-sm visible-xs"
+        style="padding: 0px;" data-target-id="nav-mobile-toggle">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>

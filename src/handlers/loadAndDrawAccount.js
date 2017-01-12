@@ -59,6 +59,10 @@ function loadAndDrawAccount(callback) {
 
     loadToken('0x1c79ee86aa0720eb7a5a77d0cb715c489850f421');
 
+    callback(null, true);
+
+    refreshPageButtons();
+
     function loadToken(addr) {
       const token = IssuedToken.at(addr);
 
