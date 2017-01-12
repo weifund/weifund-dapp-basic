@@ -1,3 +1,5 @@
+import yo from 'yo-yo';
+
 // requires
 import { keyStore } from 'eth-lightwallet';
 import store from 'store';
@@ -33,18 +35,22 @@ module.exports = loadAndDrawAccount;
 // draw account page
 function loadAndDrawAccount(callback) {
   // draw loader
-  el('#view-focus').innerHTML = viewLoader({t: t});
+  el('#view-focus').innerHTML = '';
+  el('#view-focus').appendChild(viewLoader({ t }));
 
   web3.eth.getAccounts((err, accounts) => {
     if (!accounts) {
       accounts = ['0xc5b14f77554e4d6f1060b2d95f26a31191bd46c9'];
     }
 
-    el('#accountAddress').innerHTML = accounts[0];
+    el('#accountAddress').innerHTML = '';
+    el('#accountAddress').appendChild(yo`<span>${accounts[0]}</span>`);
 
     web3.eth.getBalance(accounts[0], (err, balance) => {
-      el('#accountBalanceEther').innerHTML = web3.fromWei(balance, 'ether');
-      el('#accountBalanceWei').innerHTML = web3.fromWei(balance, 'wei');
+      el('#accountBalanceEther').innerHTML = '';
+      el('#accountBalanceWei').innerHTML = '';
+      el('#accountBalanceEther').appendChild(yo`<span>${web3.fromWei(balance, 'ether')}</span>`);
+      el('#accountBalanceWei').appendChild(yo`<span>${web3.fromWei(balance, 'wei')}</span>`);
     });
 
     loadToken('0x1c79ee86aa0720eb7a5a77d0cb715c489850f421');
@@ -58,7 +64,7 @@ function loadAndDrawAccount(callback) {
             token.totalSupply((err, totalSupply) => {
               token.symbol((err, symbol) => {
                 token.version((err, version) => {
-                  const tokenHTML = `<div class="row">
+                  el('#tokens').appendChild(yo`<div class="row">
                   <div class="col-sm-12">
                     <h3>${name} <small>(${symbol})</small></h3>
                     <div class="row">
@@ -126,8 +132,7 @@ function loadAndDrawAccount(callback) {
                       </div>
                     </div>
                   </div>
-                  </div>`;
-                  el('#tokens').innerHTML = tokenHTML;
+                  </div>`);
 
                   var open = 'none';
 

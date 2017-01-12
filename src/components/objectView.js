@@ -1,3 +1,4 @@
+import yo from 'yo-yo';
 import { isBigNumber } from 'weifund-util';
 
 // helper methods
@@ -16,7 +17,7 @@ module.exports = objectView;
 
 // intake object, return html
 function objectView(options) {
-  var returnedHTML = ``;
+  var returnedElement = yo`<div></div>`;
   const object = options.object;
   const layout = options.layout;
   const web3 = options.web3;
@@ -66,7 +67,7 @@ function objectView(options) {
       }
 
       // handle just standard type
-      valueOutput = `<pre style="overflow: scroll;">${JSON.stringify(valueInput, null, 2)}</pre>`
+      valueOutput = yo`<pre style="overflow: scroll;">${JSON.stringify(valueInput, null, 2)}</pre>`
     }
 
     // handle special type ether
@@ -75,14 +76,15 @@ function objectView(options) {
     }
 
     // add to html return
-    returnedHTML += `
+    returnedElement.appendChild(yo`<div>
       <br />
       <h4>${layoutObject.name && layoutObject.name || toCapitalizedWords(objectKey)}</h4>
       <small>${layoutObject.description}</small>
       <h5>${valueOutput}</h5>
-    `;
+    </div>
+    `);
   });
 
   // return html
-  return returnedHTML;
+  return returnedElement;
 }

@@ -116,11 +116,6 @@ function setupRouter(options) {
           openSubView('view-campaign-contribute-wallet');
         });
       }, [
-        ['/method', function(params) {
-          openCampaignContribute(options, params, function(err, result){
-            openSubView('view-campaign-contribute-method');
-          });
-        }],
         ['/wallet', function(params) {
           openCampaignContribute(options, params, function(err, result){
             openSubView('view-campaign-contribute-wallet');
@@ -159,26 +154,6 @@ function setupRouter(options) {
           }],
         ]
         ],
-        ['/exchanges', function(params) {
-          openCampaignContribute(options, params, function(err, result){
-            openSubView('view-campaign-contribute-exchanges');
-          });
-        }],
-        ['/cryptocurrency', function(params) {
-          openCampaignContribute(options, params, function(err, result){
-            openSubView('view-campaign-contribute-cryptocurrency-method');
-          });
-        }],
-        ['/ether', function(params) {
-          openCampaignContribute(options, params, function(err, result){
-            openSubView('view-campaign-contribute-ether-method');
-          });
-        }],
-        ['/ether-qrcode', function(params) {
-          openCampaignContribute(options, params, function(err, result){
-            openSubView('view-campaign-contribute-ether-qrcode');
-          });
-        }],
         ['/form', function(params) {
           openCampaignContribute(options, params, function(err, result){
             openSubView('view-campaign-contribute-form');

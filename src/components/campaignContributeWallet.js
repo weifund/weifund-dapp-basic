@@ -1,14 +1,20 @@
+import yo from 'yo-yo';
+
+// get nav
 import campaignContributeNav from './campaignContributeNav';
 
+// export method
 module.exports = campaignContributeWallet;
 
+// main export
 function campaignContributeWallet(options) {
   const t = options.t;
   const campaignObject = options.campaignObject;
   const defaultAccount = options.defaultAccount;
 
-  return `
-    <div id="view-campaign-contribute-wallet-balance" class="row center-block container" style=" display: none; margin-top: 40px;">
+  return yo`<div>
+    <div id="view-campaign-contribute-wallet-balance" class="row center-block container"
+      style=" display: none; margin-top: 40px;">
 
       <h2>USING LIGHTWALLET</h2>
 
@@ -17,7 +23,8 @@ function campaignContributeWallet(options) {
 
       <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-4">
-          <canvas id="campaign-contribute-qrcode" style="border: 3px solid #333; padding: 20px;"></canvas>
+          <canvas id="campaign-contribute-qrcode" style="border: 3px solid #333; padding: 20px;">
+          </canvas>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-8">
           <h2 class="text-break-all">
@@ -39,16 +46,21 @@ function campaignContributeWallet(options) {
               <h3 style="margin-top: 0px;"><span class="account-balance">0</span> ether</h3>
             </div>
             <div class="col-sm-6"><br />
-              <a href="/campaign/${campaignObject.id}/contribute/form" disabled class="btn btn-primary">CONTRIBUTE TO CAMPAIGN</a>
+              <a href="/campaign/${campaignObject.id}/contribute/form" disabled
+                class="btn btn-primary">CONTRIBUTE TO CAMPAIGN</a>
             </div>
           </div>
 
         </div>
       </div>
-      ${campaignContributeNav({backURL: `/campaign/${campaignObject.id}/contribute/wallet`, showNextButton: false})}
+      ${campaignContributeNav({
+        backURL: `/campaign/${campaignObject.id}/contribute/wallet`,
+        showNextButton: false,
+      })}
     </div>
 
-    <div id="view-campaign-contribute-wallet-download" class="row center-block container" style=" display: none; margin-top: 40px;">
+    <div id="view-campaign-contribute-wallet-download" class="row center-block container"
+      style=" display: none; margin-top: 40px;">
 
       <h2>USING LIGHTWALLET</h2>
 
@@ -59,13 +71,18 @@ function campaignContributeWallet(options) {
 
       <br />
 
-      <a href="/campaign/${campaignObject.id}/contribute/wallet/balance" class="btn btn-primary">DOWNLOAD ENCRYPTED WALLET</a>
+      <a href="/campaign/${campaignObject.id}/contribute/wallet/balance" class="btn btn-primary">
+        DOWNLOAD ENCRYPTED WALLET
+      </a>
 
-      <a href="/campaign/${campaignObject.id}/contribute/wallet/balance" class="btn btn-primary">NO, THANKS</a>
+      <a href="/campaign/${campaignObject.id}/contribute/wallet/balance" class="btn btn-primary">
+        NO, THANKS
+      </a>
 
     </div>
 
-    <div id="view-campaign-contribute-wallet-password" class="row center-block container" style=" display: none; margin-top: 40px;">
+    <div id="view-campaign-contribute-wallet-password" class="row center-block container"
+      style=" display: none; margin-top: 40px;">
 
       <h2>USING LIGHTWALLET</h2>
 
@@ -103,12 +120,18 @@ function campaignContributeWallet(options) {
 
       <br /><br />
 
-      <a href="/campaign/${campaignObject.id}/contribute/wallet/confirm" class="btn btn-primary">CREATE WALLET</a>
+      <a href="/campaign/${campaignObject.id}/contribute/wallet/confirm" class="btn btn-primary">
+        CREATE WALLET
+      </a>
 
-      ${campaignContributeNav({backURL: `/campaign/${campaignObject.id}/contribute/wallet`, showNextButton: false})}
+      ${campaignContributeNav({
+        backURL: `/campaign/${campaignObject.id}/contribute/wallet`,
+        showNextButton: false,
+      })}
     </div>
 
-    <div id="view-campaign-contribute-wallet-entropy" class="row center-block container" style=" display: none; margin-top: 40px;">
+    <div id="view-campaign-contribute-wallet-entropy" class="row center-block container"
+      style=" display: none; margin-top: 40px;">
 
       <h2>USING LIGHTWALLET</h2>
 
@@ -126,10 +149,14 @@ function campaignContributeWallet(options) {
         </div>
       </a>
 
-      ${campaignContributeNav({backURL: `/campaign/${campaignObject.id}/contribute/wallet`, showNextButton: false})}
+      ${campaignContributeNav({
+        backURL: `/campaign/${campaignObject.id}/contribute/wallet`,
+        showNextButton: false,
+      })}
     </div>
 
-    <div id="view-campaign-contribute-wallet-confirm" class="row center-block container" style=" display: none; margin-top: 40px;">
+    <div id="view-campaign-contribute-wallet-confirm" class="row center-block container"
+      style=" display: none; margin-top: 40px;">
 
       <h2>USING LIGHTWALLET</h2>
 
@@ -144,12 +171,18 @@ function campaignContributeWallet(options) {
 
       <br />
 
-      <a href="/campaign/${campaignObject.id}/contribute/wallet/download" class="btn btn-primary">CONFIRM SEED PHRASE</a>
+      <a href="/campaign/${campaignObject.id}/contribute/wallet/download" class="btn btn-primary">
+        CONFIRM SEED PHRASE
+      </a>
 
-      ${campaignContributeNav({backURL: `/campaign/${campaignObject.id}/contribute/wallet`, showNextButton: false})}
+      ${campaignContributeNav({
+        backURL: `/campaign/${campaignObject.id}/contribute/wallet`,
+        showNextButton: false,
+      })}
     </div>
 
-    <div id="view-campaign-contribute-wallet-restore" class="row center-block container" style=" display: none; margin-top: 40px;">
+    <div id="view-campaign-contribute-wallet-restore" class="row center-block container"
+      style=" display: none; margin-top: 40px;">
 
       <h2>USING LIGHTWALLET</h2>
 
@@ -164,7 +197,10 @@ function campaignContributeWallet(options) {
         or
       <a class="btn btn-primary">UPLOAD WALLET FILE</a>
 
-      ${campaignContributeNav({backURL: `/campaign/${campaignObject.id}/contribute/wallet`, showNextButton: false})}
+      ${campaignContributeNav({
+        backURL: `/campaign/${campaignObject.id}/contribute/wallet`,
+        showNextButton: false,
+      })}
     </div>
 
     <div id="view-campaign-contribute-wallet" class="row center-block container"
@@ -195,6 +231,9 @@ function campaignContributeWallet(options) {
         </a>
       </div>
 
-      ${campaignContributeNav({backURL: `/campaign/${campaignObject.id}`, showNextButton: false})}
-    </div>`;
+      ${campaignContributeNav({
+        backURL: `/campaign/${campaignObject.id}`,
+        showNextButton: false,
+      })}
+    </div></div>`;
 }

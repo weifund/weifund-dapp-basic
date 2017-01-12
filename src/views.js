@@ -31,12 +31,7 @@ const subViews = [
   'view-campaign-contribute-wallet-balance',
   'view-campaign-contribute-wallet-password',
 
-  'view-campaign-contribute-method',
   'view-campaign-contribute-wallet',
-  'view-campaign-contribute-exchanges',
-  'view-campaign-contribute-ether-method',
-  'view-campaign-contribute-cryptocurrency-method',
-  'view-campaign-contribute-ether-qrcode',
   'view-campaign-contribute-form',
   'view-campaign-contribute-receipt',
   'view-campaign-contribute-review',

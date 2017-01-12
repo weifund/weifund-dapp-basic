@@ -41,19 +41,19 @@ function drawCampaigns(campaignsToDraw) {
     if (typeof campaignToDraw !== 'undefined') {
       // campaign is a staff pick, change draw target
       if (campaignToDraw.staffPick === true) {
-        el(`#staffpicks_list`).innerHTML += campaignHighlightMedium({
+        el(`#staffpicks_list`).appendChild(campaignHighlightMedium({
           campaignObject: campaignToDraw,
           web3,
           getLocale,
           t,
-        });
+        }));
       } else {
-        el(`#campaigns_list`).innerHTML += campaignHighlightMedium({
+        el(`#campaigns_list`).appendChild(campaignHighlightMedium({
           campaignObject: campaignToDraw,
           web3,
           getLocale,
           t,
-        });
+        }));
       }
     }
   }
@@ -68,7 +68,8 @@ function loadAndDrawCampaignsList() {
   var selectorArray = [];
 
   // draw loader
-  el('#view-list').innerHTML = viewLoader({ t });
+  el('#view-list').innerHTML = '';
+  el('#view-list').appendChild(viewLoader({ t }));
 
   // get the number of campaigns then load campaigns list accordingly
   campaignRegistry.numCampaigns(function(numCampaignsError, numCampaignsResult){
@@ -95,14 +96,16 @@ function loadAndDrawCampaignsList() {
 
       // handle errors
       if (loadCampaignsError) {
-        el('#campaigns_list').innerHTML = `
+        el('#campaigns_list').innerHTML =
+        el('#campaigns_list').appendChild(yo`
           Error while loading campaigns ${JSON.stringify(loadCampaignsError)}
-        `;
+        `);
         return;
       }
 
       // draw campaigns page
-      el('#view-list').innerHTML = campaignsView({ t });
+      el('#view-list').innerHTML = '';
+      el('#view-list').appendChild(campaignsView({ t }));
 
       // if load result is nice
       if (typeof loadCampaignsResult === 'object') {

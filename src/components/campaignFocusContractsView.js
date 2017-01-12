@@ -1,3 +1,5 @@
+import yo from 'yo-yo';
+
 // main export
 module.exports = campaignFocusContractsView;
 
@@ -5,7 +7,7 @@ module.exports = campaignFocusContractsView;
 function campaignFocusContractsView(options) {
   const t = options.t;
 
-  return `<div id="view-campaign-contracts" class="bg-white container row center-block" style="display: none;">
+  return yo`<div><div id="view-campaign-contracts" class="bg-white container row center-block" style="display: none;">
     <div class="col-xs-12">
 
         <div class="row">
@@ -33,5 +35,5 @@ function campaignFocusContractsView(options) {
         </div>
 
     </div>
-  </div>`;
+  </div></div>`;
 }

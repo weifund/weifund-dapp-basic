@@ -1,3 +1,6 @@
+import yo from 'yo-yo';
+
+// main import
 import methodABIInputsReview from './methodABIInputsReview';
 
 // export method
@@ -9,7 +12,7 @@ function campaignRefundReview(options) {
   const defaultAccount = options.defaultAccount;
   const t = options.t;
 
-  return `
+  return yo`
   <div id="view-campaign-refund-review" class="center-block container" style="margin-top: 40px; margin-bottom: 150px; display: none;">
     <div id="campaign-refund-header" class="row center-block container" style="margin-top: 80px;">
       <input type="hidden" value="${campaignObject.id}" id="campaign_id" />
@@ -38,10 +41,17 @@ function campaignRefundReview(options) {
       </div>
       <div class="row">
         <div class="col-xs-12 col-sm-6">
-          <div id="campaign_contributeReviewInputs">${methodABIInputsReview({campaignObject: campaignObject, methodType: 'refund'})}</div>
+          <div id="campaign_contributeReviewInputs">
+            ${methodABIInputsReview({
+              campaignObject: campaignObject,
+              methodType: 'refund',
+            })}</div>
 
           <h4>WeiFund Contribution</h4>
-          <h4><b><span id="campaign_contributeReview_weifundContributeAmount">0<span> Ether</b> <small>(ETH)</small></h4>
+          <h4>
+            <b><span id="campaign_contributeReview_weifundContributeAmount">0<span> Ether</b>
+            <small>(ETH)</small>
+          </h4>
           <small>Note, this will create a small second transaction for the amount specified.</small>
 
         </div>
@@ -56,7 +66,9 @@ function campaignRefundReview(options) {
 
           <h4>Campaign Contract</h4>
           <h4><b>${options.campaignObject.addr}</b> </h4>
-          <small><i>Balance: <b>${options.web3.fromWei(options.campaignObject.balance, 'ether').toString(10)}</b> Ether (ETH)</i></small>
+          <small><i>Balance: <b>
+            ${options.web3.fromWei(options.campaignObject.balance, 'ether').toString(10)}
+          </b> Ether (ETH)</i></small>
         </div>
       </div>
       <div class="row">
@@ -64,17 +76,21 @@ function campaignRefundReview(options) {
           <br />
           <hr />
 
-          <button id="campaign_reviewContributeButton" class="btn btn-primary btn-lg">Make Contribution</button>
+          <button id="campaign_reviewContributeButton" class="btn btn-primary btn-lg">
+            Make Refund
+          </button>
 
           <br />
           <br />
 
-          <div id="campaign_contribute_info_response" class="alert alert-info" style="display: none;">
+          <div id="campaign_contribute_info_response" class="alert alert-info"
+            style="display: none;">
             <h4>Processing</h4>
             <p id="campaign_contribute_info_response_body"></p>
           </div>
 
-          <div id="campaign_contribute_warning_response" class="alert alert-warning" style="display: none;">
+          <div id="campaign_contribute_warning_response" class="alert alert-warning"
+            style="display: none;">
             <h4>Warning!</h4>
             <p id="campaign_contribute_warning_response_body"></p>
           </div>

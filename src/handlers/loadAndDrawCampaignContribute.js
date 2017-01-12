@@ -89,7 +89,8 @@ function loadAndDrawCampaignContribute(campaignID, callback) {
   }
 
   // draw loader
-  el('#view-campaign-contribute').innerHTML = viewLoader({ t });
+  el('#view-campaign-contribute').innerHTML = '';
+  el('#view-campaign-contribute').appendChild(viewLoader({ t }));
 
   // load campaign fresh to draw
   getCampaigns({
@@ -120,12 +121,13 @@ function loadAndDrawCampaignContribute(campaignID, callback) {
     setCampaign(campaignID, campaignData);
 
     // draw campaign focus
-    el('#view-campaign-contribute').innerHTML = campaignContributeView({
+    el('#view-campaign-contribute').innerHTML = '';
+    el('#view-campaign-contribute').appendChild(campaignContributeView({
       campaignObject: campaignData,
       getLocale,
       web3,
       defaultAccount: getDefaultAccount,
-    });
+    }));
 
     // get latest account balance
     /* web3.eth.getBalance(getDefaultAccount(), function(balanceError, balanceResult) {
@@ -247,7 +249,7 @@ function loadAndDrawCampaignContribute(campaignID, callback) {
     */
 
     // set campaign contribution custom inputs
-    el('#campaignContribution_inputs').innerHTML = campaignContributionInputHTML;
+    // el('#campaignContribution_inputs').innerHTML = campaignContributionInputHTML;
 
     // refresh all page buttons after redraw
     refreshPageButtons();

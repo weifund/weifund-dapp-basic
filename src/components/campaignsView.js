@@ -1,3 +1,5 @@
+import yo from 'yo-yo';
+
 // export method
 module.exports = campaignsView;
 
@@ -5,7 +7,7 @@ module.exports = campaignsView;
 function campaignsView(options) {
   const t = options.t;
 
-  return `
+  return yo`<div>
     <br />
 
     <h1 class="text-huge text-center">${t("campaignsView.header")}</h1>
@@ -17,8 +19,6 @@ function campaignsView(options) {
       <div id="staffpicks_list"><h3>${t("campaignsView.loading")}</h3></div>
     </div>
 
-    <!--<br /><br /><br /><br /><br /><br />-->
-
     <div class="row">
       <h3>${t("campaignsView.campaignsHeader")}</h3>
 
@@ -27,5 +27,5 @@ function campaignsView(options) {
       <div id="campaigns_list"><h3>${t("campaignsView.loading")}</h3></div>
     </div>
   </div>
-  `;
+</div>`;
 }

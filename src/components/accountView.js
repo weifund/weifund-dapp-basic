@@ -1,7 +1,11 @@
+import yo from 'yo-yo';
+
+// export method
 module.exports = accountView;
 
+// main export
 function accountView(options) {
-  return `
+  return yo`
     <div class="container" style="height: 600px;">
       <div class="row">
         <div class="col-xs-12">

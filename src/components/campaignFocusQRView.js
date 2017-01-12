@@ -1,3 +1,5 @@
+import yo from 'yo-yo';
+
 // export method
 module.exports = campaignFocusContractsView;
 
@@ -5,7 +7,7 @@ module.exports = campaignFocusContractsView;
 function campaignFocusContractsView(options) {
   const t = options.t;
 
-  return `<div id="view-campaign-qr" class="bg-white container row center-block" style="display: none;">
+  return yo`<div id="view-campaign-qr" class="bg-white container row center-block" style="display: none;">
     <div class="col-xs-12">
       <h3>Campaign QR Code</h3>
       <br />

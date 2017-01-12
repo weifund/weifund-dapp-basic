@@ -33,7 +33,8 @@ module.exports = loadAndDrawCampaignRefund;
 // draw campaign
 function loadAndDrawCampaignRefund(campaignID, callback) {
   // draw loader
-  el('#view-campaign-refund').innerHTML = viewLoader({ t });
+  el('#view-campaign-refund').innerHTML = '';
+  el('#view-campaign-refund').appendChild(viewLoader({ t }));
 
   // load campaign fresh to draw
   getCampaigns({
@@ -58,7 +59,8 @@ function loadAndDrawCampaignRefund(campaignID, callback) {
     setCampaign(campaignID, campaignData);
 
     // draw campaign focus
-    el('#view-campaign-refund').innerHTML = `
+    el('#view-campaign-refund').innerHTML = '';
+    el('#view-campaign-refund').appendChild(yo`
     ${campaignRefundForm({
       campaignObject: campaignData,
       defaultAccount: getDefaultAccount,
@@ -72,7 +74,7 @@ function loadAndDrawCampaignRefund(campaignID, callback) {
     })}
 
     <div id="view-campaign-refund-receipt"></div>
-    `;
+    `);
 
     // build all sliders
     buildAllInputSliders();

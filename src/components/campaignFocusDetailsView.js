@@ -1,3 +1,5 @@
+import yo from 'yo-yo';
+
 // object to html
 import objectView from './objectView';
 
@@ -11,9 +13,7 @@ function campaignFocusDetailsView(options) {
   const campaignObject = options.campaignObject;
   const web3 = options.web3;
 
-  console.log(campaignObject);
-
-  return `<div id="view-campaign-details" class="bg-white container row center-block" style="display: none; margin-top: 20px;">
+  return yo`<div><div id="view-campaign-details" class="bg-white container row center-block" style="display: none; margin-top: 20px;">
     <div class="col-xs-12">
 
       <br />
@@ -43,9 +43,9 @@ function campaignFocusDetailsView(options) {
           <br />
 
           <h4>Expiry</h4>
-          ${campaignObject.expiry.minus(campaignObject.blockNumber).dividedBy(17).floor()} in seconds
+          ${campaignObject.expiry.minus(campaignObject.blockNumber).dividedBy(17).floor().toString(10)} in seconds
           <br />
-          <small>current. ${campaignObject.blockNumber} unix. ${campaignObject.expiry}</small>
+          <small>current. ${campaignObject.blockNumber.toString(10)} unix. ${campaignObject.expiry.toString(10)}</small>
 
           <br />
           <br />
@@ -64,7 +64,7 @@ function campaignFocusDetailsView(options) {
 
       <div class="row">
         <div class="col-xs-12 col-sm-6">
-          ${objectView({web3: web3, object: campaignObject, layout: {
+          ${objectView({web3, object: campaignObject, layout: {
               active: {
                 name: 'Active',
                 description: 'Is the campaign active (i.e. can you contribute to it)',
@@ -173,7 +173,7 @@ function campaignFocusDetailsView(options) {
         })}
         </div>
         <div class="col-xs-12 col-md-6">
-          ${objectView({web3: web3, object: campaignObject, layout: {
+          ${objectView({web3, object: campaignObject, layout: {
             contributeMethodABIObject: {
               description: 'The contribute method interface object.',
             },
@@ -195,5 +195,5 @@ function campaignFocusDetailsView(options) {
 
     </div>
 
-  </div>`;
+  </div></div>`;
 }

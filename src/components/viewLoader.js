@@ -1,3 +1,5 @@
+import yo from 'yo-yo';
+
 // export module
 module.exports = viewLoader;
 
@@ -14,7 +16,7 @@ function viewLoader(options) {
   window.scrollTo(0, 0);
 
   // return tempalte
-  return `<div style="height: 500px;">
+  return yo`<div style="height: 500px;">
     <span class="cssload-loader" style="margin-top: 17%;"><span class="cssload-loader-inner"></span></span>
     <br />
     <br />
