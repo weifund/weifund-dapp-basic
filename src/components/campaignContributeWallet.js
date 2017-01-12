@@ -122,7 +122,7 @@ function campaignContributeWallet(options) {
 
       <a href="/campaign/${campaignObject.id}/contribute/wallet/password">
         <div style="width: 100%; height: 15px; background: #F1F1F1;">
-          <div style="width: 65%; height: 15px; background: #ff7518"></div>
+          <div class="progress" style="width: 0; height: 15px; background: #ff7518"></div>
         </div>
       </a>
 
@@ -187,7 +187,7 @@ function campaignContributeWallet(options) {
       <br /><br />
 
       <div>
-        <a href="/campaign/${campaignObject.id}/contribute/wallet/entropy" class="btn btn-primary">
+        <a href="/campaign/${campaignObject.id}/contribute/wallet/entropy" class="generate btn btn-primary">
           GENERATE
         </a>
         <a href="/campaign/${campaignObject.id}/contribute/wallet/restore" class="btn btn-primary">

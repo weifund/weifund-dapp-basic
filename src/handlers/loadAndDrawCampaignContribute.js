@@ -151,7 +151,7 @@ function loadAndDrawCampaignContribute(campaignID, callback) {
     // handleCampaignContribution
     el('#campaign_reviewContributeButton').addEventListener('click', handleCampaignContribution);
 
-    el('#view-campaign-contribute-wallet-entropy a').addEventListener('click', handleGenerateWallet);
+    el('#view-campaign-contribute-wallet a.generate').addEventListener('click', handleGenerateWallet);
 
     /*
 
