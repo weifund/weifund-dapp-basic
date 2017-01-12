@@ -16,7 +16,7 @@ function campaignContributeWallet(options) {
     <div id="view-campaign-contribute-wallet-balance" class="row center-block container"
       style=" display: none; margin-top: 40px;">
 
-      <h2>USING LIGHTWALLET</h2>
+      <h2>YOUR LIGHTWALLET</h2>
 
       <br />
       <br />
@@ -29,7 +29,7 @@ function campaignContributeWallet(options) {
         <div class="col-xs-12 col-sm-6 col-md-8">
           <h2 class="text-break-all">
             <label>Address</label><br />
-            0x6e0e6d45820d91356fc73d7ff2bdef353ebfe7e9
+            <span class="user-address">0x0</span>
           </h2>
 
           <hr />
@@ -43,11 +43,11 @@ function campaignContributeWallet(options) {
           <div class="row">
             <div class="col-sm-6">
               <h4 style="margin-top: 0px;"><b>Balance</b></h4>
-              <h3 style="margin-top: 0px;">0 ether</h3>
+              <h3 style="margin-top: 0px;"><span class="account-balance">0</span> ether</h3>
             </div>
             <div class="col-sm-6"><br />
               <a href="/campaign/${campaignObject.id}/contribute/form" disabled
-                class="btn btn-primary">CONTRIBUTE TO CAMPAIGN</a>
+                class="contribute btn btn-primary">CONTRIBUTE TO CAMPAIGN</a>
             </div>
           </div>
 
@@ -62,7 +62,7 @@ function campaignContributeWallet(options) {
     <div id="view-campaign-contribute-wallet-download" class="row center-block container"
       style=" display: none; margin-top: 40px;">
 
-      <h2>USING LIGHTWALLET</h2>
+      <h2>YOUR LIGHTWALLET</h2>
 
       <br />
       <br />
@@ -84,44 +84,33 @@ function campaignContributeWallet(options) {
     <div id="view-campaign-contribute-wallet-password" class="row center-block container"
       style=" display: none; margin-top: 40px;">
 
-      <h2>USING LIGHTWALLET</h2>
+      <h2>YOUR LIGHTWALLET</h2>
 
       <br />
       <br />
 
-      <h4>Your seed is:</h4>
+      <h4>Your seed phrase is:</h4>
 
       <div class="alert alert-warning text-center">
-        <h3 style="margin-top: 0px; margin-bottom: 0px;">maze broom course magnet lady abandon put stove rhythm bag short speed</h3>
+        <h3 class="seed" style="margin-top: 0px; margin-bottom: 0px;">Loading...</h3>
       </div>
 
       <h4>
-        <b>REMEMBER TO WRITE DOWN YOUR SEED</b>
-        You will need this in case you lose your wallet.
+        <b>WRITE DOWN YOUR SEED PHRASE.</b>
+        WeiFund does not store your wallet. Your seed phrase is required to
+        access your assets.
       </h4>
+
+      <br />
 
       <h4>
         This lightwallet is still in beta and is presently not recommended for the storage of large amounts of ETH.
       </h4>
 
-      <h4>
-        Please enter a password to securely encrypt your wallet.
-      </h4>
-
-      <br /><br />
-
-      <div>
-        <input type="password" class="form-control" placeholder="PASSWORD" />
-
-        <br />
-
-        <input type="password" class="form-control" placeholder="VERIFY PASSWORD" />
-      </div>
-
       <br /><br />
 
       <a href="/campaign/${campaignObject.id}/contribute/wallet/confirm" class="btn btn-primary">
-        CREATE WALLET
+        I WROTE IT DOWN
       </a>
 
       ${campaignContributeNav({
@@ -133,19 +122,19 @@ function campaignContributeWallet(options) {
     <div id="view-campaign-contribute-wallet-entropy" class="row center-block container"
       style=" display: none; margin-top: 40px;">
 
-      <h2>USING LIGHTWALLET</h2>
+      <h2>YOUR LIGHTWALLET</h2>
 
       <br />
       <br />
 
-      <h4>Please move your mouse to add entropy to the seed generation.</h4>
+      <h4>Move your mouse randomly to generate your new wallet.</h4>
 
       <br />
 
 
       <a href="/campaign/${campaignObject.id}/contribute/wallet/password">
         <div style="width: 100%; height: 15px; background: #F1F1F1;">
-          <div style="width: 65%; height: 15px; background: #ff7518"></div>
+          <div class="progress" style="width: 0; height: 15px; background: #ff7518"></div>
         </div>
       </a>
 
@@ -158,12 +147,12 @@ function campaignContributeWallet(options) {
     <div id="view-campaign-contribute-wallet-confirm" class="row center-block container"
       style=" display: none; margin-top: 40px;">
 
-      <h2>USING LIGHTWALLET</h2>
+      <h2>YOUR LIGHTWALLET</h2>
 
       <br />
       <br />
 
-      <p>Please re-enter your wallet seed</p>
+      <p>Please re-enter your wallet seed to verify that your backup is correct.</p>
 
       <br />
 
@@ -171,7 +160,7 @@ function campaignContributeWallet(options) {
 
       <br />
 
-      <a href="/campaign/${campaignObject.id}/contribute/wallet/download" class="btn btn-primary">
+      <a disabled href="/campaign/${campaignObject.id}/contribute/wallet/balance" class="confirm btn btn-primary">
         CONFIRM SEED PHRASE
       </a>
 
@@ -184,7 +173,7 @@ function campaignContributeWallet(options) {
     <div id="view-campaign-contribute-wallet-restore" class="row center-block container"
       style=" display: none; margin-top: 40px;">
 
-      <h2>USING LIGHTWALLET</h2>
+      <h2>YOUR LIGHTWALLET</h2>
 
       <br />
       <br />
@@ -193,9 +182,7 @@ function campaignContributeWallet(options) {
 
       <br />
 
-      <a class="btn btn-primary">RESTORE FROM SEED</a>
-        or
-      <a class="btn btn-primary">UPLOAD WALLET FILE</a>
+      <a class="restore btn btn-primary">RESTORE FROM SEED</a>
 
       ${campaignContributeNav({
         backURL: `/campaign/${campaignObject.id}/contribute/wallet`,
@@ -206,28 +193,32 @@ function campaignContributeWallet(options) {
     <div id="view-campaign-contribute-wallet" class="row center-block container"
         style="margin-top: 40px; display: none;">
 
-      <h2>USING LIGHTWALLET</h2>
+      <h2>YOUR LIGHTWALLET</h2>
 
       <br />
       <br />
 
-      <h4>Please watch our instructional video on how to
-    generate, use and restore your SingularDTV Lightwallet.</h4>
+      <h4>
+        <b>DISCLAIMER</b>
+        This lightwallet is still in beta and is presently not recommended for
+        the storage of large amounts of ETH.
+      </h4>
 
-      <h4><b>DISCLAIMER</b>
-      This lightwallet is still in beta and is presently not recommended for the storage of large amounts of ETH.</h4>
+      <br />
 
-      <h4>If you created an account before, enter your seed below or open a wallet.
-      Click on "Generate" to create a new account.</h4>
+      <h4>
+        You can create a new Ethereum wallet to contribute to a campaign or use
+        an existing wallet if you already have one.
+      </h4>
 
       <br /><br />
 
       <div>
-        <a href="/campaign/${campaignObject.id}/contribute/wallet/entropy" class="btn btn-primary">
-          GENERATE
+        <a href="/campaign/${campaignObject.id}/contribute/wallet/entropy" class="generate btn btn-primary">
+          NEW WALLET
         </a>
         <a href="/campaign/${campaignObject.id}/contribute/wallet/restore" class="btn btn-primary">
-          RESTORE
+          EXISING WALLET
         </a>
       </div>
 
