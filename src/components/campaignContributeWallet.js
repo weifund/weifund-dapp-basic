@@ -47,7 +47,7 @@ function campaignContributeWallet(options) {
             </div>
             <div class="col-sm-6"><br />
               <a href="/campaign/${campaignObject.id}/contribute/form" disabled
-                class="btn btn-primary">CONTRIBUTE TO CAMPAIGN</a>
+                class="contribute btn btn-primary">CONTRIBUTE TO CAMPAIGN</a>
             </div>
           </div>
 

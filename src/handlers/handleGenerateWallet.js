@@ -11,14 +11,63 @@ import { getRouter } from '../router';
 import { web3 } from '../web3';
 
 
+/**
+ * Create a function that updates the wallet UI depending on the account's balance.
+ *
+ * Returns a Promise that resolves to whether the user has a non-zero balance.
+ */
+export function contributionBalanceUpdater(address) {
+  function updateContributionBalance() {
+    return new Promise((resolve, reject) => {
+      web3.eth.getBalance(address, (err, balance) => {
+        if (err) {
+          reject(new Error(`Lightwallet balance failed to load: ${err}`));
+          return;
+        }
+
+        const balanceEl = el('#view-campaign-contribute-wallet-balance .account-balance');
+        balanceEl.innerHTML = web3.fromWei(balance, 'ether');
+        if (balance.gte(web3.toWei(1, 'ether'))) {
+          const contributeEl = el('#view-campaign-contribute-wallet-balance a.contribute');
+          contributeEl.removeAttribute('disabled');
+          resolve(true);
+          return;
+        }
+        resolve(false);
+      });
+    });
+  }
+
+  return updateContributionBalance;
+}
+
+function startPollingForBalance(address) {
+  // Keep polling until the contribute button is clicked.
+  let keepPolling = true;
+  const contributeEl = el('#view-campaign-contribute-wallet-balance a.contribute');
+  contributeEl.addEventListener('click', () => { keepPolling = false; });
+
+  const updateBalance = contributionBalanceUpdater(address);
+  function pollForBalance() {
+    return updateBalance()
+      .catch(() => false)
+      .then(hasBalance => {
+        if (!hasBalance && keepPolling) {
+          setTimeout(pollForBalance, 10000);
+        }
+      });
+  }
+  return pollForBalance();
+}
+
 export function updateWalletUI() {
   return new Promise(resolve => {
-    // Update the account address and QR code.
     web3.eth.getAccounts((err, accounts) => {
       if (err || accounts.length < 1) {
         console.error(`Lightwallet accounts failed to load: ${err}/${accounts}`);
         return;
       }
+
       const address = `0x${accounts[0]}`;
       const addressEl = el('#view-campaign-contribute-wallet-balance .user-address');
       addressEl.innerHTML = address;
@@ -29,17 +78,7 @@ export function updateWalletUI() {
         value: address,
       });
 
-      // Update the balance.
-      web3.eth.getBalance(address, (err, balance) => {
-        if (err) {
-          console.error(`Lightwallet balance failed to load: ${err}`);
-          return;
-        }
-
-        const balanceEl = el('#view-campaign-contribute-wallet-balance .account-balance');
-        balanceEl.innerHTML = web3.fromWei(balance, 'ether');
-        resolve();
-      });
+      startPollingForBalance(address).then(resolve);
     });
   });
 }
