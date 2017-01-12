@@ -11,32 +11,35 @@ import { getRouter } from '../router';
 import { web3 } from '../web3';
 
 
-function updateWalletUI() {
-  // Update the account address and QR code.
-  web3.eth.getAccounts((err, accounts) => {
-    if (err || accounts.length < 1) {
-      console.error(`Lightwallet accounts failed to load: ${err}/${accounts}`);
-      return;
-    }
-    const address = `0x${accounts[0]}`;
-    const addressEl = el('#view-campaign-contribute-wallet-balance .user-address');
-    addressEl.innerHTML = address;
-
-    new QRious({
-      element: el('#campaign-contribute-qrcode'),
-      size: 250,
-      value: address,
-    });
-
-    // Update the balance.
-    web3.eth.getBalance(address, (err, balance) => {
-      if (err) {
-        console.error(`Lightwallet balance failed to load: ${err}`);
+export function updateWalletUI() {
+  return new Promise(resolve => {
+    // Update the account address and QR code.
+    web3.eth.getAccounts((err, accounts) => {
+      if (err || accounts.length < 1) {
+        console.error(`Lightwallet accounts failed to load: ${err}/${accounts}`);
         return;
       }
+      const address = `0x${accounts[0]}`;
+      const addressEl = el('#view-campaign-contribute-wallet-balance .user-address');
+      addressEl.innerHTML = address;
 
-      const balanceEl = el('#view-campaign-contribute-wallet-balance .account-balance');
-      balanceEl.innerHTML = web3.fromWei(balance, 'ether');
+      new QRious({
+        element: el('#campaign-contribute-qrcode'),
+        size: 250,
+        value: address,
+      });
+
+      // Update the balance.
+      web3.eth.getBalance(address, (err, balance) => {
+        if (err) {
+          console.error(`Lightwallet balance failed to load: ${err}`);
+          return;
+        }
+
+        const balanceEl = el('#view-campaign-contribute-wallet-balance .account-balance');
+        balanceEl.innerHTML = web3.fromWei(balance, 'ether');
+        resolve();
+      });
     });
   });
 }

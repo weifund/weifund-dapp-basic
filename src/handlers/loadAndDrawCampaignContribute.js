@@ -29,6 +29,7 @@ const campaignRegistry = contracts.CampaignRegistry.instance();
 // build all input sliders
 import handleCampaignContribution from './handleCampaignContribution';
 import handleGenerateWallet from './handleGenerateWallet';
+import handleRestoreSeed from './handleRestoreSeed';
 import handleVerifySeed from './handleVerifySeed';
 import buildAllInputSliders from './drawAllInputSliders';
 
@@ -155,6 +156,7 @@ function loadAndDrawCampaignContribute(campaignID, callback) {
     el('#campaign_reviewContributeButton').addEventListener('click', handleCampaignContribution);
 
     el('#view-campaign-contribute-wallet a.generate').addEventListener('click', handleGenerateWallet);
+    el('#view-campaign-contribute-wallet-restore a.restore').addEventListener('click', handleRestoreSeed);
     el('#view-campaign-contribute-wallet-confirm input[type=text]').addEventListener('keyup', handleVerifySeed);
 
     /*
