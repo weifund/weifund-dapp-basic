@@ -6,46 +6,10 @@ import HookedWalletSubprovider from 'web3-provider-engine/subproviders/hooked-wa
 import Web3Subprovider from 'web3-provider-engine/subproviders/web3';
 
 import { el } from '../document';
+import { createUnlockedKeystore, getSeed, setKeystore, setWalletProvider } from '../keystore';
 import { getRouter } from '../router';
 import { web3 } from '../web3';
 
-// We disable passwords in eth-lightwallet since we do not store keys on disk.
-// The key is immediately used to fund the campaign, and there's no gain from
-// encrypting the keys from when they're entered to when they're used. Keys
-// remain accessible until the browser window is closed.
-// TODO: Reset the web3 provider after a timeout and after contributions are
-//       made.
-const password = 'Disable passwords.';
-
-
-function setWalletProvider(keystore) {
-  return new Promise((resolve) => {
-    keystore.keyFromPassword(password, function (err, pwDerivedKey) {
-      keystore.generateNewAddress(pwDerivedKey, 1);
-      // Allow transactions to be signed without prompting for a password.
-      keystore.passwordProvider = function (cb) { cb(null, password); };
-
-      // Create a provider engine that uses the keystore to sign transactions.
-      const provider = new ProviderEngine();
-      provider.addProvider(new HookedWalletSubprovider({
-        getAccounts(callback) {
-          callback(null, keystore.getAddresses());
-        },
-        signTransaction: keystore.signTransaction.bind(keystore),
-      }));
-      const web3Provider = new Web3.providers.HttpProvider('https://ropsten.infura.io/');
-      provider.addProvider(new Web3Subprovider(web3Provider));
-
-      // Activate the provider, but stop polling for blocks since we don't use
-      // filter RPC calls.
-      provider.start();
-      provider.stop();
-
-      web3.setProvider(provider);
-      resolve(provider);
-    });
-  });
-}
 
 function updateWalletUI() {
   // Update the account address and QR code.
@@ -88,7 +52,7 @@ function generateSeedWithEntropy() {
   return new Promise((resolve) => {
     const entropy = [];
     const samplesToCollect = 40;
-    const sampleDelayMs = 500;
+    const sampleDelayMs = 300;
     const eventEl = el('body');
     let lastPosition = [0, 0];
 
@@ -148,17 +112,11 @@ export default function handleGenerateWallet(event) {
       getRouter()(`/campaign/${campaignId}/contribute/wallet/password`);
 
       // Create a keystore with the new seed.
-      return new Promise((resolve, reject) => {
-        lightwallet.keystore.createVault({
-          seedPhrase,
-          password,
-          hdPathString: "m/44'/60'/0'/0",
-        }, (err, keystore) => {
-          if (err) reject(err);
-          resolve(keystore);
-        });
-      });
+      return createUnlockedKeystore(seedPhrase);
     })
-    .then(setWalletProvider)
+    .then(keystore => {
+      setKeystore(keystore);
+      return setWalletProvider(keystore);
+    })
     .then(updateWalletUI);
 }
