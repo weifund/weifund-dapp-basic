@@ -1,6 +1,7 @@
 import yo from 'yo-yo';
 
 import campaignContributeNav from './campaignContributeNav';
+import { getNetwork } from '../environment';
 
 // export main
 module.exports = campaignContributeForm;
@@ -103,7 +104,7 @@ WeiFund (A) expressly disclaims the accuracy, adequacy, or completeness of any d
       <h3>Technical Details</h3>
       <br />
       <h4>Network</h4>
-      <h5>Ethereum (ETH) Morden Test Network*</h5>
+      <h5>Ethereum (ETH) ${getNetwork()} Network*</h5>
       <br />
       <h4>Selected Account</h4>
       <h5>${defaultAccount()}</h5>
@@ -122,8 +123,8 @@ WeiFund (A) expressly disclaims the accuracy, adequacy, or completeness of any d
       <h4>Contribute Method ABI</h4>
       <h5>${campaignObject.contributeMethodABI}</h5>
       <br />
-      <h4>Web3 Provider</h4>
-      <h5>--</h5>
+      <h4>Provider</h4>
+      <h5>Hooked Web3 Provider</h5>
     </div>
     ${campaignContributeNav({
       backURL: `/campaign/${options.campaignObject.id}/contribute/`,

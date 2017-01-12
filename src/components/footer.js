@@ -47,7 +47,7 @@ function footer(options) {
         <div class="col-xs-6 col-md-9">
           <a href="/"><img src="/styles/weifund-logo-small-white.png" style="height: 35px; max-width: auto;" /></a>
           <br />
-          <small>${t("footer.copyright")}</small>
+          <small>© ${t("footer.copyright")}</small>
         </div>
         <div class="col-xs-6 col-md-3 text-right">
           <a href="http://weifund.readthedocs.org" target="_blank">Read The Docs</a>

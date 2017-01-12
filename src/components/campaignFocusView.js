@@ -35,14 +35,20 @@ const campaignFocusView = function(options) {
 
     <div class="container row center-block">
       <div class="col-xs-12 col-sm-8">
-        ${yo`<iframe style="width: 100%; height: 410px;" src="${campaignObject.mainEntityIsVideo && campaignObject.mainEntityVideo.embedUrl || `https://www.youtube.com/embed/kn-1D5z3-Cs?showinfo=0`}" frameborder="0" allowfullscreen></iframe>`}
+        ${yo`<iframe style="width: 100%; height: 410px;"
+        src="${campaignObject.mainEntityIsVideo && campaignObject.mainEntityVideo.embedUrl
+            || `https://www.youtube.com/embed/kn-1D5z3-Cs?showinfo=0`}"
+        frameborder="0" allowfullscreen></iframe>`}
       </div>
       <div class="col-xs-12 col-sm-4">
         <h1><b>${campaignObject.progress}%</b></h1>
         <h4>${t('campaignFocusView.progress')}</h4>
-        <h1><b>${web3.fromWei(campaignObject.amountRaised, 'ether').toFixed(4)} <small>ETH</small></b></h1>
-        <h4>${t('campaignFocusView.contributedOf', {fundingGoal: web3.fromWei(campaignObject.fundingGoal, 'ether').toFixed(4), fundingGoalUnits: 'ETH'})}</h4>
-        <h1><b>${campaignObject.hasExpired && "0" || campaignObject.expiry.toString(10)} </b></h1>
+        <h1><b>${web3.fromWei(campaignObject.amountRaised, 'ether').toFixed(4)}
+          <small>ETH</small></b></h1>
+        <h4>${t('campaignFocusView.contributedOf', {
+          fundingGoal: web3.fromWei(campaignObject.fundingGoal, 'ether').toFixed(4),
+          fundingGoalUnits: 'ETH'})}</h4>
+        <h1><b>${campaignObject.approximateDaysToGo.toString(10)} </b></h1>
         <h4>${t('campaignFocusView.daysToGo')}</h4>
 
         <br /><br />
@@ -93,7 +99,7 @@ const campaignFocusView = function(options) {
         <br />
 
         <small>${t('campaignFocusView.expiryNotice', {
-          expiryDate: (new Date(campaignObject.expiry.toNumber(10) * 1000)).toString()
+          expiryDate: campaignObject.approximateExpiryDate.toISOString(),
         })}</small>
       </div>
     </div>

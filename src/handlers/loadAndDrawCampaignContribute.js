@@ -32,6 +32,7 @@ const campaignRegistry = contracts.CampaignRegistry.instance();
 // build all input sliders
 import handleCampaignContribution from './handleCampaignContribution';
 import buildAllInputSliders from './drawAllInputSliders';
+import handleConfirmOnPageExit from './handleConfirmOnPageExit';
 
 // export method
 module.exports = loadAndDrawCampaignContribute;

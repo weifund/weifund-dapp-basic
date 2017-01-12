@@ -6,6 +6,8 @@ function handleConfirmOnPageExit(e) {
   // If we haven't been passed the event get the window.event
   e = e || window.event;
 
+  console.log(window.location);
+
   const message = `
     WARNING:
 
@@ -17,6 +19,7 @@ function handleConfirmOnPageExit(e) {
 
   // For Chrome, Safari, IE8+ and Opera 12+
   if (window.location.href.indexOf('/contribute') !== -1
+    || window.location.href.indexOf('/account') !== -1
     || window.location.href.indexOf('/payout') !== -1
     || window.location.href.indexOf('/refund') !== -1) {
     // For IE6-8 and Firefox prior to version 4
