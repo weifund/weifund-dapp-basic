@@ -18,13 +18,14 @@ function accountView(options) {
 
         <br />
 
-        <input type="text" class="form-control" placeholder="WALLET SEED PHRASE" />
+        <input id="account-wallet-seed" type="text" class="form-control"
+          placeholder="WALLET SEED PHRASE" />
 
         <br /><br />
 
-        <a href="/account/panel" class="btn btn-primary">RESTORE FROM SEED</a>
+        <button id="account-wallet-restore" class="btn btn-primary">RESTORE FROM SEED</button>
           or
-        <a href="/account/panel" class="btn btn-primary">UPLOAD WALLET FILE</a>
+        <button id="account-wallet-upload" class="btn btn-primary">UPLOAD WALLET FILE</button>
       </div>
     </div>
 

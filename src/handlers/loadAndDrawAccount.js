@@ -21,7 +21,7 @@ import { viewLoader, accountView } from '../components';
 // web3
 import { web3 } from '../web3';
 import { ipfs } from '../ipfs';
-import { refreshPageButtons } from '../router';
+import { refreshPageButtons, getRouter } from '../router';
 import { t } from '../i18n';
 
 // Contracts
@@ -32,19 +32,19 @@ const IssuedToken = contracts.IssuedToken.factory;
 // export module
 module.exports = loadAndDrawAccount;
 
-// draw account page
-function loadAndDrawAccount(callback) {
-  // draw loader
-  el('#view-focus').innerHTML = '';
-  el('#view-focus').appendChild(viewLoader({ t }));
+// load wallet
+function loadWallet() {
+  // handle wallet seed
+  const walletSeed = el('#account-wallet-seed').value;
 
+  // route to panel page
+  getRouter()('/account/panel');
+
+  // get accounts
   web3.eth.getAccounts((err, accounts) => {
     if (!accounts) {
       accounts = ['0xc5b14f77554e4d6f1060b2d95f26a31191bd46c9'];
     }
-
-    el('#view-account').innerHTML = '';
-    el('#view-account').appendChild(accountView({}));
 
     el('#accountAddress').innerHTML = '';
     el('#accountAddress').appendChild(yo`<span>${accounts[0]}</span>`);
@@ -58,8 +58,6 @@ function loadAndDrawAccount(callback) {
     });
 
     loadToken('0x1c79ee86aa0720eb7a5a77d0cb715c489850f421');
-
-    callback(null, true);
 
     refreshPageButtons();
 
@@ -200,4 +198,19 @@ function loadAndDrawAccount(callback) {
       });
     }
   });
+}
+
+// draw account page
+function loadAndDrawAccount(callback) {
+  // draw loader
+  el('#view-focus').innerHTML = '';
+  el('#view-focus').appendChild(viewLoader({ t }));
+
+  el('#view-account').innerHTML = '';
+  el('#view-account').appendChild(accountView({}));
+
+  el('#account-wallet-restore').addEventListener('click', loadWallet);
+  el('#account-wallet-upload').addEventListener('click', loadWallet);
+
+  callback(null, true);
 }
