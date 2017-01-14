@@ -32,6 +32,7 @@ const subViews = [
   'view-campaign-contribute-wallet-entropy',
   'view-campaign-contribute-wallet-confirm',
   'view-campaign-contribute-wallet-balance',
+  'view-campaign-contribute-wallet-seed',
   'view-campaign-contribute-wallet-password',
 
   'view-campaign-contribute-wallet',

@@ -147,6 +147,11 @@ function setupRouter(options) {
               openSubView('view-campaign-contribute-wallet-confirm');
             });
           }],
+          ['/seed', function(params) {
+            openCampaignContribute(options, params, function(err, result){
+              openSubView('view-campaign-contribute-wallet-seed');
+            });
+          }],
           ['/password', function(params) {
             openCampaignContribute(options, params, function(err, result){
               openSubView('view-campaign-contribute-wallet-password');

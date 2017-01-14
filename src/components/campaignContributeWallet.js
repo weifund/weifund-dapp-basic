@@ -81,7 +81,7 @@ function campaignContributeWallet(options) {
 
     </div>
 
-    <div id="view-campaign-contribute-wallet-password" class="row center-block container"
+    <div id="view-campaign-contribute-wallet-seed" class="row center-block container"
       style=" display: none; margin-top: 40px;">
 
       <h2>YOUR LIGHTWALLET</h2>
@@ -132,11 +132,9 @@ function campaignContributeWallet(options) {
       <br />
 
 
-      <a href="/campaign/${campaignObject.id}/contribute/wallet/password">
-        <div style="width: 100%; height: 15px; background: #F1F1F1;">
-          <div class="progress" style="width: 0; height: 15px; background: #ff7518"></div>
-        </div>
-      </a>
+      <div style="width: 100%; height: 15px; background: #F1F1F1;">
+        <div class="progress" style="width: 0; height: 15px; background: #ff7518"></div>
+      </div>
 
       ${campaignContributeNav({
         backURL: `/campaign/${campaignObject.id}/contribute/wallet`,
@@ -160,7 +158,7 @@ function campaignContributeWallet(options) {
 
       <br />
 
-      <a disabled href="/campaign/${campaignObject.id}/contribute/wallet/balance" class="confirm btn btn-primary">
+      <a disabled href="/campaign/${campaignObject.id}/contribute/wallet/password" class="confirm btn btn-primary">
         CONFIRM SEED PHRASE
       </a>
 
@@ -169,6 +167,38 @@ function campaignContributeWallet(options) {
         showNextButton: false,
       })}
     </div>
+
+    <div id="view-campaign-contribute-wallet-password" class="row center-block container"
+      style=" display: none; margin-top: 40px;">
+
+      <h2>YOUR LIGHTWALLET</h2>
+
+      <br />
+      <br />
+
+      <h4>
+        Seed phrases are unencrypted, but WeiFund encrypts your in-app
+        lightwallet with a password that you'll need to enter before the app
+        can access your assets. Choose a password to protect your lightwallet
+        from unauthorized access.
+      </h4>
+
+      <br />
+      <br />
+
+      <form>
+        <input name="password-1" type="password" class="form-control" placeholder="ENTER PASSWORD" />
+        <input name="password-2" type="password" class="form-control" placeholder="REPEAT PASSWORD" />
+        <br />
+        <input type="submit" disabled value="ENCRYPT" class="encrypt btn btn-primary" />
+      </form>
+
+      ${campaignContributeNav({
+        backURL: `/campaign/${campaignObject.id}/contribute/wallet`,
+        showNextButton: false,
+      })}
+    </div>
+
 
     <div id="view-campaign-contribute-wallet-restore" class="row center-block container"
       style=" display: none; margin-top: 40px;">
