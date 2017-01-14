@@ -9,6 +9,8 @@ import { web3 } from './web3';
 
 
 export function inputPassword() {
+  // FIXME: window.prompt has a cleartext input box. We need to build our own
+  // prompt with a real password input.
   const password = window.prompt('Enter your password to decrypt your lightwallet.');
   return Promise.resolve(password);
 }
