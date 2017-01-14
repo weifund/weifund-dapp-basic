@@ -72,7 +72,7 @@ export function updateWalletUI() {
 
 export default function handleEncryptSeed(event) {
   event.preventDefault();
-  // Browsers will noticed the unsubmitted form and warn users about unsaved
+  // Browsers will notice the unsubmitted form and warn users about unsaved
   // changes when they try to navigate away. This disables that check.
   window.onbeforeunload = null;
 
