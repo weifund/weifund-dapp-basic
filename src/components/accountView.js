@@ -21,11 +21,25 @@ function accountView(options) {
         <input id="account-wallet-seed" type="text" class="form-control"
           placeholder="WALLET SEED PHRASE" />
 
+        <input id="account-wallet-passphrase" type="text" class="form-control"
+            placeholder="WALLET PASSPHRASE" style="display: none;" />
+
+        <input type="file" style="display: none;" id="account-wallet-file" />
+
         <br /><br />
 
-        <button id="account-wallet-restore" class="btn btn-primary">RESTORE FROM SEED</button>
-          or
-        <button id="account-wallet-upload" class="btn btn-primary">UPLOAD WALLET FILE</button>
+        <div id="account-wallet-buttons">
+          <button id="account-wallet-restore" class="btn btn-primary">RESTORE FROM SEED</button>
+            or
+          <button id="account-wallet-upload" class="btn btn-primary">UPLOAD WALLET FILE</button>
+        </div>
+
+
+        <br /><br /><br />
+
+        <div id="account-wallet-alert" class="alert alert-info text-left">
+          <p>Something happened</p>
+        </div>
       </div>
     </div>
 

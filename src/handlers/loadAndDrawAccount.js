@@ -32,11 +32,8 @@ const IssuedToken = contracts.IssuedToken.factory;
 // export module
 module.exports = loadAndDrawAccount;
 
-// load wallet
-function loadWallet() {
-  // handle wallet seed
-  const walletSeed = el('#account-wallet-seed').value;
-
+// load account
+function loadAccount() {
   // route to panel page
   getRouter()('/account/panel');
 
@@ -200,6 +197,30 @@ function loadWallet() {
   });
 }
 
+// load wallet
+function loadWallet() {
+  // handle wallet seed
+  const walletSeed = el('#account-wallet-seed').value;
+  const walletFile = el('#account-wallet-file').files[0];
+  const walletPassphrase = el('#account-wallet-passphrase').value;
+
+  if (walletFile) {
+    var reader = new FileReader();
+    reader.onload = (e) => {
+      // e.target.result
+      // display passphrase box
+
+      loadAccount();
+    };
+    reader.readAsText(walletFile);
+  } else if (walletSeed) {
+    loadAccount();
+  } else {
+    el('#account-wallet-alert').innerHTML = '';
+    el('#account-wallet-alert').appendChild(yo`<p>You must enter a seed or upload your encrypted wallet file.</p>`);
+  }
+}
+
 // draw account page
 function loadAndDrawAccount(callback) {
   // draw loader
@@ -209,8 +230,14 @@ function loadAndDrawAccount(callback) {
   el('#view-account').innerHTML = '';
   el('#view-account').appendChild(accountView({}));
 
+  el('#account-wallet-file').addEventListener('change', () => {
+    el('#account-wallet-seed').style.display = 'none';
+    el('#account-wallet-passphrase').style.display = 'block';
+  });
   el('#account-wallet-restore').addEventListener('click', loadWallet);
-  el('#account-wallet-upload').addEventListener('click', loadWallet);
+  el('#account-wallet-upload').addEventListener('click', () => {
+    el('#account-wallet-file').click();
+  });
 
   callback(null, true);
 }

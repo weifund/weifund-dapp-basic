@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./node_modules/budo/bin/cmd.js src/app.js:bundle.js -P --cors --open -- -t [ babelify --presets [ es2015 ] ]",
     "browserify": "browserify src/app.js -o bundle.js -t [ babelify --presets [ es2015 ] ]",
-    "surge": "npm run browserify && cp index.html 200.html && surge --domain weifund-basic.surge.sh && rm 200.html && rm bundle.js",
+    "surge": "npm run browserify && cp index.html 200.html && surge --domain weifund-design.surge.sh && rm 200.html && rm bundle.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

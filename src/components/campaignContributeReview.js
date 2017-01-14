@@ -29,7 +29,7 @@ function campaignContributeReview(options) {
       <div class="col-xs-12 col-sm-6">
         <h4>Campaign Contribution</h4>
         <h4>
-          <b><span id="campaign_contributeReview_contributeAmount"><span> Ether</b>
+          <b><span id="campaign_contributeReview_contributeAmount"></span> Ether</b>
           <small>(ETH)</small>
         </h4>
 
@@ -37,7 +37,7 @@ function campaignContributeReview(options) {
 
         <h4>WeiFund Contribution</h4>
         <h4>
-          <b><span id="campaign_contributeReview_weifundContributeAmount"><span> Ether</b>
+          <b><span id="campaign_contributeReview_weifundContributeAmount"></span> Ether</b>
           <small>(ETH)</small>
         </h4>
         <small>Note, this will create a small second transaction for the amount specified.</small>
@@ -61,8 +61,8 @@ function campaignContributeReview(options) {
     </div>
     <div class="row">
       <div class="col-xs-12">
-        <h4>Total Transactions to Send</h4>
-        <h3><span id="campaign_contributeReview_transactionTotal">0</span> Transactions Queued</h3>
+        <h4></h4>
+        <h3><span id="campaign_contributeReview_transactionTotal"></span></h3>
 
         <br />
         <hr />
