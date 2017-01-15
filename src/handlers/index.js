@@ -1,20 +1,14 @@
-// require components
 import { footer, navBar } from '../components';
-
-// document helper
 import { el } from '../document';
 import { t } from '../i18n';
-
-// environment
 import { setDefaultAccount, getDefaultAccount, getCampaign, setCampaign,
   getNetwork, getLocale, getContractEnvironment, txObject } from '../environment';
-
 import buildAllNavToggles from './drawAllNavToggles';
 import buildAllInputSliders from './drawAllInputSliders';
 
 // export
 function buildLocaleToggles() {
-  [].slice.call(document.querySelectorAll('.input-locale-toggle')).forEach(function(inputToggleElement){
+  [].slice.call(document.querySelectorAll('.input-locale-toggle')).forEach((inputToggleElement) => {
     // check if toggle is listening
     if (inputToggleElement.dataset.listening) {
       return;
@@ -31,7 +25,7 @@ function buildLocaleToggles() {
     inputToggleElement.dataset.listening = true;
 
     // add toggle event listener
-    inputToggleElement.addEventListener('change', function(localeToggleEvent){
+    inputToggleElement.addEventListener('change', (localeToggleEvent) => {
       // input toggle value
       const inputToggleValue = inputToggleElement.value;
 
@@ -62,13 +56,13 @@ module.exports = {
   drawNavBar,
   drawFooter,
 
-  loadAndDrawCampaign: require('./loadAndDrawCampaign'),
-  loadAndDrawCampaignRefund: require('./loadAndDrawCampaignRefund'),
-  loadAndDrawCampaignContribute: require('./loadAndDrawCampaignContribute'),
-  loadAndDrawCampaignsList: require('./loadAndDrawCampaignsList'),
-  loadAndDrawAccount: require('./loadAndDrawAccount'),
-  handleConfirmOnPageExit: require('./handleConfirmOnPageExit'),
+  loadAndDrawCampaign: require('./loadAndDrawCampaign').default,
+  loadAndDrawCampaignRefund: require('./loadAndDrawCampaignRefund').default,
+  loadAndDrawCampaignContribute: require('./loadAndDrawCampaignContribute').default,
+  loadAndDrawCampaignsList: require('./loadAndDrawCampaignsList').default,
+  loadAndDrawAccount: require('./loadAndDrawAccount').default,
+  handleConfirmOnPageExit: require('./handleConfirmOnPageExit').default,
 
-  handleCampaignContribution: require('./handleCampaignContribution'),
-  handleCampaignRefund: require('./handleCampaignRefund'),
+  handleCampaignContribution: require('./handleCampaignContribution').default,
+  handleCampaignRefund: require('./handleCampaignRefund').default,
 };

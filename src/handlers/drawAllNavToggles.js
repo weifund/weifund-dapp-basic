@@ -1,7 +1,7 @@
 // document helper
 import { el } from '../document';
 
-// calculate outer height off an element
+
 function outerElHeight(el) {
   var height = el.offsetHeight;
   var style = getComputedStyle(el);
@@ -10,18 +10,15 @@ function outerElHeight(el) {
   return height;
 }
 
-// main export
-module.exports = drawAllNavToggles;
-
 // buidl all nav togglesbuildAllNavToggles
-function drawAllNavToggles() {
-  [].slice.call(document.querySelectorAll('.navbar-toggle')).forEach(function(navBarToggle){
-    navBarToggle.addEventListener('click', function(event){
+export default function drawAllNavToggles() {
+  [].slice.call(document.querySelectorAll('.navbar-toggle')).forEach((navBarToggle) => {
+    navBarToggle.addEventListener('click', () => {
 
       var toggleState = false;
       const toggleTarget = el(`#${navBarToggle.dataset.targetId}`);
 
-      const getToggleState = function() {
+      const getToggleState = () => {
         return toggleState();
       };
 

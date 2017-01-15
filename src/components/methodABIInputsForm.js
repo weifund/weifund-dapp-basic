@@ -1,10 +1,7 @@
 import { parseMethodABIObject } from 'weifund-util';
 
-// export method
-module.exports = methodABIInputsForm;
-
 // main export
-function methodABIInputsForm(options) {
+export default function methodABIInputsForm(options) {
   // the output html
   var outputHTML = ``;
 

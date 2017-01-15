@@ -1,10 +1,7 @@
 import yo from 'yo-yo';
 
-// export method
-module.exports = campaignFocusContractsView;
-
 // main export
-function campaignFocusContractsView(options) {
+export default function campaignFocusContractsView(options) {
   const t = options.t;
 
   return yo`<div id="view-campaign-qr" class="bg-white container row center-block" style="display: none;">

@@ -1,38 +1,21 @@
-// utils
 import { log, etherScanAddressUrl, etherScanTxHashUrl, oneDay } from 'weifund-util';
+import Contracts from 'weifund-contracts';
 
-// document helper
-import { el } from '../document';
-
-// require compocomnents
 import { campaignContributeReceipt } from '../components';
-
-// environment
-import { setDefaultAccount, getDefaultAccount, getCampaign, setCampaign,
-  getNetwork, getLocale, getContractEnvironment, txObject } from '../environment';
-
-// web3
+import { setDefaultAccount, getCampaign, getNetwork, getLocale, txObject } from '../environment';
 import { web3 } from '../web3';
+import { t } from '../i18n';
+import { getRouter } from '../router';
 
 // require contracts
-import Contracts from 'weifund-contracts';
 const contracts = new Contracts('ropsten', web3.currentProvider);
 const campaignRegistry = contracts.CampaignRegistry.instance();
 const campaign = contracts.Campaign.factory;
 
-// router instance
-import { getRouter } from '../router';
 
-// require i18n
-import { t } from '../i18n';
-
-// export method
-module.exports = handleCampaignContribution;
-
-// handle a campaign contribution
-function handleCampaignContribution(event){
+export default function handleCampaignContribution(){
   // get contribution value, and convert
-  const selectedCampaignIdInput = parseInt(el('#campaign_id').value);
+  const selectedCampaignIdInput = parseInt(el('#campaign_id').value, 10);
   const selectedCampaign = getCampaign(selectedCampaignIdInput);
   const contributeValueInput =  el('#campaign_contributeAmount').value;
   const contributeValueWei = web3.toWei(contributeValueInput, 'ether');
@@ -41,19 +24,19 @@ function handleCampaignContribution(event){
   const contributeMethodName = selectedCampaign.contributeMethodABIObject.name;
   const contributeMethodInputParams = selectedCampaign.contributeMethodABIObject.inputs || [];
   const numContributeMethodInputParams = contributeMethodInputParams.length;
-  const contributionIntervalTimeout = 180000; // 15 seconds
+  const contributionIntervalTimeout = 60 * 1000; // 60 seconds
   const contributionReceiptIntervalLength = 1000;
   var contributionIntervalTimer = 0;
   var contributionParams = [];
 
   // contribute to weifund
   const weifundContributionAmount = el('#campaign_weifundContributeAmount').value;
-  const weifundContributionAmountFloat = parseFloat(weifundContributionAmount);
+  const weifundContributionAmountFloat = parseFloat(weifundContributionAmount, 10);
   const weifundContributionAmountEther = web3.toWei(weifundContributionAmount, 'ether');
 
   // handle additional contribution inputs
   if (numContributeMethodInputParams > 0) {
-    contributeMethodInputParams.forEach(function(inputParam, inputParamIndex) {
+    contributeMethodInputParams.forEach((inputParam, inputParamIndex) => {
         // get input type and value
         const inputType = inputParam.type;
         const inputValue = el(`#campaign_contributionInput_${inputParamIndex}`).value;
@@ -87,6 +70,8 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
   if (confirm(confirmationMessage)) {
     // awaiting tx approval message
     resetReviewResponses();
+
+    // info response
     el('#campaign_contribute_info_response').style.display = '';
     el('#campaign_contribute_info_response').innerHTML = '';
     el('#campaign_contribute_info_response').appendChild(yo`<span>
@@ -95,9 +80,13 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
 
     // build contribute params
     contributionParams.push(Object.assign({value: contributeValueWei}, txObject()));
-    contributionParams.push(function(contributeError, contributeResultTxHash){
+    contributionParams.push((contributeError, contributeResultTxHash) => {
+      resetReviewResponses();
+
       if (contributeError) {
-        resetReviewResponses();
+        // reset review page
+
+        // make warning response under error
         el('#campaign_contribute_warning_response').style.display = '';
         el('#campaign_contribute_warning_response').innerHTML = '';
         el('#campaign_contribute_warning_response').appendChild(yo`<span>
@@ -109,7 +98,7 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
 
       // if tx hash present
       if (contributeResultTxHash) {
-        resetReviewResponses();
+        // info response
         el('#campaign_contribute_info_response').style.display = '';
         el('#campaign_contribute_info_response').innerHTML = '';
         el('#campaign_contribute_info_response').appendChild(yo`<span>
@@ -125,10 +114,11 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
       }
 
       // check transaction receipt
-      const receiptInterval = setInterval(function(){
-        web3.eth.getTransactionReceipt(contributeResultTxHash, function(receiptError, receiptResult){
+      const receiptInterval = setInterval(() => {
+        web3.eth.getTransactionReceipt(contributeResultTxHash, (receiptError, receiptResult) => {
+
+          // if error while getting receipt
           if (receiptError) {
-            resetReviewResponses();
             el('#campaign_contribute_warning_response').style.display = '';
             el('#campaign_contribute_warning_response').innerHTML = '';
             el('#campaign_contribute_warning_response').appendChild(yo`<span>
@@ -138,38 +128,43 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
                 ${contributeResultTxHash}
             </span>`);
 
+            // resent review response
+            resetReviewResponses();
+
             // clear receipt interval
             clearInterval(receiptInterval);
           }
 
           // display transaction receipt
           if (receiptResult) {
-            if (receiptResult.blockNumber !== null) {
-              resetReviewResponses();
-              el('#campaign_contribute_info_response').style.display = '';
-              el('#campaign_contribute_info_response').innerHTML = '';
-              el('#campaign_contribute_info_response').appendChild(`<span>
-                Your transaction was processed:
-                ${JSON.stringify(receiptResult, null, 2)}
-                with transaction hash:
-                ${contributeResultTxHash}
-              </span>`);
+            // info response
+            el('#campaign_contribute_info_response').style.display = '';
+            el('#campaign_contribute_info_response').innerHTML = '';
+            el('#campaign_contribute_info_response').appendChild(`<span>
+              Your transaction was processed:
+              ${JSON.stringify(receiptResult, null, 2)}
+              with transaction hash:
+              ${contributeResultTxHash}
+            </span>`);
 
-              el('#view-campaign-contribute-receipt').innerHTML = '';
-              el('#view-campaign-contribute-receipt').appendChild(campaignContributeReceipt({
-                receipt: receiptResult,
-                from: txObject().from,
-                to: selectedCampaign.addr,
-                campaignObject: selectedCampaign,
-                getLocale, web3,
-              }));
+            // set contribution receipt
+            el('#view-campaign-contribute-receipt').innerHTML = '';
+            el('#view-campaign-contribute-receipt').appendChild(campaignContributeReceipt({
+              receipt: receiptResult,
+              from: txObject().from,
+              to: selectedCampaign.addr,
+              campaignObject: selectedCampaign,
+              getLocale, web3,
+            }));
 
-              // clear receipt interval
-              clearInterval(receiptInterval);
+            // resent review response
+            resetReviewResponses();
 
-              // receipt page
-              getRouter()(`/campaign/${selectedCampaign.id}/contribute/receipt`);
-            }
+            // clear receipt interval
+            clearInterval(receiptInterval);
+
+            // receipt page
+            getRouter()(`/campaign/${selectedCampaign.id}/contribute/receipt`);
           }
         });
 
@@ -178,7 +173,10 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
 
         // if interval checking expires
         if (contributionIntervalTimer >= contributionIntervalTimeout) {
+          // timeout, reset review
           resetReviewResponses();
+
+          // present response error
           el('#campaign_contribute_warning_response').style.display = '';
           el('#campaign_contribute_warning_response').innerHTML = '';
           el('#campaign_contribute_warning_response').appendChild(yo`<span>
@@ -193,13 +191,6 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
         }
       }, contributionReceiptIntervalLength);
     });
-
-    // send weifund tx
-    if (parseFloat(weifundContributionAmount) > 0) {
-      web3.eth.sendTransaction(Object.assign({value: weifundContributionAmountEther}, txObject()), function(weifundContributionError, weifundContributionTxHash){
-        console.log('WeiFund contribution', weifundContributionError, weifundContributionTxHash);
-      });
-    }
 
     // contribute to campaign
     campaignContractInstance[contributeMethodName].apply(campaignContractInstance, contributionParams);

@@ -69,7 +69,7 @@ function generateSeedWithEntropy() {
 /**
  * Use the provided entropy to generate a seed.
  */
-export default function handleGenerateWallet(event) {
+export default function handleGenerateWallet() {
   generateSeedWithEntropy()
     .then(seedPhrase => {
       setSeed(seedPhrase);

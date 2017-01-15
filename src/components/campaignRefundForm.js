@@ -1,15 +1,12 @@
 import yo from 'yo-yo';
 import methodABIInputsForm from './methodABIInputsForm';
 
-// export method
-module.exports = campaignRefundForm;
-
 /* <div id="campaignContribution_inputs">
   ${methodABIInputsForm({campaignObject: campaignObject, methodType: 'refund'})}
 </div> */
 
 // main export
-function campaignRefundForm(options) {
+export default function campaignRefundForm(options) {
   const campaignObject = options.campaignObject;
   const defaultAccount = options.defaultAccount;
   const t = options.t;

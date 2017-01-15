@@ -1,32 +1,21 @@
-// utils
 import { log, etherScanAddressUrl, etherScanTxHashUrl } from 'weifund-util';
+import Contracts from 'weifund-contracts';
+import { getCampaigns } from 'weifund-lib';
 
-// document helper
 import { el } from '../document';
-
-// require components
 import { campaignHighlightMedium, viewLoader, campaignsView } from '../components';
-
-// environment
 import { setDefaultAccount, getDefaultAccount, getStoredCampaigns, setCampaign,
   getNetwork, getLocale, getContractEnvironment, txObject } from '../environment';
-
-// require web3 i18n  router  loadCampaign method
-import { getCampaigns } from 'weifund-lib';
 import { refreshPageButtons } from '../router';
 import { t } from '../i18n';
 import { web3 } from '../web3';
 
 // require contracts
-import Contracts from 'weifund-contracts';
 const contracts = new Contracts('ropsten', web3.currentProvider);
 const campaignRegistry = contracts.CampaignRegistry.instance();
 const curationRegistry = contracts.CurationRegistry.instance();
 
-// export method
-module.exports = loadAndDrawCampaignsList;
 
-// draw campaigns
 function drawCampaigns(campaignsToDraw) {
   // reset inner html
   el('#staffpicks_list').innerHTML = ``;
@@ -63,7 +52,7 @@ function drawCampaigns(campaignsToDraw) {
 }
 
 // load all campaigns
-function loadAndDrawCampaignsList() {
+export default function loadAndDrawCampaignsList() {
   // the campaign id selector array
   var selectorArray = [];
 
@@ -72,7 +61,7 @@ function loadAndDrawCampaignsList() {
   el('#view-list').appendChild(viewLoader({ t }));
 
   // get the number of campaigns then load campaigns list accordingly
-  campaignRegistry.numCampaigns(function(numCampaignsError, numCampaignsResult){
+  campaignRegistry.numCampaigns((numCampaignsError, numCampaignsResult) => {
     if (numCampaignsError) {
       alert(`Error while loading campaigns ${numCampaignsError} ${JSON.stringify(numCampaignsError)}`);
       return;
@@ -92,7 +81,7 @@ function loadAndDrawCampaignsList() {
       // set campaign selector
       // array (i.e. array of campaignIDs)
       selector: [0],
-    }, function(loadCampaignsError, loadCampaignsResult){
+    }, (loadCampaignsError, loadCampaignsResult) => {
 
       // handle errors
       if (loadCampaignsError) {
@@ -109,7 +98,7 @@ function loadAndDrawCampaignsList() {
 
       // if load result is nice
       if (typeof loadCampaignsResult === 'object') {
-        Object.keys(loadCampaignsResult).forEach(function(campaignID){
+        Object.keys(loadCampaignsResult).forEach((campaignID) => {
           setCampaign(campaignID, loadCampaignsResult[campaignID]);
 
           // draw campaigns everytime

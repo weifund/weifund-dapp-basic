@@ -1,10 +1,7 @@
 import yo from 'yo-yo';
 
-// export method
-module.exports = accountView;
-
 // main export
-function accountView(options) {
+export default function accountView(options) {
   return yo`<div>
     <div id="view-account-restore" class="row center-block container"
       style=" display: none; margin-top: 8%;">

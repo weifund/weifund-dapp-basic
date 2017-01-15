@@ -15,7 +15,7 @@ function parseDisambiguatedDescription(campaignDataObject, locale) {
   //`A crowdfund that is valid enough to be listed, but does not have a description.`
 }
 
-const campaignFocusView = function(options) {
+export default function campaignFocusView(options) {
   const t = options.t;
   const campaignObject = options.campaignObject;
   const web3 = options.web3;

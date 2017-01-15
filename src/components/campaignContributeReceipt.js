@@ -1,10 +1,7 @@
 import yo from 'yo-yo';
 
-// export method
-module.exports = campaignContributeReceipt;
-
 // main export
-function campaignContributeReceipt(options){
+export default function campaignContributeReceipt(options){
   const t = options.t;
   const to = options.to;
   const from = options.from;

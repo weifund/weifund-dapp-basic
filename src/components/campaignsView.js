@@ -1,10 +1,7 @@
 import yo from 'yo-yo';
 
-// export method
-module.exports = campaignsView;
-
 // main export
-function campaignsView(options) {
+export default function campaignsView(options) {
   const t = options.t;
 
   return yo`<div>

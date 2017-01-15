@@ -1,17 +1,9 @@
-// environment
-import { setDefaultAccount } from './environment';
-
-// ipfs instance and setup
 import networkDetective from 'web3-network-detective';
 
-// web3 instance and setup method, and ipfs
+import { setDefaultAccount } from './environment';
 import  { web3, setupWeb3Provider } from './web3';
 import  { setupIPFSProvider } from './ipfs';
-
-// router instance
 import { setupRouter, getRouter } from './router';
-
-// handlers draw
 import { drawNavBar, drawFooter, loadAndDrawCampaign,
   loadAndDrawCampaignsList, loadAndDrawCampaignContribute, loadAndDrawCampaignRefund, handleConfirmOnPageExit,
   loadAndDrawAccount } from './handlers';

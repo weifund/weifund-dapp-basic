@@ -6,11 +6,8 @@ import campaignContributeReview from './campaignContributeReview';
 import campaignContributeNav from './campaignContributeNav';
 import campaignContributeWallet from './campaignContributeWallet';
 
-// export method
-module.exports = campaignContributeView;
-
 // main export
-function campaignContributeView(options) {
+export default function campaignContributeView(options) {
   const campaignObject = options.campaignObject;
   const t = options.t;
 

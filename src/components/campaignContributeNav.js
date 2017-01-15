@@ -1,10 +1,7 @@
 import yo from 'yo-yo';
 
-// export method
-module.exports = campaignContributeNav;
-
 // main export
-function campaignContributeNav(options) {
+export default function campaignContributeNav(options) {
   const t = options.t;
 
   return yo`<div>

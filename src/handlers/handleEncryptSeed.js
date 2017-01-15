@@ -1,10 +1,12 @@
 import promisify from 'es6-promisify';
 import lightwallet from 'eth-lightwallet';
 import QRious from 'qrious';
+import yo from 'yo-yo';
 
 import { viewLoader } from '../components';
 import { el } from '../document';
 import { t } from '../i18n';
+import { setDefaultAccount } from '../environment';
 import { createEncryptedKeystore, getSeed, setKeystore, setWalletProvider } from '../keystore';
 import { getRouter } from '../router';
 import { web3 } from '../web3';
@@ -20,7 +22,15 @@ export function contributionBalanceUpdater(address) {
     return getBalance(address)
       .then(balance => {
         const balanceEl = el('#view-campaign-contribute-wallet-balance .account-balance');
-        balanceEl.innerHTML = web3.fromWei(balance, 'ether');
+        const formBalanceEl = el('#defaultAccountBalance');
+        const balanceEther = web3.fromWei(balance, 'ether');
+
+        balanceEl.innerHTML = '';
+        balanceEl.appendChild(yo`<span>${balanceEther.toString(10) || '0'}</span>`);
+
+        formBalanceEl.innerHTML = '';
+        formBalanceEl.appendChild(yo`<span>${balanceEther.toString(10) || '0'}</span>`);
+
         if (balance.gte(web3.toWei(1, 'ether'))) {
           const contributeEl = el('#view-campaign-contribute-wallet-balance a.contribute');
           contributeEl.removeAttribute('disabled');
@@ -58,7 +68,12 @@ export function updateWalletUI() {
     .then(accounts => {
       const address = `0x${accounts[0]}`;
       const addressEl = el('#view-campaign-contribute-wallet-balance .user-address');
-      addressEl.innerHTML = address;
+      addressEl.innerHTML = '';
+      addressEl.appendChild(yo`<span>${address}</span>`);
+      const defaultAddressEl = el('#defaultAccountAddress');
+      defaultAddressEl.innerHTML = '';
+      defaultAddressEl.appendChild(yo`<span>${address}</span>`);
+      setDefaultAccount(address);
 
       new QRious({
         element: el('#campaign-contribute-qrcode'),

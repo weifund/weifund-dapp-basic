@@ -1,8 +1,6 @@
 import yo from 'yo-yo';
 
-module.exports = navBar;
-
-function navBar(options) {
+export default function navBar(options) {
   const t = options.t;
 
   return yo`<nav class="navbar nav navbar-fixed-top row">

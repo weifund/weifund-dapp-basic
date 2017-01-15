@@ -3,11 +3,8 @@ import yo from 'yo-yo';
 // object to html
 import objectView from './objectView';
 
-// export method
-module.exports = campaignFocusDetailsView;
-
 // main export
-function campaignFocusDetailsView(options) {
+export default function campaignFocusDetailsView(options) {
   const t = options.t;
 
   const campaignObject = options.campaignObject;

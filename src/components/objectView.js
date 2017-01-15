@@ -12,11 +12,8 @@ function toCapitalizedWords(name) {
   return words.map(capitalize).join(" ");
 }
 
-// main export
-module.exports = objectView;
-
 // intake object, return html
-function objectView(options) {
+export default function objectView(options) {
   var returnedElement = yo`<div></div>`;
   const object = options.object;
   const layout = options.layout;

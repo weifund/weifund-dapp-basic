@@ -2,11 +2,8 @@ import yo from 'yo-yo';
 
 import oneDay from 'weifund-util';
 
-// export method
-module.exports = campaignMedium;
-
 // main export
-function campaignMedium(options) {
+export default function campaignMedium(options) {
   const campaignObject = options.campaignObject;
   const web3 = options.web3;
   const getLocale = options.getLocale;

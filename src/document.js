@@ -1,9 +1,4 @@
 // simple query shortcut
-function el(id) {
+export function el(id) {
   return document.querySelector(id);
-};
-
-// export
-module.exports = {
-  el,
-};
+}

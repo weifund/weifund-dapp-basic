@@ -3,11 +3,8 @@ import yo from 'yo-yo';
 // get nav
 import campaignContributeNav from './campaignContributeNav';
 
-// export method
-module.exports = campaignContributeWallet;
-
 // main export
-function campaignContributeWallet(options) {
+export default function campaignContributeWallet(options) {
   const t = options.t;
   const campaignObject = options.campaignObject;
   const defaultAccount = options.defaultAccount;

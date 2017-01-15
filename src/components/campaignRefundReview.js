@@ -3,11 +3,8 @@ import yo from 'yo-yo';
 // main import
 import methodABIInputsReview from './methodABIInputsReview';
 
-// export method
-module.exports = campaignRefundReview;
-
 // main export
-function campaignRefundReview(options) {
+export default function campaignRefundReview(options) {
   const campaignObject = options.campaignObject;
   const defaultAccount = options.defaultAccount;
   const t = options.t;

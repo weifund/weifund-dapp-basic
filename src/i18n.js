@@ -21,11 +21,6 @@ const polyglot = new Polyglot({
 });
 
 // translate function
-function t(phraseKey, phraseData) {
+export function t(phraseKey, phraseData) {
   return polyglot.t(phraseKey, phraseData);
-};
-
-// export i18n functions
-module.exports = {
-  t,
-};
+}

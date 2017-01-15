@@ -1,10 +1,7 @@
 import yo from 'yo-yo';
 
-// export method
-module.exports = campaignFocusNav;
-
 // main export
-function campaignFocusNav(options) {
+export default function campaignFocusNav(options) {
   const campaignObject = options.campaignObject;
   const t = options.t;
 

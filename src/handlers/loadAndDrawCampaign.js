@@ -1,32 +1,17 @@
-// requires
 import QRious from 'qrious';
+import { getCampaigns } from 'weifund-lib';
 
-// environment and components
 import { setDefaultAccount, getDefaultAccount, getCampaign, setCampaign,
   getNetwork, getLocale, getContractEnvironment, txObject } from '../environment';
 import { campaignFocusView, viewLoader } from '../components';
-
-// document helper
 import { el } from '../document';
-
-// web3, ipfs
 import { web3 } from '../web3';
 import { ipfs } from '../ipfs';
-
-// loadCampaign method
-import { getCampaigns } from 'weifund-lib';
-
-// router instance
 import { refreshPageButtons } from '../router';
-
-// require i18n
 import { t } from '../i18n';
 
-// export load and draw campaign
-module.exports = loadAndDrawCampaign;
 
-// draw campaign
-function loadAndDrawCampaign(campaignID, callback) {
+export default function loadAndDrawCampaign(campaignID, callback) {
   // draw loader
   el('#view-focus').innerHTML = '';
   el('#view-focus').appendChild(viewLoader({ t }));
@@ -36,7 +21,7 @@ function loadAndDrawCampaign(campaignID, callback) {
     network: 'ropsten',
 
     selector: [campaignID],
-  }, function(campaignLoadError, campaignDataObject){
+  }, (campaignLoadError, campaignDataObject) => {
     if (campaignLoadError) {
       log('Campaign load while drawing...', campaignLoadError);
       callback(campaignLoadError, null);

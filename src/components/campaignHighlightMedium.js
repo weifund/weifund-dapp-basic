@@ -1,11 +1,8 @@
 import yo from 'yo-yo';
 import { oneDay } from 'weifund-util';
 
-// export highlight medium
-module.exports = campaignHighlightMedium;
-
 // draw highlight campaign
-function campaignHighlightMedium(options) {
+export default function campaignHighlightMedium(options) {
   const t = options.t;
   const campaignObject = options.campaignObject;
   const web3 = options.web3;

@@ -16,27 +16,27 @@ var transactions = [];
 var defaultAccount = '';
 
 // get transactions
-function getTransactions() {
+export function getTransactions() {
   return personalTransactions;
 }
 
 // transactions
-function setTransaction(transactionId, transactionHash) {
+export function setTransaction(transactionId, transactionHash) {
   personalTransactions[transactionId] = transactionHash;
 }
 
 // set default account
-function setDefaultAccount(account) {
+export function setDefaultAccount(account) {
   defaultAccount = account;
 }
 
 // get default account
-function getDefaultAccount() {
+export function getDefaultAccount() {
   return defaultAccount;
 }
 
 // txObject builder
-function txObject() {
+export function txObject() {
   return Object.assign({}, {
     from: getDefaultAccount(),
     gas: 3141592,
@@ -46,53 +46,36 @@ function txObject() {
 // state related here
 // this and locale will be localstore
 // environment
-function getNetwork(){
+export function getNetwork(){
   return 'testnet'; // or livenet
 }
 
 // get current locale
-function getLocale() {
+export function getLocale() {
   return store.get('locale') || 'en';
 }
 
 // set locale
-function setLocale(locale) {
+export function setLocale(locale) {
   store.set('locale', locale);
 }
 
 // get contract environment
-function getContractEnvironment() {
+export function getContractEnvironment() {
   return 'ropsten';
 }
 
 // get all campaigns
-function getStoredCampaigns() {
+export function getStoredCampaigns() {
   return campaigns;
 }
 
 // get single campaign
-function getCampaign(campaignId) {
+export function getCampaign(campaignId) {
   return campaigns[parseInt(campaignId, 10)];
 }
 
 // set campaign data
-function setCampaign(campaignId, campaignData) {
+export function setCampaign(campaignId, campaignData) {
   campaigns[parseInt(campaignId, 10)] = campaignData;
 }
-
-// export campaign
-module.exports = {
-  getDefaultAccount,
-  getContractEnvironment,
-  setDefaultAccount,
-  txObject,
-  campaigns,
-  getStoredCampaigns,
-  getCampaign,
-  setCampaign,
-  getNetwork,
-  getLocale,
-  setLocale,
-  setTransaction,
-  getTransactions,
-};

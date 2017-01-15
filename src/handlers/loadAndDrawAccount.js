@@ -1,38 +1,23 @@
 import yo from 'yo-yo';
-
-// requires
 import { keyStore } from 'eth-lightwallet';
 import store from 'store';
-
-// utils
 import { log, etherScanAddressUrl, parseSolidityMethodName,
   etherScanTxHashUrl, oneDay, emptyWeb3Address } from 'weifund-util';
+  import Contracts from 'weifund-contracts';
 
-// document helper
 import { el } from '../document';
-
-// env
 import { setDefaultAccount, getDefaultAccount, getCampaign, setCampaign,
   getNetwork, getLocale, getContractEnvironment, txObject } from '../environment';
-
-// components
 import { viewLoader, accountView } from '../components';
-
-// web3
 import { web3 } from '../web3';
 import { ipfs } from '../ipfs';
 import { refreshPageButtons, getRouter } from '../router';
 import { t } from '../i18n';
 
-// Contracts
-import Contracts from 'weifund-contracts';
 const contracts = new Contracts(getContractEnvironment(), web3.currentProvider);
 const IssuedToken = contracts.IssuedToken.factory;
 
-// export module
-module.exports = loadAndDrawAccount;
 
-// load account
 function loadAccount() {
   // route to panel page
   getRouter()('/account/panel');
@@ -222,7 +207,7 @@ function loadWallet() {
 }
 
 // draw account page
-function loadAndDrawAccount(callback) {
+export default function loadAndDrawAccount(callback) {
   // draw loader
   el('#view-focus').innerHTML = '';
   el('#view-focus').appendChild(viewLoader({ t }));

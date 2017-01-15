@@ -1,10 +1,7 @@
 import yo from 'yo-yo';
 
-// export module
-module.exports = viewLoader;
-
 // main component
-function viewLoader(options) {
+export default function viewLoader(options) {
   // handle no options
   if (typeof options === 'undefined') {
     options = {};

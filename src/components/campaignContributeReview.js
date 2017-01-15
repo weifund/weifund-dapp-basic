@@ -1,11 +1,8 @@
 import yo from 'yo-yo';
 import campaignContributeNav from './campaignContributeNav';
 
-// export method
-module.exports = campaignContributeReview;
-
 // main export
-function campaignContributeReview(options) {
+export default function campaignContributeReview(options) {
   const t = options.t;
 
   return yo`<div id="view-campaign-contribute-review"

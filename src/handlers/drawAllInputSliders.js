@@ -10,12 +10,9 @@ function outerElWidth(el) {
   return width;
 }
 
-// export method
-module.exports = drawAllInputSliders;
 
-// build all input sliders
-function drawAllInputSliders() {
-  [].slice.call(document.querySelectorAll('.input-slider')).forEach(function(inputSliderElement){
+export default function drawAllInputSliders() {
+  [].slice.call(document.querySelectorAll('.input-slider')).forEach((inputSliderElement) => {
     // setup rail and bar
     const inputSliderRailHighlight = inputSliderElement.querySelector('.input-slider-rail-highlight');
     const inputSliderRail = inputSliderElement.querySelector('.input-slider-rail');
@@ -23,24 +20,24 @@ function drawAllInputSliders() {
     var inputSliderDraggable = false;
 
     // setup slider state getter
-    const getSliderState = function() {
+    const getSliderState = () => {
       return inputSliderDraggable;
     };
 
     // setup slider mouseup handler
-    const handleInputSliderMouseUp = function(event) {
+    const handleInputSliderMouseUp = () => {
       inputSliderDraggable = false;
     };
 
     // setup slider mouse down handler
-    const handleInputSliderMouseDown = function(event) {
+    const handleInputSliderMouseDown = (e) => {
       inputSliderDraggable = true;
       handleInputSliderMouseMove(event);
-      event.preventDefault();
+      e.preventDefault();
     };
 
     // setup slider mouse move handler
-    const handleInputSliderMouseMove = function(event){
+    const handleInputSliderMouseMove = () => {
       if (!getSliderState()) {
         return;
       }
@@ -94,7 +91,7 @@ function drawAllInputSliders() {
       const dataInputElement = el(`#${inputSliderElement.dataset.inputId}`);
 
       // handle input element change
-      const handleInputElementChange = function(event) {
+      const handleInputElementChange = () => {
         var inputElementValue = parseInt(dataInputElement.value, 10);
 
         if (inputElementValue > 100) {
@@ -129,6 +126,5 @@ function drawAllInputSliders() {
     inputSliderRail.addEventListener('mouseup', handleInputSliderMouseUp, false);
     inputSliderBar.addEventListener('mouseup', handleInputSliderMouseUp, false);
     document.body.addEventListener('mouseup', handleInputSliderMouseUp, false);
-
   });
 }

@@ -1,10 +1,7 @@
 import yo from 'yo-yo';
 
-// export method
-module.exports = campaignRefundReceipt;
-
 // main export
-function campaignRefundReceipt(options){
+export default function campaignRefundReceipt(options){
   const t = options.t;
 
   return yo`<div class="row center-block container"

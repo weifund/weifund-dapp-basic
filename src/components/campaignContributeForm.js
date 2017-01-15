@@ -3,11 +3,7 @@ import yo from 'yo-yo';
 import campaignContributeNav from './campaignContributeNav';
 import { getNetwork } from '../environment';
 
-// export main
-module.exports = campaignContributeForm;
-
-// main export
-function campaignContributeForm(options) {
+export default function campaignContributeForm(options) {
   const campaignObject = options.campaignObject;
   const defaultAccount = options.defaultAccount;
   const t = options.t;
@@ -43,33 +39,6 @@ function campaignContributeForm(options) {
       </div>
 
       <br />
-
-      <h3>Support WeiFund</h3>
-      <h4>Help support WeiFund by making a small donation to the team.</h4>
-      <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-8">
-          <div class="input-slider input-slider-lg"
-            data-input-id="campaign_weifundContributeAmount">
-            <div class="input-slider-rail">
-              <div class="input-slider-rail-highlight"></div>
-              <div class="input-slider-bar"></div>
-            </div>
-          </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-4">
-          <div class="input-group">
-            <input type="text" id="campaign_weifundContributeAmount"
-              value=".03" class="form-control input-lg"
-              placeholder="i.e. 3" aria-describedby="basic-addon2" />
-            <span class="input-group-addon" id="basic-addon2">ether</span>
-          </div>
-
-        </div>
-      </div>
-
-      <small>Note, this will create a small second transaction. We thank for your support.</small>
-
-      <br /><br />
 
       <h3>Disclaimer</h3>
       <p>You must read and agree to this disclaimer before contributing to this campaign.</p>
@@ -107,7 +76,7 @@ WeiFund (A) expressly disclaims the accuracy, adequacy, or completeness of any d
       <h5>Ethereum (ETH) ${getNetwork()} Network*</h5>
       <br />
       <h4>Selected Account</h4>
-      <h5>${defaultAccount()}</h5>
+      <h5 id="defaultAccountAddress">0x</h5>
       <br />
       <h4>Selected Account Balance</h4>
       <h5><span id="defaultAccountBalance">0</span> Ether (ETH)</h5>

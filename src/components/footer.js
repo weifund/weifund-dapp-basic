@@ -1,10 +1,7 @@
 import yo from 'yo-yo';
 
-// export method
-module.exports = footer;
-
 // main export
-function footer(options) {
+export default function footer(options) {
   const t = options.t;
 
   return yo`<footer class="row text-light-gray no-padding-xs no-padding-sm">

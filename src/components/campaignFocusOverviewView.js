@@ -1,6 +1,6 @@
 import yo from 'yo-yo';
 
-const campaignFocusOverviewView = function(options) {
+export default function campaignFocusOverviewView(options) {
   var mailChimpFormAction = '';
   var showMailChimp = false;
 
