@@ -1,6 +1,8 @@
 import { log, etherScanAddressUrl, etherScanTxHashUrl, oneDay } from 'weifund-util';
 import Contracts from 'weifund-contracts';
+import yo from 'yo-yo';
 
+import { el } from '../document';
 import { campaignContributeReceipt } from '../components';
 import { setDefaultAccount, getCampaign, getNetwork, getLocale, txObject } from '../environment';
 import { web3 } from '../web3';
@@ -27,38 +29,30 @@ export default function handleCampaignContribution(){
   const contributionIntervalTimeout = 60 * 1000; // 60 seconds
   const contributionReceiptIntervalLength = 1000;
   var contributionIntervalTimer = 0;
-  var contributionParams = [];
-
-  // contribute to weifund
-  const weifundContributionAmount = el('#campaign_weifundContributeAmount').value;
-  const weifundContributionAmountFloat = parseFloat(weifundContributionAmount, 10);
-  const weifundContributionAmountEther = web3.toWei(weifundContributionAmount, 'ether');
+  var contributionParams = [[]]; // for the first arg
 
   // handle additional contribution inputs
-  if (numContributeMethodInputParams > 0) {
+  /* if (numContributeMethodInputParams > 0) {
     contributeMethodInputParams.forEach((inputParam, inputParamIndex) => {
-        // get input type and value
-        const inputType = inputParam.type;
-        const inputValue = el(`#campaign_contributionInput_${inputParamIndex}`).value;
+      // get input type and value
+      const inputType = inputParam.type;
+      const inputValue = el(`#campaign_contributionInput_${inputParamIndex}`).value;
 
-        // handle contribute input data
-        // bool to parseInt, everything else as a string
-        if (inputType.indexOf('bool') !== -1) {
-          contributionParams.push(parseInt(inputValue));
-        } else {
-          contributionParams.push(inputValue);
-        }
+      // handle contribute input data
+      // bool to parseInt, everything else as a string
+      if (inputType.indexOf('bool') !== -1) {
+        contributionParams.push(parseInt(inputValue));
+      } else {
+        contributionParams.push(inputValue);
+      }
     });
-  }
+  } */
 
   // confirmation message
   const confirmationMessage = `Contribution Confirmation:
 
-Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')} ether to the "${selectedCampaign.name}" campaign and make a second donation transaction of ${web3.fromWei(weifundContributionAmountEther, 'ether')} ether to WeiFund?
-
-  WARNING:
-  If you selected a donatation to WeiFUnd, this will create a second transaction. Do not be alarmed.
-  `;
+Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')} ether to the "${selectedCampaign.name}" campaign?
+`;
 
   // reset review responses
   const resetReviewResponses = function () {
@@ -78,21 +72,29 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
       Your contribution transaction is awaiting approval...
     </span>`);
 
+    web3.eth.getAccounts((err, result) => {
+      console.log(err, result);
+    });
+
     // build contribute params
-    contributionParams.push(Object.assign({value: contributeValueWei}, txObject()));
+    contributionParams.push(Object.assign({}, {
+      value: contributeValueWei,
+      from: txObject().from.slice(2),
+      gas: txObject().gas,
+    }));
     contributionParams.push((contributeError, contributeResultTxHash) => {
       resetReviewResponses();
 
       if (contributeError) {
-        // reset review page
-
         // make warning response under error
         el('#campaign_contribute_warning_response').style.display = '';
         el('#campaign_contribute_warning_response').innerHTML = '';
         el('#campaign_contribute_warning_response').appendChild(yo`<span>
+        <h2 style="margin-top: 0px;">Error While Sending Transaction</h2>
+        <p>
           There was an error while sending your contribution transaction:
-          ${String(JSON.stringify(contributeError, null, 2))}
-        </span>`);
+          ${contributeError.toString()} ${String(JSON.stringify(contributeError, null, 2))}
+        </p></span>`);
         return;
       }
 
@@ -123,6 +125,7 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
             el('#campaign_contribute_warning_response').innerHTML = '';
             el('#campaign_contribute_warning_response').appendChild(yo`<span>
               There was an error while getting your transaction receipt:
+                ${receiptError}
                 ${String(JSON.stringify(receiptError, null, 2))}
                 with transaction hash:
                 ${contributeResultTxHash}
@@ -193,6 +196,7 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
     });
 
     // contribute to campaign
-    campaignContractInstance[contributeMethodName].apply(campaignContractInstance, contributionParams);
+    campaignContractInstance[contributeMethodName]
+      .apply(campaignContractInstance, contributionParams);
   }
 }

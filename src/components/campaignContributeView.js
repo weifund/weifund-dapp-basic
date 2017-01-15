@@ -40,6 +40,7 @@ export default function campaignContributeView(options) {
   ${campaignContributeReview({
     campaignObject: options.campaignObject,
     t,
+    getNetwork: options.getNetwork,
     getLocale: options.getLocale,
     defaultAccount: options.defaultAccount,
     web3: options.web3,

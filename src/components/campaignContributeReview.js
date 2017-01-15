@@ -26,25 +26,26 @@ export default function campaignContributeReview(options) {
       <div class="col-xs-12 col-sm-6">
         <h4>Campaign Contribution</h4>
         <h4>
-          <b><span id="campaign_contributeReview_contributeAmount"></span> Ether</b>
+          <b><span id="campaign_contributeReview_contributeAmount">0</span> Ether</b>
           <small>(ETH)</small>
         </h4>
 
-        <br />
+        <br /><br />
 
-        <h4>WeiFund Contribution</h4>
+        <h4>Network/Provider</h4>
         <h4>
-          <b><span id="campaign_contributeReview_weifundContributeAmount"></span> Ether</b>
-          <small>(ETH)</small>
+          ${options.getNetwork()} <small>(Network)</small><br />
+          Hooked Web3 Provider <small>(Provider)</small>
         </h4>
-        <small>Note, this will create a small second transaction for the amount specified.</small>
-
       </div>
       <div class="col-xs-12 col-sm-6">
-
         <h4>Your Account</h4>
-        <h4><b>${options.defaultAccount()}</b> </h4>
-        <small><i>Balance: <b>300</b> Ether (ETH)</i></small>
+        <h4><b id="campaign_reviewAccountAddress"></b> </h4>
+        <small>
+          <i>Balance:
+            <b id="campaign_reviewAccountBalance">0</b>
+            Ether (ETH)</i>
+        </small>
 
         <br />
         <br />
@@ -73,7 +74,7 @@ export default function campaignContributeReview(options) {
         <br />
         <br />
 
-        <button id="campaign_reviewContributeButton" class="btn btn-primary btn-lg">
+        <button id="campaign-review-contribute-button" class="btn btn-primary btn-lg">
           Make Contribution
         </button>
 

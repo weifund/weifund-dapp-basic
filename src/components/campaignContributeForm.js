@@ -12,7 +12,7 @@ export default function campaignContributeForm(options) {
   <div id="view-campaign-contribute-form" class="row center-block container"
     style="margin-top: 80px; margin-bottom: 150px;">
     <div class="col-xs-12 col-sm-6 col-md-8 no-border-xs no-border-sm"
-      style="border-right: 3px solid #E1E1E1; padding-right: 50px;">
+      style="padding-right: 50px;">
       <h3>Contribution Amount</h3>
       <h4>Please select the amount you want to contribute to this campaign.</h4>
       <div class="row">
@@ -55,21 +55,18 @@ WeiFund (A) expressly disclaims the accuracy, adequacy, or completeness of any d
       <br />
       <br />
       <br />
-      <a href="/campaign/${campaignObject.id}/contribute/review"
-        id="campaign-contribute-review-button" class="btn btn-primary btn-lg">
+      <button id="campaign-contribute-review-button" class="btn btn-primary btn-lg">
         Review Contribution
-      </a>
+      </button>
       <br /><br />
-      <div id="campaign-contribute-form-response-wrapper"
+      <div id="campaign-contribute-form-response"
         class="alert alert-dismissible alert-warning" style="display: none;">
         <h4>Warning!</h4>
-        <p id="campaign-contribute-form-response-body">
-          Best check yo self, you're not looking too good. Nulla vitae elit libero, a pharetra augue. Praesent commodo cursus magna, <a href="#" class="alert-link">vel scelerisque nisl consectetur et</a>.
-        </p>
+        <p></p>
       </div>
     </div>
     <div class="col-xs-12 col-sm-6 col-md-4 no-padding-xs text-break-all"
-      style="padding-left: 50px;">
+      style="border-left: 3px solid #E1E1E1; padding-left: 50px;">
       <h3>Technical Details</h3>
       <br />
       <h4>Network</h4>

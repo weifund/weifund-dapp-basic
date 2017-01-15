@@ -71,10 +71,8 @@ export default function loadAndDrawCampaignContribute(campaignID, callback) {
       getLocale,
       web3,
       defaultAccount: getDefaultAccount,
+      getNetwork: getNetwork,
     }));
-
-    // initially update review page
-    handleCampaignContributeReview();
 
     // weifund amount contributor amount
     el('#campaign_contributeAmount').addEventListener('change', handleCampaignContributeReview);
@@ -83,7 +81,14 @@ export default function loadAndDrawCampaignContribute(campaignID, callback) {
     el('#campaign-contribute-disclaimer').addEventListener('change', handleCampaignContributeReview);
 
     // handleCampaignContribution
-    el('#campaign_reviewContributeButton').addEventListener('click', handleCampaignContribution);
+    el('#campaign-contribute-review-button').addEventListener('click', () => {
+      if(handleCampaignContributeReview()) {
+        getRouter()(`/campaign/${campaignID}/contribute/review`);
+      }
+    });
+
+    // final contribution button
+    el('#campaign-review-contribute-button').addEventListener('click', handleCampaignContribution);
 
     // wallet and password generation
     el('#view-campaign-contribute-wallet a.generate').addEventListener('click', handleGenerateWallet);
