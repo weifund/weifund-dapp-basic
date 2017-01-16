@@ -11,7 +11,7 @@ export default function campaignContributeWallet(options) {
 
   return yo`<div>
     <div id="view-campaign-contribute-wallet-balance" class="row center-block container"
-      style=" display: none; margin-top: 40px;">
+      style=" display: none; margin-top: 10px;">
 
       <h2>YOUR LIGHTWALLET</h2>
 
@@ -33,7 +33,7 @@ export default function campaignContributeWallet(options) {
 
           <h4>This is the QR code for your wallet address.</h4>
 
-          <h4>Please fill your account with Ether, so you can contribute to the campaign.</h4>
+          <h4><b>Please fill your account with Ether</b>, so you can contribute to the campaign.</h4>
 
           <br />
 
@@ -44,7 +44,9 @@ export default function campaignContributeWallet(options) {
             </div>
             <div class="col-sm-6"><br />
               <a href="/campaign/${campaignObject.id}/contribute/form" disabled
-                class="contribute btn btn-primary">CONTRIBUTE TO CAMPAIGN</a>
+                class="contribute btn btn-primary">
+                CONTRIBUTE TO CAMPAIGN
+              </a>
             </div>
           </div>
 
@@ -57,14 +59,14 @@ export default function campaignContributeWallet(options) {
     </div>
 
     <div id="view-campaign-contribute-wallet-download" class="row center-block container"
-      style=" display: none; margin-top: 40px;">
+      style=" display: none; margin-top: 10px;">
 
       <h2>YOUR LIGHTWALLET</h2>
 
       <br />
       <br />
 
-      <p>We recommend you save a backup of your wallet on your local computer.</p>
+      <p>We recommend you <b>save a backup of your wallet</b> on your local computer.</p>
 
       <br />
 
@@ -79,7 +81,7 @@ export default function campaignContributeWallet(options) {
     </div>
 
     <div id="view-campaign-contribute-wallet-seed" class="row center-block container"
-      style=" display: none; margin-top: 40px;">
+      style=" display: none; margin-top: 10px;">
 
       <h2>YOUR LIGHTWALLET</h2>
 
@@ -117,17 +119,16 @@ export default function campaignContributeWallet(options) {
     </div>
 
     <div id="view-campaign-contribute-wallet-entropy" class="row center-block container"
-      style=" display: none; margin-top: 40px;">
+      style=" display: none; margin-top: 10px;">
 
       <h2>YOUR LIGHTWALLET</h2>
 
       <br />
       <br />
 
-      <h4>Move your mouse randomly to generate your new wallet.</h4>
+      <h4><b>Move your mouse randomly</b> to generate your new wallet.</h4>
 
       <br />
-
 
       <div style="width: 100%; height: 15px; background: #F1F1F1;">
         <div class="progress" style="width: 0; height: 15px; background: #ff7518"></div>
@@ -140,14 +141,14 @@ export default function campaignContributeWallet(options) {
     </div>
 
     <div id="view-campaign-contribute-wallet-confirm" class="row center-block container"
-      style=" display: none; margin-top: 40px;">
+      style=" display: none; margin-top: 10px;">
 
       <h2>YOUR LIGHTWALLET</h2>
 
       <br />
       <br />
 
-      <p>Please re-enter your wallet seed to verify that your backup is correct.</p>
+      <p>Please <b>re-enter your wallet seed</b> to verify that your backup is correct.</p>
 
       <br />
 
@@ -166,7 +167,7 @@ export default function campaignContributeWallet(options) {
     </div>
 
     <div id="view-campaign-contribute-wallet-password" class="row center-block container"
-      style=" display: none; margin-top: 40px;">
+      style=" display: none; margin-top: 10px;">
 
       <h2>YOUR LIGHTWALLET</h2>
 
@@ -198,7 +199,7 @@ export default function campaignContributeWallet(options) {
 
 
     <div id="view-campaign-contribute-wallet-restore" class="row center-block container"
-      style=" display: none; margin-top: 40px;">
+      style=" display: none; margin-top: 10px;">
 
       <h2>YOUR LIGHTWALLET</h2>
 
@@ -218,7 +219,7 @@ export default function campaignContributeWallet(options) {
     </div>
 
     <div id="view-campaign-contribute-wallet" class="row center-block container"
-        style="margin-top: 40px; display: none;">
+        style="margin-top: 10px; display: none;">
 
       <h2>YOUR LIGHTWALLET</h2>
 

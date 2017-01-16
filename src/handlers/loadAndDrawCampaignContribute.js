@@ -69,6 +69,7 @@ export default function loadAndDrawCampaignContribute(campaignID, callback) {
     el('#view-campaign-contribute').appendChild(campaignContributeView({
       campaignObject: campaignData,
       getLocale,
+      getRouter,
       web3,
       defaultAccount: getDefaultAccount,
       getNetwork: getNetwork,
@@ -84,8 +85,40 @@ export default function loadAndDrawCampaignContribute(campaignID, callback) {
     el('#campaign-contribute-review-button').addEventListener('click', () => {
       if(handleCampaignContributeReview()) {
         getRouter()(`/campaign/${campaignID}/contribute/review`);
+        history.pushState({}, null, `/campaign/${campaignID}/contribute/review`);
       }
     });
+
+    // set itnerval steps
+    setInterval(() => {
+      let currentStep = 0;
+      const currentPath = window.location.pathname;
+
+      if (currentPath.indexOf('/form') !== -1) {
+        currentStep = 1;
+      }
+
+      if (currentPath.indexOf('/review') !== -1) {
+        currentStep = 2;
+      }
+
+      if (currentPath.indexOf('/reciept') !== -1) {
+        currentStep = 3;
+      }
+
+      el('#contributeStep0').className = `col-xs-4 col-sm-3 bs-wizard-step
+        ${currentStep >= 0 && 'complete' || 'disabled'}
+        ${currentStep === 0 && 'current' || ''}`;
+      el('#contributeStep1').className = `col-xs-3 col-sm-3 bs-wizard-step
+        ${currentStep >= 1 && 'complete' || 'disabled'}
+        ${currentStep === 1 && 'current' || ''}`;
+      el('#contributeStep2').className = `col-xs-3 col-sm-3 bs-wizard-step
+        ${currentStep >= 2 && 'complete' || 'disabled'}
+        ${currentStep === 2 && 'current' || ''}`;
+      el('#contributeStep3').className = `col-xs-2 col-sm-3 bs-wizard-step
+        ${currentStep >= 3 && 'complete' || 'disabled'}
+        ${currentStep === 3 && 'current' || ''}`;
+    }, 300);
 
     // final contribution button
     el('#campaign-review-contribute-button').addEventListener('click', handleCampaignContribution);

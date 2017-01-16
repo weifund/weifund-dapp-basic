@@ -15,12 +15,49 @@ export default function campaignContributeView(options) {
 
   <input type="hidden" value="${campaignObject.id}" id="campaign_id" />
 
-  <div class="row center-block container text-center" style="margin-bottom: 60px;">
+  <div class="row center-block container text-center" style="margin-bottom: 30px;">
     <a href="/campaign/${campaignObject.id}/" target="_blank"
       style="color: #333; text-decoration: none;">
       <h1 class="text-pretty-huge">${campaignObject.name}</h1>
     </a>
     <h4>by ${campaignObject.owner}</h4>
+
+    <form class="container-fluid">
+      <div class="row bs-wizard" style="border-bottom:0;">
+          <div id="contributeStep0" class="col-xs-3 bs-wizard-step">
+              <h3 class="text-center bs-wizard-stepnum">
+                Wallet Generation
+              </h3>
+              <div class="progress">
+                  <div class="progress-bar"></div>
+              </div> <a href="#" class="bs-wizard-dot"></a>
+          </div>
+          <div id="contributeStep1" class="col-xs-3 bs-wizard-step">
+              <h3 class="text-center bs-wizard-stepnum">
+                Contribution
+              </h3>
+              <div class="progress">
+                  <div class="progress-bar"></div>
+              </div> <a href="#" class="bs-wizard-dot"></a>
+          </div>
+          <div id="contributeStep2" class="col-xs-3 bs-wizard-step">
+              <h3 class="text-center bs-wizard-stepnum">
+                Review
+              </h3>
+              <div class="progress">
+                  <div class="progress-bar"></div>
+              </div> <a href="#" class="bs-wizard-dot"></a>
+          </div>
+          <div id="contributeStep3" class="col-xs-3 bs-wizard-step">
+              <h3 class="text-center bs-wizard-stepnum">
+                Receipt
+              </h3>
+              <div class="progress">
+                  <div class="progress-bar"></div>
+              </div> <a href="#" class="bs-wizard-dot"></a>
+          </div>
+      </div>
+    </form>
   </div>
 
   ${campaignContributeWallet({
