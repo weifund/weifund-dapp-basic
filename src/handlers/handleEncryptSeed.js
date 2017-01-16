@@ -6,7 +6,7 @@ import yo from 'yo-yo';
 import { viewLoader } from '../components';
 import { el } from '../document';
 import { t } from '../i18n';
-import { setDefaultAccount } from '../environment';
+import { setDefaultAccount, setAccountBalance } from '../environment';
 import { createEncryptedKeystore, getSeed, setKeystore, setWalletProvider } from '../keystore';
 import { getRouter } from '../router';
 import { web3 } from '../web3';
@@ -25,6 +25,9 @@ export function contributionBalanceUpdater(address) {
         const formBalanceEl = el('#defaultAccountBalance');
         const reviewBalanceEl = el('#campaign_reviewAccountBalance');
         const balanceEther = web3.fromWei(balance, 'ether');
+
+        // set the acocunt balance
+        setAccountBalance(balance);
 
         balanceEl.innerHTML = '';
         balanceEl.appendChild(yo`<span>${balanceEther.toString(10) || '0'}</span>`);

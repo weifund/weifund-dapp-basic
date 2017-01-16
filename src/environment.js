@@ -5,15 +5,19 @@
 
 // localstore
 import store from 'store';
+import BigNumber from 'bignumber.js';
 
 // loaded campaigns
-var campaigns = [];
+let campaigns = [];
 
 // receipts
-var transactions = [];
+let transactions = [];
 
 // default account
-var defaultAccount = '';
+let defaultAccount = '';
+
+// default account balance
+let accountBalance = new BigNumber(0);
 
 // get transactions
 export function getTransactions() {
@@ -68,6 +72,14 @@ export function getContractEnvironment() {
 // get all campaigns
 export function getStoredCampaigns() {
   return campaigns;
+}
+
+export function setAccountBalance(balance) {
+  accountBalance = balance;
+}
+
+export function getAccountBalance() {
+  return accountBalance;
 }
 
 // get single campaign

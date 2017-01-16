@@ -24,7 +24,7 @@ export default function campaignContributeView(options) {
 
     <form class="container-fluid">
       <div class="row bs-wizard" style="border-bottom:0;">
-          <div id="contributeStep0" class="col-xs-3 bs-wizard-step">
+          <div id="contributeStep0" class="col-xs-3 bs-wizard-step disabled">
               <h3 class="text-center bs-wizard-stepnum">
                 Wallet Generation
               </h3>
@@ -32,7 +32,7 @@ export default function campaignContributeView(options) {
                   <div class="progress-bar"></div>
               </div> <a href="#" class="bs-wizard-dot"></a>
           </div>
-          <div id="contributeStep1" class="col-xs-3 bs-wizard-step">
+          <div id="contributeStep1" class="col-xs-3 bs-wizard-step disabled">
               <h3 class="text-center bs-wizard-stepnum">
                 Contribution
               </h3>
@@ -40,7 +40,7 @@ export default function campaignContributeView(options) {
                   <div class="progress-bar"></div>
               </div> <a href="#" class="bs-wizard-dot"></a>
           </div>
-          <div id="contributeStep2" class="col-xs-3 bs-wizard-step">
+          <div id="contributeStep2" class="col-xs-3 bs-wizard-step disabled">
               <h3 class="text-center bs-wizard-stepnum">
                 Review
               </h3>
@@ -48,7 +48,7 @@ export default function campaignContributeView(options) {
                   <div class="progress-bar"></div>
               </div> <a href="#" class="bs-wizard-dot"></a>
           </div>
-          <div id="contributeStep3" class="col-xs-3 bs-wizard-step">
+          <div id="contributeStep3" class="col-xs-3 bs-wizard-step disabled">
               <h3 class="text-center bs-wizard-stepnum">
                 Receipt
               </h3>

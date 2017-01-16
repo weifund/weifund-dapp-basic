@@ -1,13 +1,37 @@
 import yo from 'yo-yo';
 import { el } from '../document';
+import { web3 } from '../web3';
+import BigNumber from 'bignumber.js';
+import { getAccountBalance } from '../environment';
 
 export default function handleCampaignContributeReview() {
   const campaignContributeID = el('#campaignFormID').value;
   const contributeAmount = el('#campaign_contributeAmount').value;
+  const accountBalance = getAccountBalance();
   var contributeTotal = parseFloat(contributeAmount, 10);
 
   if (isNaN(contributeTotal)) {
     contributeTotal = 0;
+  }
+
+  // parse float
+  if (accountBalance.lt(web3.toWei(contributeAmount, 'ether'))) {
+    el('#campaign-contribute-review-button').href = ``;
+    el('#campaign_contributeAmountGroup').style.border = `red solid 1px`;
+    el('#campaign_contributeAmount').focus();
+    el('#campaign_contributeAmount').blur();
+
+    // promt error
+    el('#campaign-contribute-form-response').innerHTML = '';
+    el('#campaign-contribute-form-response').style.display = 'block';
+    el('#campaign-contribute-form-response').appendChild(yo`<span>
+      <h2>Invalid Contribution Amount</h2>
+      <p>You are attempting to contribute more Ether than you have in your balance.</p>
+    </span>`);
+
+    return;
+  } else {
+    el('#campaign_contributeAmountGroup').style.border = `none`;
   }
 
   // parse float

@@ -26,7 +26,7 @@ export default function campaignContributeWallet(options) {
         <div class="col-xs-12 col-sm-6 col-md-8">
           <h2 class="text-break-all">
             <label>Address</label><br />
-            <span class="user-address">0x0</span>
+            <span class="user-address">Loading...</span>
           </h2>
 
           <hr />
