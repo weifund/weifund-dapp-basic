@@ -29,24 +29,7 @@ export default function handleCampaignContribution(){
   const contributionIntervalTimeout = 60 * 1000; // 60 seconds
   const contributionReceiptIntervalLength = 1000;
   var contributionIntervalTimer = 0;
-  var contributionParams = [[]]; // for the first arg
-
-  // handle additional contribution inputs
-  /* if (numContributeMethodInputParams > 0) {
-    contributeMethodInputParams.forEach((inputParam, inputParamIndex) => {
-      // get input type and value
-      const inputType = inputParam.type;
-      const inputValue = el(`#campaign_contributionInput_${inputParamIndex}`).value;
-
-      // handle contribute input data
-      // bool to parseInt, everything else as a string
-      if (inputType.indexOf('bool') !== -1) {
-        contributionParams.push(parseInt(inputValue));
-      } else {
-        contributionParams.push(inputValue);
-      }
-    });
-  } */
+  var contributionParams = []; // for the first arg
 
   // confirmation message
   const confirmationMessage = `Contribution Confirmation:
@@ -72,11 +55,8 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
       Your contribution transaction is awaiting approval...
     </span>`);
 
-    web3.eth.getAccounts((err, result) => {
-      console.log(err, result);
-    });
-
     // build contribute params
+    contributionParams.push([]); // for the empty contribution
     contributionParams.push(Object.assign({}, {
       value: contributeValueWei,
       from: txObject().from.slice(2),
@@ -143,7 +123,7 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
             // info response
             el('#campaign_contribute_info_response').style.display = '';
             el('#campaign_contribute_info_response').innerHTML = '';
-            el('#campaign_contribute_info_response').appendChild(`<span>
+            el('#campaign_contribute_info_response').appendChild(yo`<span>
               Your transaction was processed:
               ${JSON.stringify(receiptResult, null, 2)}
               with transaction hash:
@@ -194,6 +174,8 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
         }
       }, contributionReceiptIntervalLength);
     });
+
+    console.log(contributionParams);
 
     // contribute to campaign
     campaignContractInstance[contributeMethodName]

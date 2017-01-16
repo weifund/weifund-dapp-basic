@@ -7,6 +7,19 @@ import Web3Subprovider from 'web3-provider-engine/subproviders/web3';
 
 import { web3 } from './web3';
 
+// The seed for the contribution flow is stored here. It's only the canonical
+// source for the seed when there's no provider yet.
+// FIXME: Global mutable state is painful to reason about. Use React
+// components instead.
+export let seed = null;
+
+// Manage a global reference to the current keystore so the seed can be fetched
+// when needed. It's easy for this keystore to accidentally get out of sync
+// with the current web3 provider.
+// TODO: Use an immutable store like redux to manage the a single source
+// of truth for the keystore.
+export let keystore = null;
+
 
 export function inputPassword() {
   // FIXME: window.prompt has a cleartext input box. We need to build our own
@@ -33,7 +46,7 @@ export function createEncryptedKeystore(seedPhrase, password) {
   })
     .then(keystore => ensureKeystoreHasAddress(keystore, password))
     .then(keystore => {
-      keystore.passwordProvider = (cb) => inputPassword().then(cb);
+      keystore.passwordProvider = (cb) => inputPassword().then((pw) => cb(null, pw));
       return keystore;
     });
 }
@@ -46,7 +59,7 @@ export function setWalletProvider(keystore) {
   const provider = new ProviderEngine();
   provider.addProvider(new HookedWalletSubprovider({
     getAccounts(callback) {
-      callback(null, keystore.getAddresses());
+      callback(null, [`0x${keystore.getAddresses()[0]}`]);
     },
     signTransaction: keystore.signTransaction.bind(keystore),
   }));
@@ -60,19 +73,6 @@ export function setWalletProvider(keystore) {
 
   web3.setProvider(provider);
 }
-
-// The seed for the contribution flow is stored here. It's only the canonical
-// source for the seed when there's no provider yet.
-// FIXME: Global mutable state is painful to reason about. Use React
-// components instead.
-export let seed = null;
-
-// Manage a global reference to the current keystore so the seed can be fetched
-// when needed. It's easy for this keystore to accidentally get out of sync
-// with the current web3 provider.
-// TODO: Use an immutable store like redux to manage the a single source
-// of truth for the keystore.
-export let keystore = null;
 
 export function setKeystore(newKeystore) {
   keystore = newKeystore;

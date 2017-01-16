@@ -41,8 +41,6 @@ function openCampaignContribute(options, params, callback) {
     return;
   }
 
-  console.log(parseInt(params.campaignID, 10), campaignContributeIdOfLoadedFocus);
-
   // set campaign id
   campaignIdOfLoadedFocus = false;
   campaignContributeIdOfLoadedFocus = parseInt(params.campaignID, 10);

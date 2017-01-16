@@ -39,7 +39,7 @@ export function getDefaultAccount() {
 export function txObject() {
   return Object.assign({}, {
     from: getDefaultAccount(),
-    gas: 3141592,
+    gas: 3000000,
   });
 }
 

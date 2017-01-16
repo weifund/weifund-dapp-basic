@@ -70,7 +70,7 @@ export function updateWalletUI() {
   const getAccounts = promisify(web3.eth.getAccounts);
   getAccounts()
     .then(accounts => {
-      const address = `0x${accounts[0]}`;
+      const address = accounts[0];
       const addressEl = el('#view-campaign-contribute-wallet-balance .user-address');
       const reviewAddressEl = el('#campaign_reviewAccountAddress');
       const defaultAddressEl = el('#defaultAccountAddress');
