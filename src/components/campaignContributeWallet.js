@@ -207,10 +207,12 @@ export default function campaignContributeWallet(options) {
       <br />
 
       <input type="text" class="form-control" placeholder="WALLET SEED PHRASE" />
+      <input type="file" style="display: none" />
 
       <br />
 
       <a class="restore btn btn-primary">RESTORE FROM SEED</a>
+      <a class="open-file btn btn-primary">OPEN WALLET FILE</a>
 
       ${campaignContributeNav({
         backURL: `/campaign/${campaignObject.id}/contribute/wallet`,
