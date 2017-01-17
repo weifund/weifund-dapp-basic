@@ -16,8 +16,30 @@ function setupWeb3Provider() {
   }
 }
 
+function getTransactionSuccess(txHash, callback) {
+  const cb = callback || function cb() {};
+  return new Promise((resolve, reject) => {
+    const txInterval = setInterval(() => {
+      web3.eth.getTransactionReceipt(txHash, (err, result) => {
+        if (err) {
+          clearInterval(txInterval);
+          cb(err, null);
+          reject(err);
+        }
+
+        if (!err && result && result !== null) {
+          clearInterval(txInterval);
+          cb(null, result);
+          resolve(result);
+        }
+      });
+    }, 2000);
+  });
+}
+
 // export web3 instance and setup
 module.exports = {
   web3,
+  getTransactionSuccess,
   setupWeb3Provider,
 };

@@ -1,4 +1,5 @@
 import yo from 'yo-yo';
+import { getDefaultAccount } from '../environment';
 
 // main export
 export default function accountView(options) {
@@ -55,11 +56,7 @@ export default function accountView(options) {
 
         <hr />
 
-        <div class="row" style="padding-left: 15px; padding-right: 15px;">
-          <div id="tokens" class="col-sm-12"
-            style="padding: 20px; background: #F1F1F1; border-bottom: 2px solid #999;">
-          </div>
-        </div>
+        <div id="tokens"></div>
 
         <br />
         <br />
@@ -82,7 +79,9 @@ export default function accountView(options) {
             </div>
             <div class="col-sm-8 text-left">
               <h4 style="text-overflow:ellipsis; overflow: hidden;">
-                <a id="accountAddress" href="http://etherscan.com/address/0x" target="_blank"></a>
+                <a id="accountAddress"
+                  href=${`http://etherscan.com/address/${getDefaultAccount()}`}
+                  target="_blank"></a>
               </h4>
               <h4>
                 <b><span id="accountBalanceEther">0</span></b> ether (approx. $0,000 USD)
