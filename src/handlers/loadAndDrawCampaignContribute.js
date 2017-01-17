@@ -14,7 +14,6 @@ import { t } from '../i18n';
 import handleCampaignContribution from './handleCampaignContribution';
 import handleEncryptSeed from './handleEncryptSeed';
 import handleGenerateWallet from './handleGenerateWallet';
-import handleOpenWalletFile from './handleOpenWalletFile';
 import handleRestoreSeed from './handleRestoreSeed';
 import handleVerifyPassword from './handleVerifyPassword';
 import handleVerifySeed from './handleVerifySeed';
@@ -107,18 +106,20 @@ export default function loadAndDrawCampaignContribute(campaignID, callback) {
         currentStep = 3;
       }
 
-      el('#contributeStep0').className = `col-xs-4 col-sm-3 bs-wizard-step
-        ${currentStep >= 0 && 'complete' || 'disabled'}
-        ${currentStep === 0 && 'current' || ''}`;
-      el('#contributeStep1').className = `col-xs-3 col-sm-3 bs-wizard-step
-        ${currentStep >= 1 && 'complete' || 'disabled'}
-        ${currentStep === 1 && 'current' || ''}`;
-      el('#contributeStep2').className = `col-xs-3 col-sm-3 bs-wizard-step
-        ${currentStep >= 2 && 'complete' || 'disabled'}
-        ${currentStep === 2 && 'current' || ''}`;
-      el('#contributeStep3').className = `col-xs-2 col-sm-3 bs-wizard-step
-        ${currentStep >= 3 && 'complete' || 'disabled'}
-        ${currentStep === 3 && 'current' || ''}`;
+      if (el('#contributeStep0')) {
+        el('#contributeStep0').className = `col-xs-4 col-sm-3 bs-wizard-step
+          ${currentStep >= 0 && 'complete' || 'disabled'}
+          ${currentStep === 0 && 'current' || ''}`;
+        el('#contributeStep1').className = `col-xs-3 col-sm-3 bs-wizard-step
+          ${currentStep >= 1 && 'complete' || 'disabled'}
+          ${currentStep === 1 && 'current' || ''}`;
+        el('#contributeStep2').className = `col-xs-3 col-sm-3 bs-wizard-step
+          ${currentStep >= 2 && 'complete' || 'disabled'}
+          ${currentStep === 2 && 'current' || ''}`;
+        el('#contributeStep3').className = `col-xs-2 col-sm-3 bs-wizard-step
+          ${currentStep >= 3 && 'complete' || 'disabled'}
+          ${currentStep === 3 && 'current' || ''}`;
+      }
     }, 300);
 
     // final contribution button
@@ -127,7 +128,6 @@ export default function loadAndDrawCampaignContribute(campaignID, callback) {
     // wallet and password generation
     el('#view-campaign-contribute-wallet a.generate').addEventListener('click', handleGenerateWallet);
     el('#view-campaign-contribute-wallet-restore a.restore').addEventListener('click', handleRestoreSeed);
-    el('#view-campaign-contribute-wallet-restore a.open-file').addEventListener('click', handleOpenWalletFile);
     el('#view-campaign-contribute-wallet-confirm input[type=text]').addEventListener('keyup', handleVerifySeed);
     el('#view-campaign-contribute-wallet-password input[name=password-1]').addEventListener('keyup', handleVerifyPassword);
     el('#view-campaign-contribute-wallet-password input[name=password-2]').addEventListener('keyup', handleVerifyPassword);
