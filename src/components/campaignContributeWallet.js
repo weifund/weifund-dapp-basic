@@ -66,11 +66,15 @@ export default function campaignContributeWallet(options) {
       <br />
       <br />
 
-      <p>We recommend you <b>save a backup of your wallet</b> on your local computer.</p>
+      <h4>
+        We recommend you <b>save a backup of your wallet</b> on your local
+        computer. Your backup file will be encrypted with the password you
+        entered.
+      </h4>
 
       <br />
 
-      <a href="/campaign/${campaignObject.id}/contribute/wallet/balance" class="btn btn-primary">
+      <a class="download btn btn-primary">
         DOWNLOAD ENCRYPTED WALLET
       </a>
 
@@ -186,7 +190,9 @@ export default function campaignContributeWallet(options) {
 
       <form>
         <input name="password-1" type="password" class="form-control" placeholder="ENTER PASSWORD" />
+        <br />
         <input name="password-2" type="password" class="form-control" placeholder="REPEAT PASSWORD" />
+        <p>Strong passwords contain upper case letters, lower case letters, numbers, and special characters. Using dictionary words in your password makes it weaker.</p>
         <br />
         <input type="submit" disabled value="ENCRYPT" class="encrypt btn btn-primary" />
       </form>

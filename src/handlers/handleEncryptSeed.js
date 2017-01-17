@@ -132,7 +132,7 @@ export default function handleEncryptSeed(event) {
     })
     .then(updateWalletUI)
     .then(() => {
-      // Navigate from the loading screen to the account display.
-      getRouter()(`/campaign/${campaignId}/contribute/wallet/balance`);
+      // Navigate from the loading screen to the download screen.
+      getRouter()(`/campaign/${campaignId}/contribute/wallet/download`);
     })
 }
