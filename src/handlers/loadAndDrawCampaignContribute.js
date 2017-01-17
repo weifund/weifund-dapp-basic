@@ -16,6 +16,7 @@ import handleEncryptSeed from './handleEncryptSeed';
 import handleGenerateWallet from './handleGenerateWallet';
 import handleOpenWalletFile from './handleOpenWalletFile';
 import handleRestoreSeed from './handleRestoreSeed';
+import handleSaveWalletFile from './handleSaveWalletFile';
 import handleVerifyPassword from './handleVerifyPassword';
 import handleVerifySeed from './handleVerifySeed';
 import buildAllInputSliders from './drawAllInputSliders';
@@ -132,6 +133,7 @@ export default function loadAndDrawCampaignContribute(campaignID, callback) {
     el('#view-campaign-contribute-wallet-password input[name=password-1]').addEventListener('keyup', handleVerifyPassword);
     el('#view-campaign-contribute-wallet-password input[name=password-2]').addEventListener('keyup', handleVerifyPassword);
     el('#view-campaign-contribute-wallet-password form').addEventListener('submit', handleEncryptSeed);
+    el('#view-campaign-contribute-wallet-download a.download').addEventListener('click', handleSaveWalletFile);
 
     // refresh all page buttons after redraw
     refreshPageButtons();

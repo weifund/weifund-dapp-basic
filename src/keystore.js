@@ -101,3 +101,19 @@ export function getSeed() {
 
   return Promise.resolve(seed);
 }
+
+function download(filename, text) {
+  const trigger = document.createElement('a');
+  trigger.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  trigger.setAttribute('download', filename);
+  trigger.click();
+}
+
+export function saveWalletFile() {
+  if (keystore == null) {
+    throw new Error('Keystore is null while attempting to save the wallet.');
+  }
+
+  const walletString = keystore.serialize();
+  download('weifund-wallet.json', walletString);
+}

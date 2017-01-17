@@ -70,7 +70,7 @@ export default function campaignContributeWallet(options) {
 
       <br />
 
-      <a href="/campaign/${campaignObject.id}/contribute/wallet/balance" class="btn btn-primary">
+      <a class="download btn btn-primary">
         DOWNLOAD ENCRYPTED WALLET
       </a>
 
@@ -187,6 +187,7 @@ export default function campaignContributeWallet(options) {
       <form>
         <input name="password-1" type="password" class="form-control" placeholder="ENTER PASSWORD" />
         <input name="password-2" type="password" class="form-control" placeholder="REPEAT PASSWORD" />
+        <p>Strong passwords contain upper case letters, lower case letters, numbers, and special characters. Using dictionary words in your password makes it weaker.</p>
         <br />
         <input type="submit" disabled value="ENCRYPT" class="encrypt btn btn-primary" />
       </form>
