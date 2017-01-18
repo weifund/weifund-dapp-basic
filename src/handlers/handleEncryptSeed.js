@@ -6,10 +6,13 @@ import yo from 'yo-yo';
 import { viewLoader } from '../components';
 import { el } from '../document';
 import { t } from '../i18n';
-import { setDefaultAccount, setAccountBalance } from '../environment';
+import { setDefaultAccount, setAccountBalance, getDefaultAccount, txObject } from '../environment';
 import { createEncryptedKeystore, getSeed, setKeystore, setWalletProvider } from '../keystore';
 import { getRouter } from '../router';
 import { web3 } from '../web3';
+
+let timeout;
+let keepPolling = true;
 
 /**
  * Create a function that updates the wallet UI depending on the account's balance.
@@ -24,13 +27,26 @@ export function contributionBalanceUpdater(address) {
         const balanceEl = el('#view-campaign-contribute-wallet-balance .account-balance');
         const formBalanceEl = el('#defaultAccountBalance');
         const reviewBalanceEl = el('#campaign_reviewAccountBalance');
+        const contributeAmountEl = el('#campaign_contributeAmount');
+        const contributeSliderEl = el('#campaign_contributeSlider');
+        const availableBalance = balance.minus(txObject().gas);
+        const availableBalanceEther = web3.fromWei(availableBalance, 'ether');
         const balanceEther = web3.fromWei(balance, 'ether');
+
+        if (balance.gt(0)) {
+          clearTimeout(timeout);
+          keepPolling = false;
+        }
 
         // set the acocunt balance
         setAccountBalance(balance);
 
         balanceEl.innerHTML = '';
         balanceEl.appendChild(yo`<span>${balanceEther.toString(10) || '0'}</span>`);
+
+        // slider max
+        contributeSliderEl.dataset.valueMax = availableBalanceEther.toString(10);
+        contributeAmountEl.value = availableBalanceEther.dividedBy(2).toString(10);
 
         formBalanceEl.innerHTML = '';
         formBalanceEl.appendChild(yo`<span>${balanceEther.toString(10) || '0'}</span>`);
@@ -39,11 +55,14 @@ export function contributionBalanceUpdater(address) {
         reviewBalanceEl.appendChild(yo`<span>${balanceEther.toString(10) || '0'}</span>`);
 
         if (balance.gte(web3.toWei(1, 'finney'))) {
-          const contributeEl = el('#view-campaign-contribute-wallet-balance a.contribute');
+          const contributeEl = el('#campaign-contribute-to-campaign');
           contributeEl.removeAttribute('disabled');
           return true;
         }
         return false;
+      })
+      .catch((error) => {
+        getRouter()(`/campaign/${campaignId}/contribute/wallet/restore`);
       });
   }
 
@@ -52,8 +71,7 @@ export function contributionBalanceUpdater(address) {
 
 function startPollingForBalance(address) {
   // Keep polling until the contribute button is clicked.
-  let keepPolling = true;
-  const contributeEl = el('#view-campaign-contribute-wallet-balance a.contribute');
+  const contributeEl = el('#campaign-contribute-to-campaign');
   contributeEl.addEventListener('click', () => { keepPolling = false; });
 
   const updateBalance = contributionBalanceUpdater(address);
@@ -62,7 +80,7 @@ function startPollingForBalance(address) {
       .catch(() => false)
       .then(hasBalance => {
         if (!hasBalance && keepPolling) {
-          setTimeout(pollForBalance, 10000);
+          timeout = setTimeout(pollForBalance, 10000);
         }
       });
   }
@@ -70,6 +88,8 @@ function startPollingForBalance(address) {
 }
 
 export function updateWalletUI() {
+  el('#campaign-contribute-to-campaign').setAttribute('disabled', 'disabled');
+
   const getAccounts = promisify(web3.eth.getAccounts);
   getAccounts()
     .then(accounts => {
@@ -89,13 +109,18 @@ export function updateWalletUI() {
 
       setDefaultAccount(address);
 
+      el('#campaign-contribute-qrcode').style.display = 'block';
       new QRious({
         element: el('#campaign-contribute-qrcode'),
         size: 250,
         value: address,
       });
 
+      // start polling
       return startPollingForBalance(address);
+    })
+    .catch((error) => {
+      getRouter()(`/campaign/${campaignId}/contribute/wallet/restore`);
     });
 }
 
@@ -133,6 +158,16 @@ export default function handleEncryptSeed(event) {
     .then(updateWalletUI)
     .then(() => {
       // Navigate from the loading screen to the download screen.
+      el('#campaign-contribute-wallet-error').style.display = 'none';
       getRouter()(`/campaign/${campaignId}/contribute/wallet/download`);
     })
+    .catch((error) => {
+      getRouter()(`/campaign/${campaignId}/contribute/wallet/restore`);
+      el('#campaign-contribute-wallet-error').style.display = 'block';
+      el('#campaign-contribute-wallet-error').innerHTML = '';
+      el('#campaign-contribute-wallet-error').appendChild(yo`<span>
+        <h3 style="margin-top: 0px;">Wallet Error</h3>
+        <p>There was an error loading your wallet: ${String(error)}</p>
+      </span>`);
+    });
 }

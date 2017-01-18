@@ -1,3 +1,5 @@
+import BigNumber from 'bignumber.js';
+
 // document helper
 import { el } from '../document';
 
@@ -17,6 +19,8 @@ export default function drawAllInputSliders() {
     const inputSliderRailHighlight = inputSliderElement.querySelector('.input-slider-rail-highlight');
     const inputSliderRail = inputSliderElement.querySelector('.input-slider-rail');
     const inputSliderBar = inputSliderElement.querySelector('.input-slider-bar');
+    const inputSliderMax = 100;
+    var e = null;
     var inputSliderDraggable = false;
 
     // setup slider state getter
@@ -25,19 +29,19 @@ export default function drawAllInputSliders() {
     };
 
     // setup slider mouseup handler
-    const handleInputSliderMouseUp = () => {
+    const handleInputSliderMouseUp = (e) => {
       inputSliderDraggable = false;
     };
 
     // setup slider mouse down handler
     const handleInputSliderMouseDown = (e) => {
       inputSliderDraggable = true;
-      handleInputSliderMouseMove(event);
+      handleInputSliderMouseMove(e);
       e.preventDefault();
     };
 
     // setup slider mouse move handler
-    const handleInputSliderMouseMove = () => {
+    const handleInputSliderMouseMove = (event) => {
       if (!getSliderState()) {
         return;
       }
@@ -48,13 +52,13 @@ export default function drawAllInputSliders() {
       const sliderOffsetLeft = inputSliderElement.getBoundingClientRect().left;
       const sliderBarOffsetLeft = inputSliderBar.getBoundingClientRect().left;
       const clientX = event.clientX;
-      var barLeftPositionShim = (parseFloat(((clientX - sliderOffsetLeft) / sliderWidth) - 1).toFixed(2) * 17) * -1;
-      var barLeftPositionPercentage = ((clientX - barLeftPositionShim - sliderOffsetLeft) / sliderWidth) * 100;
+      var barLeftPositionShim = (parseFloat(((clientX - sliderOffsetLeft) / sliderWidth) - 1).toFixed(2) * 17) * -1; // 17
+      var barLeftPositionPercentage = ((clientX - barLeftPositionShim - sliderOffsetLeft) / sliderWidth) * inputSliderMax;
       var fixedDecimalAmount = 2;
 
       // fix invarience
-      if (barLeftPositionPercentage > 100 || clientX > sliderOffsetLeft + sliderWidth) {
-        barLeftPositionPercentage = 100;
+      if (barLeftPositionPercentage > inputSliderMax || clientX > sliderOffsetLeft + sliderWidth) {
+        barLeftPositionPercentage = inputSliderMax;
       }
 
       // fix invarience
@@ -72,11 +76,13 @@ export default function drawAllInputSliders() {
 
         // if element exists
         if (dataInputElement !== null && dataInputElement.length !== 0) {
-          dataInputElement.value = parseFloat(barLeftPositionPercentage).toFixed(fixedDecimalAmount);
+          const percentage = parseFloat(barLeftPositionPercentage).toFixed(fixedDecimalAmount);
+          const valueMax = inputSliderElement.dataset.valueMax;
+          dataInputElement.value = new BigNumber((new BigNumber(percentage).dividedBy(100))).times(new BigNumber(valueMax)).toString(10);
         }
 
         // dispatch change event
-        var e = document.createEvent('HTMLEvents');
+        e = document.createEvent('HTMLEvents');
         e.initEvent('change', false, false);
         dataInputElement.dispatchEvent(e);
       }
@@ -92,10 +98,13 @@ export default function drawAllInputSliders() {
 
       // handle input element change
       const handleInputElementChange = () => {
-        var inputElementValue = parseInt(dataInputElement.value, 10);
+        const percentage = parseFloat(inputSliderBar.style.left).toFixed(2);
+        const valueMax = inputSliderElement.dataset.valueMax || 0;
 
-        if (inputElementValue > 100) {
-          inputElementValue = 100;
+        var inputElementValue = parseFloat(dataInputElement.value);
+
+        if (inputElementValue > inputSliderMax) {
+          inputElementValue = inputSliderMax;
         }
 
         if (inputElementValue < 0) {
@@ -113,7 +122,7 @@ export default function drawAllInputSliders() {
       handleInputElementChange({});
 
       // mouse move listener
-      document.body.addEventListener('change', handleInputElementChange, false);
+      dataInputElement.addEventListener('change', handleInputElementChange, false);
     }
 
     // mouse move listener

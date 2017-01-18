@@ -1,4 +1,5 @@
 import lightwallet from 'eth-lightwallet';
+import yo from 'yo-yo';
 
 import { updateWalletUI } from './handleEncryptSeed';
 import { el } from '../document';
@@ -37,8 +38,18 @@ function changeWalletFile(event) {
       this.value = '';
 
       // Navigate to the account display.
+      el('#campaign-contribute-wallet-error').style.display = 'none';
       getRouter()(`/campaign/${campaignId}/contribute/wallet/balance`);
     })
+    .catch((error) => {
+      el('#campaign-contribute-wallet-error').style.display = 'block';
+      el('#campaign-contribute-wallet-error').innerHTML = '';
+      el('#campaign-contribute-wallet-error').appendChild(yo`<span>
+        <h3 style="margin-top: 0px;">Wallet Error</h3>
+        <p>There was an error loading your wallet: ${String(error)}</p>
+      </span>`);
+      getRouter()(`/campaign/${campaignId}/contribute/wallet/restore`);
+    });
 }
 
 export default function handleOpenWalletFile(event) {

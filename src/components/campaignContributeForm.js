@@ -1,7 +1,8 @@
 import yo from 'yo-yo';
 
 import campaignContributeNav from './campaignContributeNav';
-import { getNetwork } from '../environment';
+import { getNetwork, txObject } from '../environment';
+import { web3 } from '../web3';
 
 export default function campaignContributeForm(options) {
   const campaignObject = options.campaignObject;
@@ -17,7 +18,10 @@ export default function campaignContributeForm(options) {
       <h4>Please select the amount you want to contribute to this campaign.</h4>
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-8">
-          <div class="input-slider input-slider-lg" data-input-id="campaign_contributeAmount">
+          <div class="input-slider input-slider-lg"
+            id="campaign_contributeSlider"
+            data-value-max="0"
+            data-input-id="campaign_contributeAmount">
             <div class="input-slider-rail">
               <div class="input-slider-rail-highlight"></div>
               <div class="input-slider-bar"></div>
@@ -26,7 +30,7 @@ export default function campaignContributeForm(options) {
         </div>
         <div class="col-xs-12 col-sm-12 col-md-4">
           <div class="input-group" id="campaign_contributeAmountGroup">
-            <input type="text" id="campaign_contributeAmount" value="1.5"
+            <input type="text" id="campaign_contributeAmount" value="50"
               class="form-control input-lg" placeholder="i.e. 1" aria-describedby="basic-addon2" />
             <span class="input-group-addon" id="basic-addon2">ether</span>
           </div>
@@ -77,6 +81,9 @@ WeiFund (A) expressly disclaims the accuracy, adequacy, or completeness of any d
       <br />
       <h4>Selected Account Balance</h4>
       <h5><span id="defaultAccountBalance">0</span> Ether (ETH)</h5>
+      <br />
+      <h4>Gas Cost</h4>
+      <h5><span>${web3.fromWei(txObject().gas, 'ether').toString(10)}</span> Ether (ETH)</h5>
       <br />
       <h4>Contract Address</h4>
       <h5>${campaignObject.addr}</h5>

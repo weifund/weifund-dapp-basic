@@ -38,7 +38,8 @@ export function ensureKeystoreHasAddress(keystore, password) {
 }
 
 export function createEncryptedKeystore(seedPhrase, password) {
-  const createVault = promisify(lightwallet.keystore.createVault.bind(lightwallet.keystore));
+  const createVault = promisify(lightwallet.keystore.createVault
+      .bind(lightwallet.keystore));
   return createVault({
     seedPhrase,
     password,
@@ -104,16 +105,18 @@ export function getSeed() {
 
 function download(filename, text) {
   const trigger = document.createElement('a');
-  trigger.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  trigger.setAttribute('href', `data:text/plain;charset=utf-8,${encodeURIComponent(text)}`);
   trigger.setAttribute('download', filename);
   trigger.click();
 }
 
 export function saveWalletFile() {
+  const isoString = (new Date()).toISOString();
+
   if (keystore == null) {
     throw new Error('Keystore is null while attempting to save the wallet.');
   }
 
   const walletString = keystore.serialize();
-  download('weifund-wallet.json', walletString);
+  download(`weifund-wallet-${isoString}.json`, walletString);
 }

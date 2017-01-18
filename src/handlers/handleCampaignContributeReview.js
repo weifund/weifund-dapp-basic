@@ -2,20 +2,16 @@ import yo from 'yo-yo';
 import { el } from '../document';
 import { web3 } from '../web3';
 import BigNumber from 'bignumber.js';
-import { getAccountBalance } from '../environment';
+import { getAccountBalance, txObject } from '../environment';
 
 export default function handleCampaignContributeReview() {
   const campaignContributeID = el('#campaignFormID').value;
   const contributeAmount = el('#campaign_contributeAmount').value;
   const accountBalance = getAccountBalance();
-  var contributeTotal = parseFloat(contributeAmount, 10);
-
-  if (isNaN(contributeTotal)) {
-    contributeTotal = 0;
-  }
+  var contributeTotal = new BigNumber(contributeAmount).add(web3.fromWei(txObject().gas, 'ether'));
 
   // parse float
-  if (accountBalance.lt(web3.toWei(contributeAmount, 'ether'))) {
+  if (accountBalance.add(txObject().gas).lt(web3.toWei(contributeAmount, 'ether'))) {
     el('#campaign-contribute-review-button').href = ``;
     el('#campaign_contributeAmountGroup').style.border = `red solid 1px`;
     el('#campaign_contributeAmount').focus();
@@ -26,7 +22,7 @@ export default function handleCampaignContributeReview() {
     el('#campaign-contribute-form-response').style.display = 'block';
     el('#campaign-contribute-form-response').appendChild(yo`<span>
       <h2>Invalid Contribution Amount</h2>
-      <p>You are attempting to contribute more Ether than you have in your balance.</p>
+      <p>You are attempting to contribute more Ether than you have in your balance you can spend (with gas costs included).</p>
     </span>`);
 
     return;
@@ -71,12 +67,19 @@ export default function handleCampaignContributeReview() {
 
     return;
   } else {
-    el('#campaign-contribute-disclaimer').style.border = `none`;
+    el('#campaign-contribute-disclaimer').style.border = 'none';
   }
 
+  el('#campaign_contribute_info_response').style.display = 'none';
+  el('#campaign_contribute_warning_response').style.display = 'none';
+
   el('#campaign-contribute-form-response').style.display = 'none';
-  el('#campaign_contributeReview_contributeAmount').innerHTML = contributeAmount;
-  el('#campaign_contributeReview_totalContributeAmount').innerHTML = contributeTotal;
+  el('#campaign_contributeReview_contributeGas').innerHTML = '';
+  el('#campaign_contributeReview_contributeGas').appendChild(yo`<span>${web3.fromWei(txObject().gas, 'ether').toString(10)}</span>`);
+  el('#campaign_contributeReview_contributeAmount').innerHTML = '';
+  el('#campaign_contributeReview_contributeAmount').appendChild(yo`<span>${contributeAmount}</span>`);
+  el('#campaign_contributeReview_totalContributeAmount').innerHTML = '';
+  el('#campaign_contributeReview_totalContributeAmount').appendChild(yo`<span>${contributeTotal.toString(10)}</span>`);
 
   // return true;
   return true;

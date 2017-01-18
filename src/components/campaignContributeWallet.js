@@ -20,13 +20,13 @@ export default function campaignContributeWallet(options) {
 
       <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-4">
-          <canvas id="campaign-contribute-qrcode" style="border: 3px solid #333; padding: 20px;">
+          <canvas id="campaign-contribute-qrcode" style="border: 3px solid #333; padding: 20px; display: none;">
           </canvas>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-8">
-          <h2 class="text-break-all">
+          <h2 class="text-break-all" style="position: relative;">
             <label>Address</label><br />
-            <span class="user-address">Loading...</span>
+            <span class="user-address">Loading... please <a href=${`/campaign/${campaignObject.id}/contribute/wallet/restore`}>retry</a> if this doesn't load within several seconds</span>
           </h2>
 
           <hr />
@@ -43,10 +43,11 @@ export default function campaignContributeWallet(options) {
               <h3 style="margin-top: 0px;"><span class="account-balance">0</span> ether</h3>
             </div>
             <div class="col-sm-6"><br />
-              <a href="/campaign/${campaignObject.id}/contribute/form" disabled
-                class="contribute btn btn-primary">
+              <button id="campaign-contribute-to-campaign"
+                class="contribute btn btn-primary"
+                disabled>
                 CONTRIBUTE TO CAMPAIGN
-              </a>
+              </button>
             </div>
           </div>
 
@@ -82,6 +83,10 @@ export default function campaignContributeWallet(options) {
         NO, THANKS
       </a>
 
+      ${campaignContributeNav({
+        backURL: `/campaign/${campaignObject.id}/contribute/wallet`,
+        showNextButton: false,
+      })}
     </div>
 
     <div id="view-campaign-contribute-wallet-seed" class="row center-block container"
@@ -185,14 +190,18 @@ export default function campaignContributeWallet(options) {
         from unauthorized access.
       </h4>
 
-      <br />
+      <h4>
+        <b>Note, Strong passwords contain upper case letters,
+        lower case letters, numbers, and special characters.</b>
+        Using dictionary words in your password makes it weaker.
+      </h4>
+
       <br />
 
       <form>
         <input name="password-1" type="password" class="form-control" placeholder="ENTER PASSWORD" />
         <br />
         <input name="password-2" type="password" class="form-control" placeholder="REPEAT PASSWORD" />
-        <p>Strong passwords contain upper case letters, lower case letters, numbers, and special characters. Using dictionary words in your password makes it weaker.</p>
         <br />
         <input type="submit" disabled value="ENCRYPT" class="encrypt btn btn-primary" />
       </form>
@@ -219,6 +228,11 @@ export default function campaignContributeWallet(options) {
 
       <a class="restore btn btn-primary">RESTORE FROM SEED</a>
       <a class="open-file btn btn-primary">OPEN WALLET FILE</a>
+
+      <div class="alert alert-warning row center-block container"
+        id="campaign-contribute-wallet-error"
+        style="display: none; margin-top: 20px; margin-bottom: 0px;">
+      </div>
 
       ${campaignContributeNav({
         backURL: `/campaign/${campaignObject.id}/contribute/wallet`,
@@ -262,5 +276,6 @@ export default function campaignContributeWallet(options) {
         backURL: `/campaign/${campaignObject.id}`,
         showNextButton: false,
       })}
-    </div></div>`;
+    </div>
+</div>`;
 }

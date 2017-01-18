@@ -400,6 +400,7 @@ footer {
 }
 .bs-wizard > .bs-wizard-step > .bs-wizard-dot {
     position: absolute;
+    cursor: default;
     width: 30px;
     height: 30px;
     display: block;
@@ -413,6 +414,7 @@ footer {
 .bs-wizard > .bs-wizard-step > .bs-wizard-dot:after {
     content:' ';
     width: 14px;
+    cursor: default;
     height: 14px;
     background: #2780e3;
     border-radius: 50px;

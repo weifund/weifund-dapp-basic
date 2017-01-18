@@ -32,10 +32,10 @@ export default function campaignContributeReview(options) {
 
         <br /><br />
 
-        <h4>Network/Provider</h4>
+        <h4>Gas Cost</h4>
         <h4>
-          ${options.getNetwork()} <small>(Network)</small><br />
-          Hooked Web3 Provider <small>(Provider)</small>
+          <b><span id="campaign_contributeReview_contributeGas">0</span> Ether</b>
+          <small>(ETH)</small>
         </h4>
       </div>
       <div class="col-xs-12 col-sm-6">
@@ -63,6 +63,17 @@ export default function campaignContributeReview(options) {
         <h3><span id="campaign_contributeReview_transactionTotal"></span></h3>
 
         <br />
+
+        <div id="campaign_contribute_info_response" class="alert alert-info" style="display: none;">
+          <h4>Processing</h4>
+          <p id="campaign_contribute_info_response_body"></p>
+        </div>
+
+        <div id="campaign_contribute_warning_response" class="alert alert-danger" style="display: none;">
+          <h4>Warning!</h4>
+          <p id="campaign_contribute_warning_response_body"></p>
+        </div>
+
         <hr />
 
         <h4>Contribution Total</h4>
@@ -74,22 +85,13 @@ export default function campaignContributeReview(options) {
         <br />
         <br />
 
+        <a href=${`/campaign/${options.campaignObject.id}/contribute/form`} class="btn btn-primary btn-lg">
+          Back
+        </a>
+
         <button id="campaign-review-contribute-button" class="btn btn-primary btn-lg">
           Make Contribution
         </button>
-
-        <br />
-        <br />
-
-        <div id="campaign_contribute_info_response" class="alert alert-info" style="display: none;">
-          <h4>Processing</h4>
-          <p id="campaign_contribute_info_response_body"></p>
-        </div>
-
-        <div id="campaign_contribute_warning_response" class="alert alert-warning" style="display: none;">
-          <h4>Warning!</h4>
-          <p id="campaign_contribute_warning_response_body"></p>
-        </div>
 
       </div>
     </div>

@@ -5,7 +5,7 @@ import { log, etherScanAddressUrl, parseSolidityMethodName,
   parseSolidityMethodInterface, etherScanTxHashUrl, oneDay, emptyWeb3Address } from 'weifund-util';
 import { el } from '../document';
 import { campaignContributeView, viewLoader } from '../components';
-import { setDefaultAccount, getDefaultAccount, getCampaign, setCampaign,
+import { setDefaultAccount, getDefaultAccount, getCampaign, setCampaign, getAccountBalance,
   getNetwork, getLocale, getContractEnvironment, txObject } from '../environment';
 import { web3 } from '../web3';
 import { ipfs } from '../ipfs';
@@ -16,6 +16,7 @@ import handleEncryptSeed from './handleEncryptSeed';
 import handleGenerateWallet from './handleGenerateWallet';
 import handleRestoreSeed from './handleRestoreSeed';
 import handleSaveWalletFile from './handleSaveWalletFile';
+import handleOpenWalletFile from './handleOpenWalletFile';
 import handleVerifyPassword from './handleVerifyPassword';
 import handleVerifySeed from './handleVerifySeed';
 import buildAllInputSliders from './drawAllInputSliders';
@@ -82,11 +83,20 @@ export default function loadAndDrawCampaignContribute(campaignID, callback) {
     // update form when disclaimer is checked
     el('#campaign-contribute-disclaimer').addEventListener('change', handleCampaignContributeReview);
 
+    // contirbute to campaign buton
+    el('#campaign-contribute-to-campaign').addEventListener('click', () => {
+      if (getAccountBalance().gte(web3.toWei('1', 'finney'))) {
+        getRouter()(`/campaign/${campaignID}/contribute/form`);
+        history.pushState({}, null, `/campaign/${campaignID}/contribute/form`);
+      }
+    });
+
     // handleCampaignContribution
     el('#campaign-contribute-review-button').addEventListener('click', () => {
       if(handleCampaignContributeReview()) {
         getRouter()(`/campaign/${campaignID}/contribute/review`);
         history.pushState({}, null, `/campaign/${campaignID}/contribute/review`);
+        el('#campaign-review-contribute-button').focus();
       }
     });
 
@@ -103,7 +113,7 @@ export default function loadAndDrawCampaignContribute(campaignID, callback) {
         currentStep = 2;
       }
 
-      if (currentPath.indexOf('/reciept') !== -1) {
+      if (currentPath.indexOf('/receipt') !== -1) {
         currentStep = 3;
       }
 
@@ -127,8 +137,14 @@ export default function loadAndDrawCampaignContribute(campaignID, callback) {
     el('#campaign-review-contribute-button').addEventListener('click', handleCampaignContribution);
 
     // wallet and password generation
+    el('#view-campaign-contribute-wallet-restore a.open-file').addEventListener('click', handleOpenWalletFile);
     el('#view-campaign-contribute-wallet a.generate').addEventListener('click', handleGenerateWallet);
-    el('#view-campaign-contribute-wallet-restore a.restore').addEventListener('click', handleRestoreSeed);
+    el('#view-campaign-contribute-wallet-restore a.restore').addEventListener('click', (e) => {
+      // test for valid seed
+      if (el('#view-campaign-contribute-wallet-restore input[type=text]').value !== '') {
+        handleRestoreSeed(e);
+      }
+    });
     el('#view-campaign-contribute-wallet-confirm input[type=text]').addEventListener('keyup', handleVerifySeed);
     el('#view-campaign-contribute-wallet-password input[name=password-1]').addEventListener('keyup', handleVerifyPassword);
     el('#view-campaign-contribute-wallet-password input[name=password-2]').addEventListener('keyup', handleVerifyPassword);
