@@ -1,12 +1,15 @@
 import { log, etherScanAddressUrl, etherScanTxHashUrl } from 'weifund-util';
 import Contracts from 'weifund-contracts';
 import { getCampaigns } from 'weifund-lib';
+import BigNumber from 'bignumber.js';
+import stateSnapshot from '../getCampaignsState.json';
 
 import { el } from '../document';
 import { campaignHighlightMedium, viewLoader, campaignsView } from '../components';
 import { setDefaultAccount, getDefaultAccount, getStoredCampaigns, setCampaign,
   getNetwork, getLocale, getContractEnvironment, txObject } from '../environment';
 import { refreshPageButtons } from '../router';
+import { download } from '../keystore';
 import { t } from '../i18n';
 import { web3 } from '../web3';
 
@@ -15,6 +18,54 @@ const contracts = new Contracts('ropsten', web3.currentProvider);
 const campaignRegistry = contracts.CampaignRegistry.instance();
 const curationRegistry = contracts.CurationRegistry.instance();
 
+
+function bignumberToSafeObject(value) {
+  if (typeof value === 'object' && value !== null) {
+    if (value.lessThanOrEqualTo) {
+      return { val: value.toString(10), isBigNumber: true };
+    } else if (!value.getMonth && !value.getYear) {
+      if (Array.isArray(value)) {
+        const outputValue = value.slice();
+        outputValue.forEach((item, index) => {
+          outputValue[index] = bignumberToSafeObject(outputValue[index]);
+        });
+        return outputValue;
+      } else {
+        const outputValue = Object.assign({}, value);
+        Object.keys(outputValue).forEach(key => {
+          outputValue[key] = bignumberToSafeObject(outputValue[key]);
+        });
+        return outputValue;
+      }
+    }
+  }
+
+  return value;
+}
+
+function safeObjectToBigNumber(value) {
+  if (typeof value === 'object' && value !== null) {
+    if (value.isBigNumber === true) {
+      return new BigNumber(value.val);
+    } else if (!value.getMonth && !value.getYear) {
+      if (Array.isArray(value)) {
+        const outputValue = value.slice();
+        outputValue.forEach((item, index) => {
+          outputValue[index] = safeObjectToBigNumber(outputValue[index]);
+        });
+        return outputValue;
+      } else {
+        const outputValue = Object.assign({}, value);
+        Object.keys(outputValue).forEach(key => {
+          outputValue[key] = safeObjectToBigNumber(outputValue[key]);
+        });
+        return outputValue;
+      }
+    }
+  }
+
+  return value;
+}
 
 function drawCampaigns(campaignsToDraw) {
   // reset inner html
@@ -58,7 +109,20 @@ export default function loadAndDrawCampaignsList() {
 
   // draw loader
   el('#view-list').innerHTML = '';
-  el('#view-list').appendChild(viewLoader({ t }));
+  el('#view-list').appendChild(campaignsView({ t }));
+
+  // load snapshot
+  if (getStoredCampaigns().length === 0) {
+    const snapshotCampaigns = safeObjectToBigNumber(stateSnapshot);
+    Object.keys(snapshotCampaigns).forEach(campaignID => {
+      setCampaign(campaignID, snapshotCampaigns[campaignID]);
+
+      // draw campaigns everytime
+      drawCampaigns(getStoredCampaigns());
+    });
+  } else {
+    drawCampaigns(getStoredCampaigns());
+  }
 
   // get the number of campaigns then load campaigns list accordingly
   campaignRegistry.numCampaigns((numCampaignsError, numCampaignsResult) => {
@@ -82,6 +146,9 @@ export default function loadAndDrawCampaignsList() {
       // array (i.e. array of campaignIDs)
       selector: [0],
     }, (loadCampaignsError, loadCampaignsResult) => {
+
+      // download snapshot
+      // download('getCampaignsState.json', JSON.stringify(bignumberToSafeObject(loadCampaignsResult)));
 
       // handle errors
       if (loadCampaignsError) {

@@ -106,7 +106,7 @@ export function getSeed() {
   return Promise.resolve(seed);
 }
 
-function download(filename, text) {
+export function download(filename, text) {
   const trigger = document.createElement('a');
   trigger.setAttribute('href', `data:text/plain;charset=utf-8,${encodeURIComponent(text)}`);
   trigger.setAttribute('download', filename);

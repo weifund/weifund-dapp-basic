@@ -4,6 +4,7 @@ import store from 'store';
 import { log, etherScanAddressUrl, etherScanTxHashUrl, oneDay, emptyWeb3Address } from 'weifund-util';
 import Contracts from 'weifund-contracts';
 import BigNumber from 'bignumber.js';
+import lightwallet from 'eth-lightwallet';
 
 import { el } from '../document';
 import { setDefaultAccount, getDefaultAccount, getCampaign, setCampaign,
@@ -15,9 +16,11 @@ import { refreshPageButtons, getRouter } from '../router';
 import { t } from '../i18n';
 import { createEncryptedKeystore, setKeystore, setWalletProvider } from '../keystore';
 
+
 const contracts = new Contracts(getContractEnvironment(), web3.currentProvider);
 const IssuedToken = contracts.IssuedToken.factory;
 const Model1Enhancer = contracts.Model1Enhancer.factory;
+const StandardCampaign = contracts.StandardCampaign.factory;
 
 
 function TokenUI(options) {
@@ -145,8 +148,6 @@ function loadTokenFromEnhancer(enhancerAddress) {
                 let canClaim = false;
                 let hasTokensOwed = false;
 
-                console.log(tokensOwed.toString(10));
-
                 // the user can claim the tokens
                 if (new BigNumber(blockNumber).gte(startBlock.add(freezePeriod))
                   && !claimed) {
@@ -196,15 +197,14 @@ function loadTokenFromEnhancer(enhancerAddress) {
 }
 
 function loadAccount() {
+  el('#view-focus').style.display = 'none';
+  el('#view-account').style.display = 'block';
+
   // route to panel page
   getRouter()('/account/panel');
 
   // get accounts
   web3.eth.getAccounts((err, accounts) => {
-    if (!accounts) {
-      accounts = ['0xc5b14f77554e4d6f1060b2d95f26a31191bd46c9'];
-    }
-
     // set accont address on the page
     el('#accountAddress').innerHTML = '';
     el('#accountAddress').appendChild(yo`<span>${accounts[0]}</span>`);
@@ -217,12 +217,190 @@ function loadAccount() {
       el('#accountBalanceWei').appendChild(yo`<span>${web3.fromWei(balance, 'wei').toString(10)}</span>`);
     });
 
+    // refund campaign
+    el('#claimRefundOwed').addEventListener('click', () => {
+      const campaignAddress = el('#refundCampaignAddress').value;
+      const contributionID = el('#refundCID').value;
+      const campaignInstance = StandardCampaign.at(campaignAddress);
+
+      el('#account-claim-refund-response').style.display = 'block';
+      el('#account-claim-refund-response').innerHTML = '';
+      el('#account-claim-refund-response').appendChild(yo`<span>
+        <h3 style="margin-top: 0px;">Refund Processing</h3>
+        <p>Awaiting transaction approval...</p>
+      </span>`);
+
+      campaignInstance.claimRefundOwed(contributionID, Object.assign({}, txObject(), {
+        from: accounts[0],
+      }), (txError, txHash) => {
+        if (txError) {
+          el('#account-claim-refund-response').style.display = 'block';
+          el('#account-claim-refund-response').innerHTML = '';
+          el('#account-claim-refund-response').appendChild(yo`<span>
+            <h3 style="margin-top: 0px;">Refund Transaction Error</h3>
+            <p>There was an error while sending your transaction..</p>
+            <hr />
+            <p>${String(txError)}</p>
+          </span>`);
+        }
+
+        if (txHash) {
+          el('#account-claim-refund-response').style.display = 'block';
+          el('#account-claim-refund-response').innerHTML = '';
+          el('#account-claim-refund-response').appendChild(yo`<span>
+            <h3 style="margin-top: 0px;">Refund Processing</h3>
+            <p>Your transaction is being processed...</p>
+            <hr />
+            <label>Transaction Hash</label>
+            <h4>
+              <a href=${etherScanTxHashUrl(txHash, getNetwork())}
+                target="_blank"
+                style="color: #FFF;">
+                ${txHash}
+              </a>
+            </h4>
+          </span>`);
+
+          getTransactionSuccess(txHash, (txSuccessError, txReceipt) => {
+            if (txSuccessError) {
+              el('#account-claim-refund-response').style.display = 'block';
+              el('#account-claim-refund-response').innerHTML = '';
+              el('#account-claim-refund-response').appendChild(yo`<span>
+                <h3 style="margin-top: 0px;">Transaction Error</h3>
+                <p>There was an error while sending your transaction..</p>
+                <hr />
+                <p>${String(txSuccessError)}</p>
+                <p>
+                  view it on etherscan:
+                  <a href=${etherScanTxHashUrl(txHash, getNetwork())}
+                    target="_blank"
+                    style="color: #FFF;">
+                    ${txHash}
+                  </a>
+                </p>
+              </span>`);
+            }
+
+            if (txReceipt) {
+              el('#account-claim-refund-response').style.display = 'block';
+              el('#account-claim-refund-response').innerHTML = '';
+              el('#account-claim-refund-response').appendChild(yo`<span>
+                <h3 style="margin-top: 0px;">Refund Transaction Success!</h3>
+                <p>Your transaction was successfully sent.</p>
+                <hr />
+                view it on etherscan:
+                <a href=${etherScanTxHashUrl(txHash, getNetwork())}
+                  target="_blank"
+                  style="color: #FFF;">
+                  ${txHash}
+                </a>
+              </span>`);
+            }
+          });
+        }
+      });
+    });
+
+    // send ether functionality
+    el('#sendEther').addEventListener('click', () => {
+      const etherAmount = (new BigNumber(web3.toWei(el('#sendAmount').value, 'ether'))).toFixed(0);
+      const destination = el('#sendAddress').value;
+
+      el('#account-send-tx-response').style.display = 'block';
+      el('#account-send-tx-response').innerHTML = '';
+      el('#account-send-tx-response').appendChild(yo`<span>
+        <h3 style="margin-top: 0px;">Transaction Processing</h3>
+        <p>Awaiting transaction approval...</p>
+      </span>`);
+
+      web3.eth.sendTransaction(Object.assign({}, txObject(), {
+        from: accounts[0],
+        to: destination,
+        value: etherAmount,
+      }), (txError, txHash) => {
+        if (txError) {
+          el('#account-send-tx-response').style.display = 'block';
+          el('#account-send-tx-response').innerHTML = '';
+          el('#account-send-tx-response').appendChild(yo`<span>
+            <h3 style="margin-top: 0px;">Transaction Error</h3>
+            <p>There was an error while sending your transaction..</p>
+            <hr />
+            <p>${String(txError)}</p>
+          </span>`);
+        }
+
+        if (txHash) {
+          el('#account-send-tx-response').style.display = 'block';
+          el('#account-send-tx-response').innerHTML = '';
+          el('#account-send-tx-response').appendChild(yo`<span>
+            <h3 style="margin-top: 0px;">Transaction Processing</h3>
+            <p>Your transaction is being processed...</p>
+            <hr />
+            <label>Transaction Hash</label>
+            <h4>
+              <a href=${etherScanTxHashUrl(txHash, getNetwork())}
+                target="_blank"
+                style="color: #FFF;">
+                ${txHash}
+              </a>
+            </h4>
+          </span>`);
+
+          getTransactionSuccess(txHash, (txSuccessError, txReceipt) => {
+            if (txSuccessError) {
+              el('#account-send-tx-response').style.display = 'block';
+              el('#account-send-tx-response').innerHTML = '';
+              el('#account-send-tx-response').appendChild(yo`<span>
+                <h3 style="margin-top: 0px;">Transaction Error</h3>
+                <p>There was an error while sending your transaction..</p>
+                <hr />
+                <p>${String(txSuccessError)}</p>
+                <p>
+                  view it on etherscan:
+                  <a href=${etherScanTxHashUrl(txHash, getNetwork())}
+                    target="_blank"
+                    style="color: #FFF;">
+                    ${txHash}
+                  </a>
+                </p>
+              </span>`);
+            }
+
+            if (txReceipt) {
+              el('#account-send-tx-response').style.display = 'block';
+              el('#account-send-tx-response').innerHTML = '';
+              el('#account-send-tx-response').appendChild(yo`<span>
+                <h3 style="margin-top: 0px;">Transaction Success!</h3>
+                <p>Your transaction was successfully sent.</p>
+                <hr />
+                view it on etherscan:
+                <a href=${etherScanTxHashUrl(txHash, getNetwork())}
+                  target="_blank"
+                  style="color: #FFF;">
+                  ${txHash}
+                </a>
+              </span>`);
+            }
+          });
+        }
+      });
+    });
+
+
+
     // load token at this address
     loadTokenFromEnhancer('0x2ac0f0eb919e28c9d33518f48f9565796c84d69e');
 
     // refresh page buttons
     refreshPageButtons();
   });
+}
+
+function clearSensitiveFields() {
+  el('#account-wallet-seed').value = '';
+  el('#account-wallet-passphrase').value = '';
+  el('#account-wallet-passphrase-retype').value = '';
+  el('#account-wallet-alert').style.diplay = 'none';
 }
 
 // load wallet
@@ -232,25 +410,60 @@ function loadWallet() {
   const walletFile = el('#account-wallet-file').files[0];
   const walletPassphrase = el('#account-wallet-passphrase').value;
 
+  // clear sensitive data
+  clearSensitiveFields();
+
   if (walletFile) {
-    var reader = new FileReader();
-    reader.onload = (e) => {
-      // e.target.result
-      // display passphrase box
-
-      loadAccount();
-    };
-    reader.readAsText(walletFile);
-  } else if (walletSeed) {
-    createEncryptedKeystore(walletSeed, '').then((keystore) => {
-      setKeystore(keystore);
-      setWalletProvider(keystore);
-
-      setTimeout(() => loadAccount(), 30);
+    const reader = new FileReader();
+    const filePromise = new Promise(resolve => {
+      reader.onload = (loadEvent) => {
+        resolve(loadEvent.target.result);
+      }
     });
+    reader.readAsText(walletFile);
+    filePromise
+      .then(lightwallet.keystore.deserialize)
+      .then(keystore => {
+        setKeystore(keystore);
+        setWalletProvider(keystore);
+        loadAccount();
+      })
+      .catch(error => {
+        el('#view-focus').style.display = 'none';
+        el('#view-account').style.display = 'block';
+        el('#account-wallet-encrypt-buttons').style.display = 'block';
+        el('#account-wallet-alert').style.display = 'block';
+        el('#account-wallet-alert').innerHTML = '';
+        el('#account-wallet-alert').appendChild(yo`<span>
+          <h3 style="margin-top: 0px;">Wallet Error</h3>
+          <p>${String(error)}</p>
+        </span>`);
+      });
+  } else if (walletSeed) {
+    createEncryptedKeystore(walletSeed, walletPassphrase)
+      .then((keystore) => {
+        setKeystore(keystore);
+        setWalletProvider(keystore);
+        loadAccount();
+      })
+      .catch(error => {
+        el('#view-focus').style.display = 'none';
+        el('#view-account').style.display = 'block';
+        el('#account-wallet-alert').style.display = 'block';
+        el('#account-wallet-alert').innerHTML = '';
+        el('#account-wallet-alert').appendChild(yo`<span>
+          <h3 style="margin-top: 0px;">Wallet Error</h3>
+          <p>${String(error)}</p>
+        </span>`);
+      });
   } else {
+    el('#view-focus').style.display = 'none';
+    el('#view-account').style.display = 'block';
     el('#account-wallet-alert').innerHTML = '';
-    el('#account-wallet-alert').appendChild(yo`<p>You must enter a seed or upload your encrypted wallet file.</p>`);
+    el('#account-wallet-alert').appendChild(yo`<p>
+      <h3 style="margin-top: 0px;">Wallet Error</h3>
+      You must enter a seed or upload your encrypted wallet file.
+    </p>`);
   }
 }
 
@@ -264,10 +477,28 @@ export default function loadAndDrawAccount(callback) {
   el('#view-account').appendChild(accountView({}));
 
   el('#account-wallet-file').addEventListener('change', () => {
-    el('#account-wallet-seed').style.display = 'none';
-    el('#account-wallet-passphrase').style.display = 'block';
+    el('#view-focus').style.display = 'block';
+    el('#view-account').style.display = 'none';
+    loadWallet();
   });
-  el('#account-wallet-restore').addEventListener('click', loadWallet);
+  el('#account-wallet-encrypt').addEventListener('click', () => {
+    loadWallet();
+  });
+  el('#account-wallet-passphrase-retype').addEventListener('keydown', (e) => {
+    if (e.keyCode == 13) {
+      el('#view-focus').style.display = 'block';
+      el('#view-account').style.display = 'none';
+      loadWallet();
+    }
+  });
+  el('#account-wallet-restore').addEventListener('click', () => {
+    el('#account-wallet-buttons').style.display = 'none';
+    el('#account-wallet-encrypt').style.display = 'inline-block';
+    el('#account-wallet-seed').style.display = 'none';
+    el('#account-wallet-passphrase').style.display = 'inline-block';
+    el('#account-wallet-passphrase-retype').style.display = 'inline-block';
+    el('#account-wallet-encrypt-buttons').style.display = 'inline-block';
+  });
   el('#account-wallet-upload').addEventListener('click', () => {
     el('#account-wallet-file').click();
   });

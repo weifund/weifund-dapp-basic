@@ -58,13 +58,9 @@ export default function loadAndDrawCampaign(campaignID, callback) {
   const storedCampaignData = getCampaign(campaignID);
 
   // load campaign fresh to draw
-  if (storedCampaignData) {
-    drawCampaign(null, { [campaignID]: storedCampaignData }, campaignID);
-  } else {
-    getCampaigns({
-      network: 'ropsten',
+  getCampaigns({
+    network: 'ropsten',
 
-      selector: [campaignID],
-    }, (err, result) => drawCampaign(err, result, campaignID));
-  }
+    selector: [campaignID],
+  }, (err, result) => drawCampaign(err, result, campaignID));
 }

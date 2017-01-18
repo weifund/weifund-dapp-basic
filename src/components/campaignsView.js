@@ -13,7 +13,7 @@ export default function campaignsView(options) {
     <br /><br /><br /><br />
 
     <div class="row">
-      <div id="staffpicks_list"><h3>${t("campaignsView.loading")}</h3></div>
+      <div id="staffpicks_list"></div>
     </div>
 
     <div class="row">
