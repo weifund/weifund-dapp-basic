@@ -5,6 +5,7 @@ import ProviderEngine from 'web3-provider-engine';
 import HookedWalletSubprovider from 'web3-provider-engine/subproviders/hooked-wallet';
 import Web3Subprovider from 'web3-provider-engine/subproviders/web3';
 
+import { setDefaultAccount } from './environment';
 import { web3 } from './web3';
 
 // The seed for the contribution flow is stored here. It's only the canonical
@@ -58,9 +59,11 @@ export function createEncryptedKeystore(seedPhrase, password) {
  */
 export function setWalletProvider(keystore) {
   const provider = new ProviderEngine();
+  const mainAccount = `0x${keystore.getAddresses()[0]}`;
+  setDefaultAccount(mainAccount);
   provider.addProvider(new HookedWalletSubprovider({
     getAccounts(callback) {
-      callback(null, [`0x${keystore.getAddresses()[0]}`]);
+      callback(null, [mainAccount]);
     },
     signTransaction: keystore.signTransaction.bind(keystore),
   }));

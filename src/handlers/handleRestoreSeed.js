@@ -9,7 +9,7 @@ export default function handleRestoreSeed(event) {
   const seedEl = el('#view-campaign-contribute-wallet-restore input[type=text]');
   setSeed(seedEl.value);
   seedEl.value = '';
-  const campaignId = parseInt(el('#campaign_id').value);
+  const campaignId = parseInt(el('#campaign_id').value, 10);
   // Navigate to the encryption screen.
   getRouter()(`/campaign/${campaignId}/contribute/wallet/password`);
 }
