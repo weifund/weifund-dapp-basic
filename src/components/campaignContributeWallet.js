@@ -221,6 +221,14 @@ export default function campaignContributeWallet(options) {
       <br />
       <br />
 
+      <p>
+        Warning: do not use or upload a wallet from sites like myetherwallet or any other wallet system.
+        The WeiFund MVP only supports our own light-wallet configuration.
+      </p>
+
+      <br />
+      <br />
+
       <input type="text" class="form-control" placeholder="WALLET SEED PHRASE" />
       <input type="file" style="display: none" />
 

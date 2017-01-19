@@ -46,7 +46,7 @@ export default function campaignContributeForm(options) {
 
       <h3>Disclaimer</h3>
       <p>You must read and agree to this disclaimer before contributing to this campaign.</p>
-      <textarea class="form-control input-lg text-uppercase">Disclaimer
+      <textarea class="form-control input-lg text-uppercase" style="height: 300px;">Disclaimer
 
 The data displayed in the Public Data tool is provided by the third party indicated as the data source. WeiFund does not create this data, vouch for its accuracy, or guarantee that it is the most recent data available from the data provider. For many or all of the data, the data is by its nature approximate and will contain some inaccuracies. The data may contain errors introduced by the data provider(s) and/or by WeiFund. The names of countries and other territories shown in the tool may differ from those in the original data.
 

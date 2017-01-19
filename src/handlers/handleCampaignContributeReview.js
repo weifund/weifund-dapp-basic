@@ -7,8 +7,9 @@ import { getAccountBalance, txObject } from '../environment';
 export default function handleCampaignContributeReview() {
   const campaignContributeID = el('#campaignFormID').value;
   const contributeAmount = el('#campaign_contributeAmount').value;
+  const contirbuteAmountBN = new BigNumber(contributeAmount);
   const accountBalance = getAccountBalance();
-  var contributeTotal = new BigNumber(contributeAmount).add(web3.fromWei(txObject().gas, 'ether'));
+  var contributeTotal = contirbuteAmountBN.add(web3.fromWei(txObject().gas, 'ether'));
 
   // parse float
   if (accountBalance.add(txObject().gas).lt(web3.toWei(contributeAmount, 'ether'))) {
@@ -31,7 +32,7 @@ export default function handleCampaignContributeReview() {
   }
 
   // parse float
-  if (parseFloat(contributeAmount, 10) === 0) {
+  if (contirbuteAmountBN.lt(new BigNumber('0.125'))) {
     el('#campaign-contribute-review-button').href = ``;
     el('#campaign_contributeAmountGroup').style.border = `red solid 1px`;
     el('#campaign_contributeAmount').focus();
@@ -42,7 +43,7 @@ export default function handleCampaignContributeReview() {
     el('#campaign-contribute-form-response').style.display = 'block';
     el('#campaign-contribute-form-response').appendChild(yo`<span>
       <h2>Invalid Contribution Amount</h2>
-      <p>You must select a contribution amount greater than zero Ether.</p>
+      <p>You must select a contribution amount greater than 0.125 Ether (ETH).</p>
     </span>`);
 
     return;

@@ -1,5 +1,7 @@
 import yo from 'yo-yo';
 import { getDefaultAccount } from '../environment';
+import { saveWalletFile, logout } from '../keystore';
+import { getRouter } from '../router';
 
 // main export
 export default function accountView(options) {
@@ -14,7 +16,14 @@ export default function accountView(options) {
         <br />
         <br />
 
-        <p>Please restore your wallet in order to manage your account.</p>
+        <p>Please restore your wallet in order to manage your account.
+
+          <br />
+          <br />
+
+          Warning: do not use or upload a wallet from sites like myetherwallet or any other wallet system.
+          The WeiFund MVP only supports our own light-wallet configuration.
+        </p>
 
         <br />
 
@@ -97,7 +106,6 @@ export default function accountView(options) {
             <div class="col-sm-4 text-left" style="padding-top: 0px;">
               <h4>Address</h4>
               <h4>Balance<br /><small><br /></small></h4>
-              <h4>Provider</h4>
             </div>
             <div class="col-sm-8 text-left">
               <h4 style="text-overflow:ellipsis; overflow: hidden;">
@@ -110,10 +118,21 @@ export default function accountView(options) {
                 <br />
                 <small><span id="accountBalanceWei">0</span> wei</small>
               </h4>
-              <h4>Hooked Web3 Provider (via <a href="https://infura.io" target="_blank">
-                infura.io
-              </a>)</h4>
             </div>
+
+            <br />
+            <br />
+
+            <button class="btn btn-primary" onclick=${saveWalletFile}>
+              Download Encrypted Wallet
+            </button>
+
+            <button class="btn btn-primary" onclick=${() => {
+              logout();
+              getRouter()('/');
+            }}>
+              Logout
+            </button>
           </div>
         </div>
 

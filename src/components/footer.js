@@ -18,7 +18,7 @@ export default function footer(options) {
         <div class="col-xs-12 col-sm-3">
           <h4 target="_blank" class="text-light-gray">${t("footer.headers.community")}</h4>
           <a target="_blank" href="https://www.reddit.com/r/ethereum/" class="text-light-gray">${t("footer.redditEthereum")}</a> <br />
-          <a target="_blank" href="https://www.reddit.com/r/ipfs/" class="text-light-gray">IPFS</a> <br />
+          <a target="_blank" href="https://www.reddit.com/r/ipfs/" class="text-light-gray">/r/IPFS</a> <br />
           <a target="_blank" href="https://forum.ethereum.org" class="text-light-gray">Ethereum Forum</a> <br />
         </div>
         <div class="col-xs-12 col-sm-3">
@@ -31,6 +31,7 @@ export default function footer(options) {
         <div class="col-xs-12 col-sm-3">
           <h4 class="text-light-gray">${t("footer.headers.connect")}</h4>
           <a target="_blank" href="http://weifund.io" class="text-light-gray">${t("footer.weifundWebsite")}</a> <br />
+          <a target="_blank" href="http://medium.com/@weifund" class="text-light-gray">medium</a> <br />
           <a target="_blank" href="http://twitter.com/weifund" class="text-light-gray">twitter</a> <br />
           <a target="_blank" href="mailto:mail@weifund.io" class="text-light-gray">email</a> <br />
         </div>
@@ -47,7 +48,6 @@ export default function footer(options) {
           <small>© ${t("footer.copyright")}</small>
         </div>
         <div class="col-xs-6 col-md-3 text-right">
-          <a href="http://weifund.readthedocs.org" target="_blank">Read The Docs</a>
         </div>
     </div>
   </div>

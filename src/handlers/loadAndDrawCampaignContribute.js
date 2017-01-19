@@ -77,6 +77,9 @@ export default function loadAndDrawCampaignContribute(campaignID, callback) {
       getNetwork: getNetwork,
     }));
 
+    // contribution error
+    handleCampaignContributeReview();
+
     // weifund amount contributor amount
     el('#campaign_contributeAmount').addEventListener('change', handleCampaignContributeReview);
 

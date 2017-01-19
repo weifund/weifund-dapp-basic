@@ -6,7 +6,7 @@ import HookedWalletSubprovider from 'web3-provider-engine/subproviders/hooked-wa
 import Web3Subprovider from 'web3-provider-engine/subproviders/web3';
 
 import { setDefaultAccount } from './environment';
-import { web3 } from './web3';
+import { web3, setProviderToDefault } from './web3';
 
 // The seed for the contribution flow is stored here. It's only the canonical
 // source for the seed when there's no provider yet.
@@ -44,7 +44,7 @@ export function createEncryptedKeystore(seedPhrase, password) {
   return createVault({
     seedPhrase,
     password,
-    hdPathString: "m/44'/60'/0'/0",
+    hdPathString: "m/44'/60'/0'/0", // eslint-disable-line
   })
     .then(keystore => ensureKeystoreHasAddress(keystore, password))
     .then(keystore => {
@@ -104,6 +104,12 @@ export function getSeed() {
   }
 
   return Promise.resolve(seed);
+}
+
+export function logout() {
+  setKeystore(null);
+  setSeed(null);
+  setProviderToDefault();
 }
 
 export function download(filename, text) {

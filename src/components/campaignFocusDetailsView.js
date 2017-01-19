@@ -2,6 +2,8 @@ import yo from 'yo-yo';
 
 // object to html
 import objectView from './objectView';
+import { getNetwork } from '../environment';
+import { etherScanAddressUrl, etherScanTxHashUrl, oneDay, emptyWeb3Address } from 'weifund-util';
 
 // main export
 export default function campaignFocusDetailsView(options) {
@@ -17,8 +19,8 @@ export default function campaignFocusDetailsView(options) {
 
       <div class="row">
         <div class="col-xs-12 col-sm-6">
-          <h4>Address</h4>
-          ${campaignObject.addr} <a href="http://etherscan.io/address/${campaignObject.addr}">etherscan</a>
+          <h4>Campaign Contract Balance</h4>
+          ${web3.fromWei(campaignObject.balance, 'ether').round(4).toString(10)} ether (ETH)
 
           <br />
           <br />
@@ -29,12 +31,41 @@ export default function campaignFocusDetailsView(options) {
           <br />
           <br />
 
-          <h4>Beneficiary</h4>
-          ${campaignObject.beneficiary}
-        </div>
-        <div class="col-xs-12 col-md-6">
           <h4>Funding Goal</h4>
           ${web3.fromWei(campaignObject.fundingGoal, 'ether').toString(10)} ether (ETH)
+
+          <br />
+          <br />
+
+          <h4>Funding Cap</h4>
+          ${web3.fromWei(campaignObject.fundingCap, 'ether').toString(10)} ether (ETH)
+        </div>
+        <div class="col-xs-12 col-md-6">
+          <h4>Address</h4>
+          ${campaignObject.addr}
+          <a target="_blank" href=${etherScanAddressUrl(campaignObject.addr, getNetwork())}>
+            etherscan
+          </a>
+
+          <br />
+          <br />
+
+          <h4>Beneficiary</h4>
+          ${campaignObject.beneficiary}
+          <a target="_blank"
+          href=${etherScanAddressUrl(campaignObject.beneficiary, getNetwork())}>
+            etherscan
+          </a>
+
+          <br />
+          <br />
+
+          <h4>Token</h4>
+          ${campaignObject.token}
+          <a target="_blank"
+          href=${etherScanAddressUrl(campaignObject.token, getNetwork())}>
+            etherscan
+          </a>
 
           <br />
           <br />
@@ -43,12 +74,6 @@ export default function campaignFocusDetailsView(options) {
           approx. ${campaignObject.approximateExpiryDate.toISOString()}
           <br />
           <small>current. block ${campaignObject.blockNumber.toString(10)} exp. block ${campaignObject.expiry.toString(10)}</small>
-
-          <br />
-          <br />
-
-          <h4>Current Contract Balance</h4>
-          ${web3.fromWei(campaignObject.balance, 'ether').round(4).toString(10)} ether (ETH)
         </div>
       </div>
 
@@ -62,6 +87,10 @@ export default function campaignFocusDetailsView(options) {
       <div class="row">
         <div class="col-xs-12 col-sm-6">
           ${objectView({web3, object: campaignObject, layout: {
+              totalContributions: {
+                name: 'Total Contributions',
+                description: 'The total number of contributions made to this campaign.',
+              },
               active: {
                 name: 'Active',
                 description: 'Is the campaign active (i.e. can you contribute to it)',

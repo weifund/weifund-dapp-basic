@@ -1,4 +1,8 @@
 import yo from 'yo-yo';
+import { etherScanAddressUrl, etherScanTxHashUrl, oneDay, emptyWeb3Address } from 'weifund-util';
+
+import { getNetwork } from '../environment';
+
 
 export default function campaignFocusOverviewView(options) {
   var mailChimpFormAction = '';
@@ -78,7 +82,12 @@ export default function campaignFocusOverviewView(options) {
       <div class="row">
         <div class="col-xs-12">
           <h4>Address</h4>
-          <a href="http://ropsten.etherscan.io/address/${campaignObject.addr}" class="text-break-all" style="width: 100%;">${campaignObject.addr}</a>
+          <a href=${etherScanAddressUrl(campaignObject.addr, getNetwork())}
+            target="_blank"
+            class="text-break-all"
+            style="width: 100%;">
+            ${campaignObject.addr}
+          </a>
 
           <br /><br />
 
@@ -89,7 +98,7 @@ export default function campaignFocusOverviewView(options) {
 
           <h4>Website</h4>
           ${campaignObject.hasValidData
-            && yo`<a href="${campaignObject.data.campaignSchema.url}">
+            && yo`<a href="${campaignObject.data.campaignSchema.url}" target="_blank">
               ${campaignObject.data.campaignSchema.url}</a>`
             || `No website was found`}</a>
         </div>

@@ -12,7 +12,7 @@ export default function campaignContributeReview(options) {
         <h3>Review Contribution
           <a href="javascript:window.print()">
             <button class="btn btn-sm text-gray" style="float: right;">
-              Save Review Copy
+              Print
             </button>
           </a>
         </h3>

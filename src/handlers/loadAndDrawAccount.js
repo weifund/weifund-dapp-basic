@@ -14,6 +14,7 @@ import { web3, getTransactionSuccess } from '../web3';
 import { ipfs } from '../ipfs';
 import { refreshPageButtons, getRouter } from '../router';
 import { t } from '../i18n';
+import { openSubView } from '../views';
 import { createEncryptedKeystore, setKeystore, setWalletProvider } from '../keystore';
 
 
@@ -37,7 +38,7 @@ function TokenUI(options) {
         <small>(${options.symbol})</small>
       </div>
       <div class="col-xs-6 text-right">
-        <a href=${`http://etherscan.io/address/${options.tokenAddress}`}
+        <a href=${etherScanAddressUrl(options.tokenAddress, getNetwork())}
           target="_blank"
           style="text-overflow:ellipsis;
           overflow: hidden; display: inline-block; width: 100px;">
@@ -198,10 +199,15 @@ function loadTokenFromEnhancer(enhancerAddress) {
 
 function loadAccount() {
   el('#view-focus').style.display = 'none';
+  el('#view-account-restore').style.display = 'none';
   el('#view-account').style.display = 'block';
 
   // route to panel page
-  getRouter()('/account/panel');
+  // getRouter()('/account/panel');
+
+  console.log('pabel');
+
+  openSubView('view-account-panel');
 
   // get accounts
   web3.eth.getAccounts((err, accounts) => {
@@ -313,6 +319,30 @@ function loadAccount() {
         <p>Awaiting transaction approval...</p>
       </span>`);
 
+      if ((new BigNumber(etherAmount)).lt(0)) {
+        el('#account-send-tx-response').style.display = 'block';
+        el('#account-send-tx-response').innerHTML = '';
+        el('#account-send-tx-response').appendChild(yo`<span>
+          <h3 style="margin-top: 0px;">Transaction Error</h3>
+          <p>There was an error while sending your transaction..</p>
+          <hr />
+          <p>Your transaction value cannot be less than zero.</p>
+        </span>`);
+        return;
+      }
+
+      if (!web3.isAddress(destination)) {
+        el('#account-send-tx-response').style.display = 'block';
+        el('#account-send-tx-response').innerHTML = '';
+        el('#account-send-tx-response').appendChild(yo`<span>
+          <h3 style="margin-top: 0px;">Transaction Error</h3>
+          <p>There was an error while sending your transaction..</p>
+          <hr />
+          <p>Your transaction destination address is invalid.</p>
+        </span>`);
+        return;
+      }
+
       web3.eth.sendTransaction(Object.assign({}, txObject(), {
         from: accounts[0],
         to: destination,
@@ -386,9 +416,8 @@ function loadAccount() {
       });
     });
 
-
-
     // load token at this address
+    el('#tokens').innerHTML = '';
     loadTokenFromEnhancer('0x2ac0f0eb919e28c9d33518f48f9565796c84d69e');
 
     // refresh page buttons
@@ -492,6 +521,18 @@ export default function loadAndDrawAccount(callback) {
     }
   });
   el('#account-wallet-restore').addEventListener('click', () => {
+    if (el('#account-wallet-seed').value === '') {
+      el('#account-wallet-alert').style.display = 'block';
+      el('#account-wallet-alert').innerHTML = '';
+      el('#account-wallet-alert').appendChild(yo`<p>
+        <h3 style="margin-top: 0px;">Wallet Error</h3>
+        You must enter a seed or upload your encrypted wallet file.
+      </p>`);
+      return;
+    } else {
+      el('#account-wallet-alert').style.display = 'none';
+    }
+
     el('#account-wallet-buttons').style.display = 'none';
     el('#account-wallet-encrypt').style.display = 'inline-block';
     el('#account-wallet-seed').style.display = 'none';
@@ -504,4 +545,9 @@ export default function loadAndDrawAccount(callback) {
   });
 
   callback(null, true);
+
+  // if hooked web3 provider just login
+  if (web3.currentProvider.currentBlock) {
+    loadAccount();
+  }
 }

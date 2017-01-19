@@ -35,43 +35,53 @@ export default function campaignContributeReceipt(options){
 
       <br />
 
-      <h4>Transaction Hash</h4>
-      ${options.receipt.transactionHash}
+      <div class="row">
+        <div class="col-xs-6">
+          <h4>Transaction Hash</h4>
+          ${options.receipt.transactionHash}
 
-      <br /> <br />
+          <br /> <br />
 
-      <h4>To (Campaign Account)</h4>
-      ${to}
+          <h4>To (Campaign Account)</h4>
+          ${to}
 
-      <br /> <br />
+          <br /> <br />
 
-      <h4>From (Your Selected Account)</h4>
-      ${from}
+          <h4>From (Your Selected Account)</h4>
+          ${from}
+        </div>
+        <div class="col-xs-6">
+          <h4>Block Number</h4>
+          ${options.receipt.blockNumber !== null
+            && options.receipt.blockNumber.toString(10) || 'pending'}
 
-      <br /> <br />
+          <br /> <br />
 
-      <h4>Block Number</h4>
-      ${options.receipt.blockNumber !== null
-        && options.receipt.blockNumber.toString(10) || 'pending'}
+          <h4>Value</h4>
+          ${contributeTotal.toString(10)} ether
 
-      <br /> <br />
-      <h4>Value</h4>
-      ${contributeTotal.toString(10)} ether
+          <br /> <br />
 
-      <br /> <br />
-      <h4>Cumulative Gas Used</h4>
-      ${options.receipt.cumulativeGasUsed !== null
-        && options.receipt.cumulativeGasUsed.toString(10) || 'pending'} wei
+          <h4>Cumulative Gas Used</h4>
+          ${options.receipt.cumulativeGasUsed !== null
+            && options.receipt.cumulativeGasUsed.toString(10) || 'pending'} wei
+        </div>
+      </div>
 
-      <br /> <br /> <br />
+      <div class="row">
+        <div class="col-xs-12">
+          <a href="/" class="btn btn-primary">
+            Campaign List
+          </a>
+          <a href="/account" class="btn btn-primary">
+            Manage Tokens
+          </a>
+          <a href="/account" class="btn btn-primary">
+            My Account
+          </a>
+        </div>
+      </div>
 
-      <button onclick=${() => saveWalletFile()} class="btn btn-lg btn-primary">
-        Download Encrypted Wallet
-      </button>
-
-      <a class="btn btn-lg btn-primary" href="javascript:window.print()">
-        Save Receipt
-      </a>
     </div>
   </div></div>`;
 }

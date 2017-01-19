@@ -1,6 +1,6 @@
 {
   "campaignsView": {
-    "header": "Explore a universe of next-gen campaigns",
+    "header": "Explore a universe of campaigns",
     "subHeader": "Tons of amazing projects.",
     "campaignsHeader": "Campaigns",
     "loading": "Loading campaigns..."
@@ -30,7 +30,7 @@
   },
   "campaignFocusNav": {
     "campaign": "Campaign",
-    "details": "Details",
+    "details": "Technical Details",
     "contracts": "Contracts",
     "qrcode": "QR Code"
   },
@@ -67,6 +67,6 @@
     "consensys": "ConsenSys",
     "weifundWebsite": "weifund.io",
     "weifundReddit": "/r/weifund",
-    "copyright": "2016"
+    "copyright": "2017"
   }
 }

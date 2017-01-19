@@ -2,10 +2,15 @@
 import Web3 from 'web3';
 
 // new web3 object
-const web3 = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/'));
+export const web3 = new Web3();
+
+// set provider to default
+export function setProviderToDefault() {
+  web3.setProvider(new Web3.providers.HttpProvider('https://ropsten.infura.io/'));
+}
 
 // setup web3 provider
-function setupWeb3Provider() {
+export function setupWeb3Provider() {
   // window provider support (metamask)
   // set provider later
   if (window.hasOwnProperty('web3') && typeof window.web3.currentProvider !== 'undefined') {
@@ -16,7 +21,7 @@ function setupWeb3Provider() {
   }
 }
 
-function getTransactionSuccess(txHash, callback) {
+export function getTransactionSuccess(txHash, callback) {
   const cb = callback || function cb() {};
   return new Promise((resolve, reject) => {
     const txInterval = setInterval(() => {
@@ -37,9 +42,5 @@ function getTransactionSuccess(txHash, callback) {
   });
 }
 
-// export web3 instance and setup
-module.exports = {
-  web3,
-  getTransactionSuccess,
-  setupWeb3Provider,
-};
+// set provider to default
+setProviderToDefault();
