@@ -31,7 +31,7 @@ export default function campaignContributeWallet(options) {
 
           <hr />
 
-          <h4>This is the QR code for your wallet address.</h4>
+          <h4>This is the QR code for your wallet address. Mobile Ethereum apps can scan this code to send ether to your address.</h4>
 
           <h4><b>Please fill your account with Ether</b>, so you can contribute to the campaign.</h4>
 
@@ -97,7 +97,13 @@ export default function campaignContributeWallet(options) {
       <br />
       <br />
 
-      <h4>Your seed phrase is:</h4>
+      <h4>
+        Your
+        <span data-tooltip="A seed phrase is a verbal representation of your account's private key, a very large, randomly selected number.">
+          seed phrase
+        </span>
+        is:
+      </h4>
 
       <div class="alert alert-warning text-center">
         <h3 class="seed" style="margin-top: 0px; margin-bottom: 0px;">Loading...</h3>
