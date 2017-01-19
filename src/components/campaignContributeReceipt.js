@@ -68,6 +68,9 @@ export default function campaignContributeReceipt(options){
         </div>
       </div>
 
+      <br />
+      <br />
+
       <div class="row">
         <div class="col-xs-12">
           <a href="/" class="btn btn-primary">
