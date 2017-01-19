@@ -463,3 +463,28 @@ footer {
     /*pointer-events: none;*/
 }
 /*END Form Wizard*/
+
+/* Tooltips */
+span[data-tooltip] {
+  border-bottom: 1px dotted #333;
+}
+
+span[data-tooltip]::before {
+    background: #333;
+    bottom: 9999px;
+    color: #f1f1f1;
+    content: attr(data-tooltip);
+    right: 35px;
+    line-height: 24px;
+    max-width: 33%;
+    padding: 12px;
+    position: absolute;
+    opacity: 0;
+    transition: opacity 0.4s ease-out;
+    z-index: 999;
+}
+
+span[data-tooltip]:hover::before {
+    opacity: 1;
+    bottom: 35px;
+}
