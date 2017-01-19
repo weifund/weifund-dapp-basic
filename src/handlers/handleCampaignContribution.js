@@ -56,6 +56,13 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
       Your contribution transaction is awaiting approval...
     </span>`);
 
+    console.log(Object.assign({}, {
+      value: contributeValueWei.toFixed(0),
+      from: txObject().from.slice(2),
+      gasPrice: web3.toWei('0.00000002', 'ether').toString(10),
+      gas: txObject().gas,
+    }));
+
     // build contribute params
     contributionParams.push([]); // for the empty contribution
     contributionParams.push(Object.assign({}, {

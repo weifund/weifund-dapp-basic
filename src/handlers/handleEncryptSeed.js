@@ -53,12 +53,16 @@ export function contributionBalanceUpdater(address) {
 
         reviewBalanceEl.innerHTML = '';
         reviewBalanceEl.appendChild(yo`<span>${balanceEther.toString(10) || '0'}</span>`);
+        const contributeEl = el('#campaign-contribute-to-campaign');
 
         if (balance.gte(web3.toWei(1, 'finney'))) {
-          const contributeEl = el('#campaign-contribute-to-campaign');
+          contributeEl.innerHTML = 'Contribute';
           contributeEl.removeAttribute('disabled');
           return true;
+        } else {
+          contributeEl.innerHTML = 'Polling for balance...';
         }
+
         return false;
       })
       .catch((error) => {
@@ -133,7 +137,7 @@ export default function handleEncryptSeed(event) {
   const formEl = el('#view-campaign-contribute-wallet-password form');
   const password1 = formEl.querySelector('input[name=password-1]');
   const password2 = formEl.querySelector('input[name=password-2]');
-  if (password1.value !== password2.value) {
+  if (password1.value !== password2.value && password1 !== '') {
     // If the passwords don't match, abort. The submit button in the UI should
     // still be disabled.
     return;

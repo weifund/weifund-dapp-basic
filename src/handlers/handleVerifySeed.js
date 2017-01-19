@@ -5,7 +5,7 @@ import { getSeed } from '../keystore';
 export default function handleVerifySeed(event) {
   getSeed()
     .then(seed => {
-      if (seed.toLowerCase() == event.target.value.toLowerCase()) {
+      if (seed.toLowerCase() === event.target.value.toLowerCase() && seed !== '') {
         const confirmButton = el('#view-campaign-contribute-wallet-confirm a.confirm');
         confirmButton.removeAttribute('disabled');
 
@@ -18,6 +18,9 @@ export default function handleVerifySeed(event) {
         confirmButton.addEventListener('click', () => {
           seedInputEl.value = '';
         });
+      } else {
+        const confirmButton = el('#view-campaign-contribute-wallet-confirm a.confirm');
+        confirmButton.setAttribute('disabled', 'disabled');
       }
     });
 }

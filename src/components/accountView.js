@@ -91,6 +91,7 @@ export default function accountView(options) {
 
         <hr />
 
+        <div id="tokens-loading"></div>
         <div id="tokens"></div>
       </div>
 
@@ -120,6 +121,8 @@ export default function accountView(options) {
               </h4>
             </div>
 
+            <br />
+            <br />
             <br />
             <br />
 

@@ -1,4 +1,5 @@
 import yo from 'yo-yo';
+import BigNumber from 'bignumber.js';
 
 import campaignContributeNav from './campaignContributeNav';
 import { getNetwork, txObject } from '../environment';
@@ -7,6 +8,8 @@ import { web3 } from '../web3';
 export default function campaignContributeForm(options) {
   const campaignObject = options.campaignObject;
   const defaultAccount = options.defaultAccount;
+  const gasPrice = web3.toWei('0.00000002', 'ether');
+  const actualGasCost = (new BigNumber(txObject().gas)).times(gasPrice);
   const t = options.t;
 
   return yo`<div>
@@ -82,8 +85,8 @@ WeiFund (A) expressly disclaims the accuracy, adequacy, or completeness of any d
       <h4>Selected Account Balance</h4>
       <h5><span id="defaultAccountBalance">0</span> Ether (ETH)</h5>
       <br />
-      <h4>Gas Cost</h4>
-      <h5><span>${web3.fromWei(txObject().gas, 'ether').toString(10)}</span> Ether (ETH)</h5>
+      <h4>Approx. Gas Cost</h4>
+      <h5><span>${web3.fromWei(actualGasCost, 'ether').toString(10)}</span> Ether (ETH)</h5>
       <br />
       <h4>Contract Address</h4>
       <h5>${campaignObject.addr}</h5>

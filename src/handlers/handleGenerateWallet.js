@@ -20,13 +20,23 @@ import { web3 } from '../web3';
  */
 function generateSeedWithEntropy() {
   return new Promise((resolve) => {
-    const entropy = [];
+    let entropy = [];
+    let lastPosition = [0, 0];
+    let lastTimeout = null;
     const samplesToCollect = 40;
     const sampleDelayMs = 300;
     const eventEl = el('body');
-    let lastPosition = [0, 0];
 
     function collectMouseEntropy(event) {
+      // only generate entropy when page is open, else shutdown.
+      if (el('#view-campaign-contribute-wallet-entropy').style.display === 'none') {
+        lastPosition = [0, 0];
+        lastPosition = [];
+        if(lastTimeout) { clearTimeout(lastTimeout); }
+        eventEl.removeEventListener('mousemove', collectMouseEntropy);
+        return;
+      }
+
       if (lastPosition[0] == event.screenX && lastPosition[1] == event.screenY) {
         return;
       }
@@ -57,7 +67,7 @@ function generateSeedWithEntropy() {
 
       // Let enough time elapse for the mouse to move away, then add an listener
       // for the next move event.
-      setTimeout(
+      lastTimeout = setTimeout(
         () => eventEl.addEventListener('mousemove', collectMouseEntropy),
         sampleDelayMs);
     }

@@ -11,6 +11,7 @@ import campaignRefundReview from './campaignRefundReview';
 import viewLoader from './viewLoader';
 import navBar from './navBar';
 import footer from './footer';
+import modal from './modal';
 import accountView from './accountView';
 
 module.exports = {
@@ -27,4 +28,5 @@ module.exports = {
   accountView,
   navBar,
   footer,
+  modal,
 };

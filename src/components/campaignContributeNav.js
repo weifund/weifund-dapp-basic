@@ -14,7 +14,7 @@ export default function campaignContributeNav(options) {
     <div class="col-xs-6 text-left">
       ${options.showBackButton === false
         && ``
-        || yo`<a href=${options.backURL} class="btn btn-primary">Back</a>`}
+        || yo`<a href=${options.backURL} class="btn btn-primary btn-back">Back</a>`}
     </div>
     <div class="col-xs-6 text-right">
     </div>

@@ -2,6 +2,7 @@ import yo from 'yo-yo';
 
 // get nav
 import campaignContributeNav from './campaignContributeNav';
+import { logout } from '../keystore';
 
 // main export
 export default function campaignContributeWallet(options) {
@@ -42,7 +43,7 @@ export default function campaignContributeWallet(options) {
               <h4 style="margin-top: 0px;"><b>Balance</b></h4>
               <h3 style="margin-top: 0px;"><span class="account-balance">0</span> ether</h3>
             </div>
-            <div class="col-sm-6"><br />
+            <div class="col-sm-6 text-right"><br />
               <button id="campaign-contribute-to-campaign"
                 class="contribute btn btn-primary"
                 disabled>
@@ -167,11 +168,14 @@ export default function campaignContributeWallet(options) {
 
       <br />
 
-      <input type="text" class="form-control" placeholder="WALLET SEED PHRASE" />
+      <input type="text"
+        id="wallet-seed-phrase-confirm"
+        class="form-control"
+        placeholder="WALLET SEED PHRASE" />
 
       <br />
 
-      <a disabled href="/campaign/${campaignObject.id}/contribute/wallet/password" class="confirm btn btn-primary">
+      <a disabled id="wallet-seed-confirm" class="confirm btn btn-primary">
         CONFIRM SEED PHRASE
       </a>
 
@@ -278,10 +282,14 @@ export default function campaignContributeWallet(options) {
       <br /><br />
 
       <div>
-        <a href="/campaign/${campaignObject.id}/contribute/wallet/entropy" class="generate btn btn-primary">
+        <a href="/campaign/${campaignObject.id}/contribute/wallet/entropy"
+          onclick=${logout}
+          class="generate btn btn-primary">
           NEW WALLET
         </a>
-        <a href="/campaign/${campaignObject.id}/contribute/wallet/restore" class="btn btn-primary">
+        <a href="/campaign/${campaignObject.id}/contribute/wallet/restore"
+          onclick=${logout}
+          class="btn btn-primary">
           EXISING WALLET
         </a>
       </div>

@@ -1,4 +1,4 @@
-import { footer, navBar } from '../components';
+import { footer, navBar, modal } from '../components';
 import { el } from '../document';
 import { t } from '../i18n';
 import { setDefaultAccount, getDefaultAccount, getCampaign, setCampaign,
@@ -38,6 +38,11 @@ function buildLocaleToggles() {
   });
 }
 
+function drawModal() {
+  el('#modal-wrapper').innerHTML = '';
+  el('#modal-wrapper').appendChild(modal({ t }));
+}
+
 function drawFooter() {
   el('#footer-wrapper').innerHTML = '';
   el('#footer-wrapper').appendChild(footer({ t }));
@@ -55,6 +60,7 @@ function drawNavBar() {
 module.exports = {
   drawNavBar,
   drawFooter,
+  drawModal,
 
   loadAndDrawCampaign: require('./loadAndDrawCampaign').default,
   loadAndDrawCampaignRefund: require('./loadAndDrawCampaignRefund').default,

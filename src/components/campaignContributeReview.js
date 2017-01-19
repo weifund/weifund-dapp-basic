@@ -1,5 +1,6 @@
 import yo from 'yo-yo';
 import campaignContributeNav from './campaignContributeNav';
+import { web3 } from '../web3';
 
 // main export
 export default function campaignContributeReview(options) {
@@ -23,7 +24,7 @@ export default function campaignContributeReview(options) {
     </div>
 
     <div class="row">
-      <div class="col-xs-12 col-sm-6">
+      <div class="col-xs-12 col-sm-8">
         <h4>Campaign Contribution</h4>
         <h4>
           <b><span id="campaign_contributeReview_contributeAmount">0</span> Ether</b>
@@ -32,13 +33,13 @@ export default function campaignContributeReview(options) {
 
         <br /><br />
 
-        <h4>Gas Cost</h4>
+        <h4>Approx. Gas Cost</h4>
         <h4>
           <b><span id="campaign_contributeReview_contributeGas">0</span> Ether</b>
           <small>(ETH)</small>
         </h4>
       </div>
-      <div class="col-xs-12 col-sm-6">
+      <div class="col-xs-12 col-sm-4">
         <h4>Your Account</h4>
         <h4><b id="campaign_reviewAccountAddress"></b> </h4>
         <small>
@@ -76,11 +77,12 @@ export default function campaignContributeReview(options) {
 
         <hr />
 
-        <h4>Contribution Total</h4>
+        <h4>Approx. Contribution Total</h4>
         <h4>
           <b id="campaign_contributeReview_totalContributeAmount">0</b> Ether
           <small>(ETH)</small>
         </h4>
+        <p>Note, this total is an over approximation, your final contribution may end up being less than this total amount.</p>
 
         <br />
         <br />

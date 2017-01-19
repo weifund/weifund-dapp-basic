@@ -165,6 +165,7 @@ function loadTokenFromEnhancer(enhancerAddress) {
                       token.totalSupply((err, totalSupply) => {
                         token.symbol((err, symbol) => {
                           token.version((err, version) => {
+                            el('#tokens-loading').innerHTML = '';
                             el('#tokens').appendChild(TokenUI({
                               enhancerAddress,
                               name,
@@ -417,6 +418,7 @@ function loadAccount() {
     });
 
     // load token at this address
+    el('#tokens-loading').innerHTML = '<h3>Loading token data...</h3>';
     el('#tokens').innerHTML = '';
     loadTokenFromEnhancer('0x2ac0f0eb919e28c9d33518f48f9565796c84d69e');
 

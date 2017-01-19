@@ -9,10 +9,13 @@ export default function handleCampaignContributeReview() {
   const contributeAmount = el('#campaign_contributeAmount').value;
   const contirbuteAmountBN = new BigNumber(contributeAmount);
   const accountBalance = getAccountBalance();
-  var contributeTotal = contirbuteAmountBN.add(web3.fromWei(txObject().gas, 'ether'));
+  const gasPrice = web3.toWei('0.00000002', 'ether');
+  const actualGasCost = (new BigNumber(txObject().gas)).times(gasPrice);
+  const contributionAmountWei = new BigNumber(web3.toWei(contributeAmount, 'ether'));
+  const contributeTotal = contirbuteAmountBN.add(web3.fromWei(actualGasCost, 'ether'));
 
   // parse float
-  if (accountBalance.add(txObject().gas).lt(web3.toWei(contributeAmount, 'ether'))) {
+  if (contributionAmountWei.add(actualGasCost).gt(accountBalance)) {
     el('#campaign-contribute-review-button').href = ``;
     el('#campaign_contributeAmountGroup').style.border = `red solid 1px`;
     el('#campaign_contributeAmount').focus();
@@ -76,7 +79,7 @@ export default function handleCampaignContributeReview() {
 
   el('#campaign-contribute-form-response').style.display = 'none';
   el('#campaign_contributeReview_contributeGas').innerHTML = '';
-  el('#campaign_contributeReview_contributeGas').appendChild(yo`<span>${web3.fromWei(txObject().gas, 'ether').toString(10)}</span>`);
+  el('#campaign_contributeReview_contributeGas').appendChild(yo`<span>${web3.fromWei(actualGasCost, 'ether').toString(10)}</span>`);
   el('#campaign_contributeReview_contributeAmount').innerHTML = '';
   el('#campaign_contributeReview_contributeAmount').appendChild(yo`<span>${contributeAmount}</span>`);
   el('#campaign_contributeReview_totalContributeAmount').innerHTML = '';

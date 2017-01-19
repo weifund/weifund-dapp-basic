@@ -464,6 +464,27 @@ footer {
 }
 /*END Form Wizard*/
 
+/* modal stuff */
+.modal-blur {
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  bottom: 0px;
+  position: fixed;
+  z-index: 20000;
+  display: block;
+  background-color: rgba(0, 0, 0, .5);
+}
+
+.modal-weifund {
+  z-index: 100000;
+  top: 12%;
+}
+
+.modal-dialog {
+  z-index: 100000;
+}
+
 /* Tooltips */
 span[data-tooltip] {
   border-bottom: 1px dotted #333;
