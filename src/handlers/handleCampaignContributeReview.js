@@ -4,7 +4,7 @@ import { web3 } from '../web3';
 import BigNumber from 'bignumber.js';
 import { getAccountBalance, txObject } from '../environment';
 
-export default function handleCampaignContributeReview() {
+export default function handleCampaignContributeReview(campaignData) {
   const campaignContributeID = el('#campaignFormID').value;
   const contributeAmount = el('#campaign_contributeAmount').value;
   const contirbuteAmountBN = new BigNumber(contributeAmount);
@@ -13,6 +13,26 @@ export default function handleCampaignContributeReview() {
   const actualGasCost = (new BigNumber(txObject().gas)).times(gasPrice);
   const contributionAmountWei = new BigNumber(web3.toWei(contributeAmount, 'ether'));
   const contributeTotal = contirbuteAmountBN.add(web3.fromWei(actualGasCost, 'ether'));
+
+  // parse float
+  if (contributionAmountWei.add(campaignData.amountRaised).gt(campaignData.fundingCap)) {
+    el('#campaign-contribute-review-button').href = ``;
+    el('#campaign_contributeAmountGroup').style.border = `red solid 1px`;
+    el('#campaign_contributeAmount').focus();
+    el('#campaign_contributeAmount').blur();
+
+    // promt error
+    el('#campaign-contribute-form-response').innerHTML = '';
+    el('#campaign-contribute-form-response').style.display = 'block';
+    el('#campaign-contribute-form-response').appendChild(yo`<span>
+      <h2>Invalid Contribution Amount</h2>
+      <p>You are attempting to contribute more than the funding cap.</p>
+    </span>`);
+
+    return;
+  } else {
+    el('#campaign_contributeAmountGroup').style.border = `none`;
+  }
 
   // parse float
   if (contributionAmountWei.add(actualGasCost).gt(accountBalance)) {

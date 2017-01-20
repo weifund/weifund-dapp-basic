@@ -132,8 +132,6 @@ export default function handleEncryptSeed(event) {
   event.preventDefault();
   // Browsers will notice the unsubmitted form and warn users about unsaved
   // changes when they try to navigate away. This disables that check.
-  window.onbeforeunload = null;
-
   const formEl = el('#view-campaign-contribute-wallet-password form');
   const password1 = formEl.querySelector('input[name=password-1]');
   const password2 = formEl.querySelector('input[name=password-2]');

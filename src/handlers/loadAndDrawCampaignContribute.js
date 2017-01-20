@@ -29,6 +29,9 @@ const campaignRegistry = contracts.CampaignRegistry.instance();
 
 // load and draw campaign contribute page/flow
 export default function loadAndDrawCampaignContribute(campaignID, callback) {
+  // window warnign message
+  window.onunload = window.onbeforeunload = handleConfirmOnPageExit;
+
   // handle empty callback
   if (typeof callback !== 'function') {
     callback = (e, r) => {};
@@ -78,16 +81,17 @@ export default function loadAndDrawCampaignContribute(campaignID, callback) {
     }));
 
     // contribution error
-    handleCampaignContributeReview();
+    // handleCampaignContributeReview(campaignData);
 
     // weifund amount contributor amount
-    el('#campaign_contributeAmount').addEventListener('change', handleCampaignContributeReview);
+    el('#campaign_contributeAmount').addEventListener('change', e => handleCampaignContributeReview(campaignData));
 
     // update form when disclaimer is checked
-    el('#campaign-contribute-disclaimer').addEventListener('change', handleCampaignContributeReview);
+    el('#campaign-contribute-disclaimer').addEventListener('change', e => handleCampaignContributeReview(campaignData));
 
     // contirbute to campaign buton
     el('#campaign-contribute-to-campaign').addEventListener('click', () => {
+      // check balance
       if (getAccountBalance().gte(web3.toWei('1', 'finney'))) {
         getRouter()(`/campaign/${campaignID}/contribute/form`);
         history.pushState({}, null, `/campaign/${campaignID}/contribute/form`);
@@ -96,7 +100,7 @@ export default function loadAndDrawCampaignContribute(campaignID, callback) {
 
     // handleCampaignContribution
     el('#campaign-contribute-review-button').addEventListener('click', () => {
-      if(handleCampaignContributeReview()) {
+      if(handleCampaignContributeReview(campaignData)) {
         getRouter()(`/campaign/${campaignID}/contribute/review`);
         history.pushState({}, null, `/campaign/${campaignID}/contribute/review`);
         el('#campaign-review-contribute-button').focus();
