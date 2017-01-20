@@ -98,24 +98,22 @@ export default function drawAllInputSliders() {
 
       // handle input element change
       const handleInputElementChange = () => {
-        const percentage = parseFloat(inputSliderBar.style.left).toFixed(2);
+        // const percentage = parseFloat(inputSliderBar.style.left).toFixed(2);
         const valueMax = inputSliderElement.dataset.valueMax || 0;
+        const etherInput = new BigNumber(dataInputElement.value);
+        var inputElementValue = new BigNumber(etherInput).dividedBy(valueMax).times(100);
 
-        var inputElementValue = parseFloat(dataInputElement.value);
-
-        if (inputElementValue > inputSliderMax) {
-          inputElementValue = inputSliderMax;
+        if (inputElementValue.gt(inputSliderMax)) {
+          inputElementValue = new BigNumber(100);
         }
 
-        if (inputElementValue < 0) {
-          inputElementValue = 0;
+        if (inputElementValue.lt(0)) {
+          inputElementValue = new BigNumber(0);
         }
 
-        if (!isNaN(inputElementValue)) {
-          // set input slider bar left position
-          inputSliderBar.style.left = `${inputElementValue}%`;
-          inputSliderRailHighlight.style.width = `${inputElementValue}%`;
-        }
+        // set input slider bar left position
+        inputSliderBar.style.left = `${inputElementValue.toString(10)}%`;
+        inputSliderRailHighlight.style.width = `${inputElementValue.toString(10)}%`;
       };
 
       // instantiate initial handler default input

@@ -279,6 +279,12 @@ export default function campaignContributeWallet(options) {
         an existing wallet if you already have one.
       </h4>
 
+      <br />
+
+      <h4>
+        Please <b>do not refresh the page</b> at any point while making your contribution.
+      </h4>
+
       <br /><br />
 
       <div>

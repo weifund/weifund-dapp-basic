@@ -7,6 +7,7 @@ import Web3Subprovider from 'web3-provider-engine/subproviders/web3';
 
 import { setDefaultAccount } from './environment';
 import { web3, setProviderToDefault } from './web3';
+import handlePassword from './handlers/handlePassword';
 
 // The seed for the contribution flow is stored here. It's only the canonical
 // source for the seed when there's no provider yet.
@@ -20,14 +21,6 @@ export let seed = null;
 // TODO: Use an immutable store like redux to manage the a single source
 // of truth for the keystore.
 export let keystore = null;
-
-
-export function inputPassword() {
-  // FIXME: window.prompt has a cleartext input box. We need to build our own
-  // prompt with a real password input.
-  const password = window.prompt('Enter your password to decrypt your lightwallet.');
-  return Promise.resolve(password);
-}
 
 export function ensureKeystoreHasAddress(keystore, password) {
   const keyFromPassword = promisify(keystore.keyFromPassword.bind(keystore));
@@ -48,7 +41,9 @@ export function createEncryptedKeystore(seedPhrase, password) {
   })
     .then(keystore => ensureKeystoreHasAddress(keystore, password))
     .then(keystore => {
-      keystore.passwordProvider = (cb) => inputPassword().then((pw) => cb(null, pw));
+      keystore.passwordProvider = (cb) => handlePassword()
+        .then((pw) => cb(null, pw))
+        .catch((err) => cb(err, null));
       return keystore;
     });
 }
@@ -58,6 +53,9 @@ export function createEncryptedKeystore(seedPhrase, password) {
  * @param {[type]} keystore [description]
  */
 export function setWalletProvider(keystore) {
+  keystore.passwordProvider = (cb) => handlePassword()
+    .then((pw) => cb(null, pw))
+    .catch((err) => cb(err, null));
   const provider = new ProviderEngine();
   const mainAccount = `0x${keystore.getAddresses()[0]}`;
   setDefaultAccount(mainAccount);
@@ -98,7 +96,7 @@ export function getSeed() {
 
   if (keystore != null) {
     const keyFromPassword = promisify(keystore.keyFromPassword.bind(keystore));
-    return inputPassword()
+    return handlePassword()
       .then(keyFromPassword)
       .then(pwKey => keystore.getSeed(pwKey));
   }

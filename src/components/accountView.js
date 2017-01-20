@@ -106,7 +106,9 @@ export default function accountView(options) {
           <div class="row" style="padding: 20px; border: 1px solidt #aaa;">
             <div class="col-sm-4 text-left" style="padding-top: 0px;">
               <h4>Address</h4>
-              <h4>Balance<br /><small><br /></small></h4>
+              <h4>Balance<br />
+              <small><br /></small></h4>
+              <h4>HD Path<br /></h4>
             </div>
             <div class="col-sm-8 text-left">
               <h4 style="text-overflow:ellipsis; overflow: hidden;">
@@ -118,24 +120,24 @@ export default function accountView(options) {
                 <b><span id="accountBalanceEther">0</span></b> ether
                 <br />
                 <small><span id="accountBalanceWei">0</span> wei</small>
+                <br />
+                <h4>m/44'/60'/0'/0</h4>
               </h4>
             </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <button class="btn btn-primary" onclick=${saveWalletFile}>
+                Download Encrypted Wallet
+              </button>
 
-            <br />
-            <br />
-            <br />
-            <br />
-
-            <button class="btn btn-primary" onclick=${saveWalletFile}>
-              Download Encrypted Wallet
-            </button>
-
-            <button class="btn btn-primary" onclick=${() => {
-              logout();
-              getRouter()('/');
-            }}>
-              Logout
-            </button>
+              <button class="btn btn-primary" onclick=${() => {
+                logout();
+                getRouter()('/');
+              }}>
+                Logout
+              </button>
+            </div>
           </div>
         </div>
 

@@ -77,10 +77,7 @@ export default function campaignContributeReceipt(options){
             Campaign List
           </a>
           <a href="/account" class="btn btn-primary">
-            Manage Tokens
-          </a>
-          <a href="/account" class="btn btn-primary">
-            My Account
+            Manage Account & Tokens
           </a>
         </div>
       </div>

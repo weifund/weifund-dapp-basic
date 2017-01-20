@@ -18,12 +18,6 @@ import { openSubView } from '../views';
 import { createEncryptedKeystore, setKeystore, setWalletProvider } from '../keystore';
 
 
-const contracts = new Contracts(getContractEnvironment(), web3.currentProvider);
-const IssuedToken = contracts.IssuedToken.factory;
-const Model1Enhancer = contracts.Model1Enhancer.factory;
-const StandardCampaign = contracts.StandardCampaign.factory;
-
-
 function TokenUI(options) {
   return yo`<div>
 <div class="row" style="padding-left: 15px; padding-right: 15px;">
@@ -87,11 +81,60 @@ function TokenUI(options) {
           ${!options.canClaim && 'disabled' || ''}"
           onclick=${() => {
             if (options.canClaim) {
-              options.enhancer.claim((err, result) => {
-                console.log(err, result);
+              const claimWindowEl = el(`#tokenClaimWindow_${options.tokenAddress}`);
+              claimWindowEl.style.display = 'block';
+              claimWindowEl.innerHTML = '';
+              claimWindowEl.appendChild(yo`<span>
+                <h3 style="margin-top: 0px;">Processing Claim</h3>
+                Awaiting transaction confirmation..
+              </span>`);
+
+              options.enhancer.claim.sendTransaction({
+                from: getDefaultAccount(),
+                gas: txObject().gas,
+              }, (claimError, txHash) => {
+                if (claimError) {
+                  claimWindowEl.innerHTML = '';
+                  claimWindowEl.appendChild(yo`<span>
+                    <h3 style="margin-top: 0px;">Transaction Error</h3>
+                    There was an error while claiming your tokens...
+                    <hr />
+                    ${String(claimError)}
+                  </span>`);
+                }
+
+                if (txHash) {
+                  claimWindowEl.innerHTML = '';
+                  claimWindowEl.appendChild(yo`<span>
+                    <h3 style="margin-top: 0px;">Processing Claim</h3>
+                    Your claim transaction is processing with transaction hash:
+                    <hr />
+                    <a href=${etherScanTxHashUrl(txHash, getNetwork())}
+                      style="color: #FFF"
+                      target="_blank">
+                      ${txHash}
+                    </a>
+                  </span>`);
+
+                  getTransactionSuccess(txHash, (successError, txReceipt) => {
+                    if (!successError && txReceipt) {
+                      claimWindowEl.innerHTML = '';
+                      claimWindowEl.appendChild(yo`<span>
+                        <h3 style="margin-top: 0px;">Claim Transaction Success!</h3>
+                        Claim transaction success, please refresh the page.
+                        <hr />
+                        <a href=${etherScanTxHashUrl(txHash, getNetwork())}
+                          style="color: #FFF"
+                          target="_blank">
+                          ${txHash}
+                        </a>
+                      </span>`);
+                    }
+                  });
+                }
               });
             } else {
-              console.log('cant claim!');
+              el(`#tokenClaimWarning_${options.tokenAddress}`).style.display = 'block';
             }
           }}>
           Claim
@@ -125,6 +168,22 @@ function TokenUI(options) {
     </div>
   </div>
 </div></div></div>
+  <div class="row alert alert-info" id=${`tokenClaimWindow_${options.tokenAddress}`}
+    style="display: none; padding: 16px;">
+  </div>
+  <div class="row"
+    id=${`tokenClaimWarning_${options.tokenAddress}`}
+    style=${'display: none; padding: 16px;'}>
+    <div class="col-xs-12 alert alert-info">
+      Currently, you cannot claim your tokens due either:
+      <br />
+      (1) campaign is not finished
+      <br />
+      (2) you have no tokens owed to you
+      <br />
+      (3) the token thaw period has not ended yet
+    </div>
+  </div>
   <div class="row" style=${options.canClaim
     && 'display: inline-block; padding: 16px;'
     || 'display: none; padding: 16px;'}>
@@ -135,54 +194,65 @@ function TokenUI(options) {
 </div>`;
 }
 
-function loadTokenFromEnhancer(enhancerAddress) {
+function loadTokenFromEnhancer(enhancerAddress, contracts) {
+  const IssuedToken = contracts.IssuedToken.factory;
+  const Model1Enhancer = contracts.Model1Enhancer.factory;
+
   const enhancer = Model1Enhancer.at(enhancerAddress);
 
   web3.eth.getBlockNumber((err, blockNumber) => {
     enhancer.token((err, tokenAddress) => {
       enhancer.balanceOf(getDefaultAccount(), (err, tokensOwed) => {
         enhancer.startBlock((err, startBlock) => {
-          enhancer.tokensIssued((err, tokensIssued) => {
-            enhancer.freezePeriod((err, freezePeriod) => {
-              enhancer.claimed(getDefaultAccount(), (err, claimed) => {
-                const token = IssuedToken.at(tokenAddress);
-                let canClaim = false;
-                let hasTokensOwed = false;
+          enhancer.campaign((err, campaign) => {
+            const campaignInstance = contracts.StandardCampaign.factory.at(campaign);
 
-                // the user can claim the tokens
-                if (new BigNumber(blockNumber).gte(startBlock.add(freezePeriod))
-                  && !claimed) {
-                  canClaim = true;
-                }
+            campaignInstance.stage((err, stage) => {
+              enhancer.tokensIssued((err, tokensIssued) => {
+                enhancer.freezePeriod((err, freezePeriod) => {
+                  enhancer.claimed(getDefaultAccount(), (err, claimed) => {
+                    const token = IssuedToken.at(tokenAddress);
+                    let canClaim = false;
+                    let hasTokensOwed = false;
 
-                if (tokensOwed.gt(0)) {
-                  hasTokensOwed = true;
-                }
+                    // the user can claim the tokens
+                    if (new BigNumber(blockNumber).gte(startBlock.add(freezePeriod))
+                      && stage.eq(2)
+                      && !claimed) {
+                      canClaim = true;
+                    }
 
-                token.name((err, name) => {
-                  token.balanceOf(getDefaultAccount(), (err, accountTokenBalance) => {
-                    token.decimals((err, decimals) => {
-                      token.totalSupply((err, totalSupply) => {
-                        token.symbol((err, symbol) => {
-                          token.version((err, version) => {
-                            el('#tokens-loading').innerHTML = '';
-                            el('#tokens').appendChild(TokenUI({
-                              enhancerAddress,
-                              name,
-                              decimals,
-                              canClaim,
-                              hasTokensOwed,
-                              blockNumber,
-                              tokensOwed,
-                              totalSupply,
-                              symbol,
-                              version,
-                              accountTokenBalance,
-                              tokenAddress,
-                              tokensIssued,
-                              startBlock,
-                              freezePeriod,
-                            }));
+                    if (tokensOwed.gt(0)) {
+                      hasTokensOwed = true;
+                    }
+
+                    token.name((err, name) => {
+                      token.balanceOf(getDefaultAccount(), (err, accountTokenBalance) => {
+                        token.decimals((err, decimals) => {
+                          token.totalSupply((err, totalSupply) => {
+                            token.symbol((err, symbol) => {
+                              token.version((err, version) => {
+                                el('#tokens-loading').innerHTML = '';
+                                el('#tokens').appendChild(TokenUI({
+                                  enhancerAddress,
+                                  name,
+                                  decimals,
+                                  canClaim,
+                                  hasTokensOwed,
+                                  blockNumber,
+                                  tokensOwed,
+                                  totalSupply,
+                                  enhancer,
+                                  symbol,
+                                  version,
+                                  accountTokenBalance,
+                                  tokenAddress,
+                                  tokensIssued,
+                                  startBlock,
+                                  freezePeriod,
+                                }));
+                              });
+                            });
                           });
                         });
                       });
@@ -199,14 +269,11 @@ function loadTokenFromEnhancer(enhancerAddress) {
 }
 
 function loadAccount() {
+  const contracts = new Contracts(getContractEnvironment(), web3.currentProvider);
+  const StandardCampaign = contracts.StandardCampaign.factory;
   el('#view-focus').style.display = 'none';
   el('#view-account-restore').style.display = 'none';
   el('#view-account').style.display = 'block';
-
-  // route to panel page
-  // getRouter()('/account/panel');
-
-  console.log('pabel');
 
   openSubView('view-account-panel');
 
@@ -420,7 +487,7 @@ function loadAccount() {
     // load token at this address
     el('#tokens-loading').innerHTML = '<h3>Loading token data...</h3>';
     el('#tokens').innerHTML = '';
-    loadTokenFromEnhancer('0x2ac0f0eb919e28c9d33518f48f9565796c84d69e');
+    loadTokenFromEnhancer('0x2ac0f0eb919e28c9d33518f48f9565796c84d69e', contracts);
 
     // refresh page buttons
     refreshPageButtons();
