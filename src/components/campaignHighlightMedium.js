@@ -1,5 +1,6 @@
 import yo from 'yo-yo';
 import { oneDay } from 'weifund-util';
+import { nameOf } from '../environment';
 
 // draw highlight campaign
 export default function campaignHighlightMedium(options) {
@@ -22,9 +23,10 @@ export default function campaignHighlightMedium(options) {
         <div class="col-xs-7">
             <a href="/campaign/${campaignObject.id}">
               <h3 class="text-gray">${campaignObject.name}</h3>
+              <small class="text-gray">by ${nameOf(campaignObject.owner)}</small>
             </a>
 
-            <p style="max-height: 40px;
+            <p style="max-height: 40px; margin-top: 18px;
 overflow: hidden;
 text-overflow: ellipsis;">
               ${(campaignObject.hasValidData

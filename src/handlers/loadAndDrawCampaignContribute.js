@@ -76,6 +76,7 @@ export default function loadAndDrawCampaignContribute(campaignID, callback) {
       getLocale,
       getRouter,
       web3,
+      t,
       defaultAccount: getDefaultAccount,
       getNetwork: getNetwork,
     }));

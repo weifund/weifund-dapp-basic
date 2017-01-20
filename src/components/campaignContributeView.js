@@ -22,7 +22,7 @@ export default function campaignContributeView(options) {
       style="color: #333; text-decoration: none;">
       <h1 class="text-pretty-huge">${campaignObject.name}</h1>
     </a>
-    <h4>by
+    <h4>
       ${t('campaignFocusView.by')}
       <a href=${etherScanAddressUrl(campaignObject.owner, getNetwork())}
         style="color: #333;"
