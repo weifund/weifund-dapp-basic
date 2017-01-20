@@ -1,11 +1,12 @@
 import yo from 'yo-yo';
-import oneDay from 'weifund-util';
+import { etherScanAddressUrl, etherScanTxHashUrl, oneDay, emptyWeb3Address } from 'weifund-util';
 
 import campaignFocusOverviewView from './campaignFocusOverviewView';
 import campaignFocusDetailsView from './campaignFocusDetailsView';
 import campaignFocusContractsView from './campaignFocusContractsView';
 import campaignFocusQRView from './campaignFocusQRView';
 import campaignFocusNav from './campaignFocusNav';
+import { nameOf, getNetwork } from '../environment';
 
 function parseDisambiguatedDescription(campaignDataObject, locale) {
   return campaignDataObject.hasValidData
@@ -30,7 +31,14 @@ export default function campaignFocusView(options) {
 
     <div class="row center-block container text-center" style="margin-bottom: 60px;">
       <h1 style="font-size: 40px; font-weight: 500;">${campaignObject.name}</h1>
-      <h4>${t('campaignFocusView.by')} ${campaignObject.owner}</h4>
+      <h4>
+        ${t('campaignFocusView.by')}
+        <a href=${etherScanAddressUrl(campaignObject.owner, getNetwork())}
+          style="color: #333;"
+          target="_blank">
+          ${nameOf(campaignObject.owner)}
+        </a>
+      </h4>
     </div>
 
     <div class="container row center-block">

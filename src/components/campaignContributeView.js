@@ -1,10 +1,12 @@
 import yo from 'yo-yo';
+import { etherScanAddressUrl, etherScanTxHashUrl, oneDay, emptyWeb3Address } from 'weifund-util';
 
 import campaignContributeReceipt from './campaignContributeReceipt';
 import campaignContributeForm from './campaignContributeForm';
 import campaignContributeReview from './campaignContributeReview';
 import campaignContributeNav from './campaignContributeNav';
 import campaignContributeWallet from './campaignContributeWallet';
+import { nameOf, getNetwork } from '../environment';
 
 // main export
 export default function campaignContributeView(options) {
@@ -20,7 +22,14 @@ export default function campaignContributeView(options) {
       style="color: #333; text-decoration: none;">
       <h1 class="text-pretty-huge">${campaignObject.name}</h1>
     </a>
-    <h4>by ${campaignObject.owner}</h4>
+    <h4>by
+      ${t('campaignFocusView.by')}
+      <a href=${etherScanAddressUrl(campaignObject.owner, getNetwork())}
+        style="color: #333;"
+        target="_blank">
+        ${nameOf(campaignObject.owner)}
+      </a>
+    </h4>
 
     <form class="container-fluid">
       <div class="row bs-wizard" style="border-bottom:0;">

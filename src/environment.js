@@ -54,6 +54,14 @@ export function getNetwork(){
   return 'testnet'; // or livenet
 }
 
+// name for
+export function nameOf(address) {
+  const names = {
+    '0x6023e44829921590b24f458c9ee4f544507d59b6': 'WeiFund Team',
+  };
+  return names[address.toLowerCase()] || address;
+}
+
 // get current locale
 export function getLocale() {
   return store.get('locale') || 'en';

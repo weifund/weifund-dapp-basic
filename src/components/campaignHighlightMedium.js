@@ -57,7 +57,7 @@ text-overflow: ellipsis;">
                 <h4>${web3.fromWei(campaignObject.amountRaised, 'ether').round(4).toString(10)} ETH</h4>
               </div>
               <div class="col-xs-4">
-                <h4>${web3.fromWei(campaignObject.fundingGoal, 'ether').round(4).toString(10)} ETH</h4>
+                <h4>${campaignObject.approximateDaysToGo.toString(10)}</h4>
               </div>
             </div>
             <div class="row">
@@ -68,7 +68,7 @@ text-overflow: ellipsis;">
                 <h6 style="margin-top: 0px;">${t('campaignHighlightMedium.raised')}</h6>
               </div>
               <div class="col-xs-4">
-                <h6 style="margin-top: 0px;">${t('campaignHighlightMedium.goal')}</h6>
+                <h6 style="margin-top: 0px;">days left</h6>
               </div>
             </div>
           </div>
