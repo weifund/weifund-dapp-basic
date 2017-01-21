@@ -499,7 +499,7 @@ span[data-tooltip]::before {
     line-height: 24px;
     max-width: 33%;
     padding: 12px;
-    position: absolute;
+    position: fixed;
     opacity: 0;
     transition: opacity 0.4s ease-out;
     z-index: 999;

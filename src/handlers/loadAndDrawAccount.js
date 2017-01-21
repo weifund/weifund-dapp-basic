@@ -35,16 +35,21 @@ function TokenUI(options) {
         <a href=${etherScanAddressUrl(options.tokenAddress, getNetwork())}
           target="_blank"
           style="text-overflow:ellipsis;
-          overflow: hidden; display: inline-block; width: 100px;">
-          ${options.tokenAddress}
+          overflow: hidden; display: inline-block; width: 100%;">
+          <small>
+            <span data-tooltip="This is the Ethereum address of this token contract.">
+              ${options.tokenAddress}
+            </span>
+          </small>
         </a>
       </div>
     </h3>
     <div class="row">
       <div class="col-xs-6">
         <h4>
-          Supply ${options.totalSupply.toString(10)}
-          | Issued ${options.tokensIssued.toString(10)}
+          Tokens Owed ${options.tokensOwed.toString(10)}
+          | Total Issued ${options.tokensIssued.toString(10)}
+          | Version ${options.version}
         </h4>
       </div>
       <div class="col-xs-6 text-right">
@@ -59,10 +64,8 @@ function TokenUI(options) {
     <div class="row">
       <div class="col-sm-6 text-left">
         <h4>
-          ${options.hasTokensOwed && options.tokensOwed.toString(10) || ''}
-          ${options.claimed && options.accountTokenBalance.toString(10) || ''}
+          Balance <b>${options.accountTokenBalance.toString(10) || '0'}</b>
           <small>${options.symbol}</small>
-          <small>v${options.version}</small>
         </h4>
       </div>
       <div class="col-sm-6 text-right">
@@ -137,7 +140,7 @@ function TokenUI(options) {
               el(`#tokenClaimWarning_${options.tokenAddress}`).style.display = 'block';
             }
           }}>
-          Claim
+          Claim Tokens
         </button>
       </div>
     </div>
@@ -177,11 +180,14 @@ function TokenUI(options) {
     <div class="col-xs-12 alert alert-info">
       Currently, you cannot claim your tokens due either:
       <br />
-      (1) campaign is not finished
+      (1) The campaign has not finished yet (i.e. is not at stage "Success")
       <br />
-      (2) you have no tokens owed to you
+      (2) You have no tokens owed to you
       <br />
-      (3) the token thaw period has not ended yet
+      (3) The token thaw period has not ended yet
+      <hr />
+      Note, campaign is at stage '${options.stage.toString(10)}'
+      and must be at stage '2' (Success) to claim.
     </div>
   </div>
   <div class="row" style=${options.canClaim
@@ -238,6 +244,7 @@ function loadTokenFromEnhancer(enhancerAddress, contracts) {
                                   name,
                                   decimals,
                                   canClaim,
+                                  stage,
                                   hasTokensOwed,
                                   blockNumber,
                                   tokensOwed,
@@ -281,6 +288,7 @@ function loadAccount() {
   web3.eth.getAccounts((err, accounts) => {
     // set accont address on the page
     el('#accountAddress').innerHTML = '';
+    el('#accountAddress').href = etherScanAddressUrl(accounts[0], getNetwork());
     el('#accountAddress').appendChild(yo`<span>${accounts[0]}</span>`);
 
     web3.eth.getBalance(accounts[0], (err, accountBalance) => {

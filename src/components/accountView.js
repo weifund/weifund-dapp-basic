@@ -1,7 +1,8 @@
 import yo from 'yo-yo';
-import { getDefaultAccount } from '../environment';
+import { getDefaultAccount, getNetwork } from '../environment';
 import { saveWalletFile, logout } from '../keystore';
 import { getRouter } from '../router';
+import { etherScanAddressUrl } from 'weifund-util';
 
 // main export
 export default function accountView(options) {
@@ -80,7 +81,7 @@ export default function accountView(options) {
     style="padding-left: 3%; padding-right: 3%; display: none;">
 
     <div class="row">
-      <div class="col-sm-12 col-md-6" style="padding-right: 40px;">
+      <div class="col-sm-12 col-md-6" style="padding: 30px;">
         <h3>Token Holdings</h3>
 
         <div class="row">
@@ -95,7 +96,7 @@ export default function accountView(options) {
         <div id="tokens"></div>
       </div>
 
-      <div class="col-sm-12 col-md-6" style="padding-left: 40px;">
+      <div class="col-sm-12 col-md-6" style="padding: 30px;">
         <div style="border: 1px solid #aaa; padding: 20px;">
           <h3 style="margin-top: 5px;">Account Details</h3>
 
@@ -108,20 +109,30 @@ export default function accountView(options) {
               <h4>Address</h4>
               <h4>Balance<br />
               <small><br /></small></h4>
-              <h4>HD Path<br /></h4>
+              <h4>
+                HD Path
+                <br />
+              </h4>
+
             </div>
             <div class="col-sm-8 text-left">
               <h4 style="text-overflow:ellipsis; overflow: hidden;">
                 <a id="accountAddress"
-                  href=${`http://etherscan.com/address/${getDefaultAccount()}`}
-                  target="_blank"></a>
+                  href=${etherScanAddressUrl(getDefaultAccount(), getNetwork())}
+                  target="_blank">
+                  ${getDefaultAccount()}
+                </a>
               </h4>
               <h4>
                 <b><span id="accountBalanceEther">0</span></b> ether
                 <br />
                 <small><span id="accountBalanceWei">0</span> wei</small>
                 <br />
-                <h4>m/44'/60'/0'/0</h4>
+                <h4>
+                  <span data-tooltip="This is the BIP32 HD derivation path for your lightwallet.">
+                    m/44'/60'/0'/0
+                  </span>
+                </h4>
               </h4>
             </div>
           </div>
@@ -148,13 +159,15 @@ export default function accountView(options) {
       background: #F1F1F1; border-bottom: 2px solid #999;">
             <h3 style="margin-top: 5px;">Send Ether</h3>
 
+            <p>Use this utility to send Ether from your lightwallet to another account</p>
+
             <div class="row">
               <div class="col-xs-5">
                 <label>To Address</label>
                 <input class="form-control" id="sendAddress" placeholder="0x..." />
               </div>
               <div class="col-xs-3">
-                <label>Value</label>
+                <label>Value <small>(ETH)</small></label>
                 <input type="number" class="form-control" id="sendAmount" placeholder="30 ether" />
               </div>
               <div class="col-xs-4">
@@ -174,13 +187,15 @@ export default function accountView(options) {
       background: #F1F1F1; border-bottom: 2px solid #999;">
             <h3 style="margin-top: 5px;">Claim Refund</h3>
 
+            <p>If a campaign you contributed to has failed, and a refund is owed, you may claim your refund with this utility.</p>
+
             <div class="row">
               <div class="col-xs-5">
                 <label>Campaign Address</label>
                 <input class="form-control" id="refundCampaignAddress" placeholder="0x..." />
               </div>
               <div class="col-xs-3">
-                <label>Cont. ID</label>
+                <label>Contribution ID</label>
                 <input type="number" class="form-control" id="refundCID" placeholder="1" />
               </div>
               <div class="col-xs-4">

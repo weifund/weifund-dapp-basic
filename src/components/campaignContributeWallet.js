@@ -34,7 +34,7 @@ export default function campaignContributeWallet(options) {
 
           <h4>This is the QR code for your wallet address. Mobile Ethereum apps can scan this code to send ether to your address.</h4>
 
-          <h4><b>Please fill your account with Ether</b>, so you can contribute to the campaign.</h4>
+          <h4><b class="text-warning">Please fill your account with Ether</b>, so you can contribute to the campaign.</h4>
 
           <br />
 
@@ -213,7 +213,7 @@ export default function campaignContributeWallet(options) {
         <br />
         <input name="password-2" type="password" class="form-control" placeholder="REPEAT PASSWORD" />
         <br />
-        <input type="submit" disabled value="ENCRYPT" class="encrypt btn btn-primary" />
+        <input type="submit" id="encrypt-wallet-button" disabled value="ENCRYPT" class="encrypt btn btn-primary" />
       </form>
 
       ${campaignContributeNav({

@@ -5,7 +5,8 @@ import { getSeed } from '../keystore';
 export default function handleVerifySeed(event) {
   getSeed()
     .then(seed => {
-      if (seed.toLowerCase() === event.target.value.toLowerCase() && seed !== '') {
+      if (seed.toLowerCase() === event.target.value.toLowerCase()
+        && seed !== '') {
         const confirmButton = el('#view-campaign-contribute-wallet-confirm a.confirm');
         confirmButton.removeAttribute('disabled');
 

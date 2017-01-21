@@ -46,7 +46,7 @@ export function contributionBalanceUpdater(address) {
 
         // slider max
         contributeSliderEl.dataset.valueMax = availableBalanceEther.toString(10);
-        contributeAmountEl.value = availableBalanceEther.dividedBy(2).toString(10);
+        contributeAmountEl.value = String(0.125);
 
         formBalanceEl.innerHTML = '';
         formBalanceEl.appendChild(yo`<span>${balanceEther.toString(10) || '0'}</span>`);
@@ -135,11 +135,16 @@ export default function handleEncryptSeed(event) {
   const formEl = el('#view-campaign-contribute-wallet-password form');
   const password1 = formEl.querySelector('input[name=password-1]');
   const password2 = formEl.querySelector('input[name=password-2]');
-  if (password1.value !== password2.value && password1 !== '') {
+
+  if (password1.value !== password2.value || password1.value.length === 0) {
     // If the passwords don't match, abort. The submit button in the UI should
     // still be disabled.
+    el('#encrypt-wallet-button').setAttribute('disabled', 'disabled');
     return;
+  } else {
+    el('#encrypt-wallet-button').removeAttribute('disabled');
   }
+
   const password = password1.value;
   formEl.reset();
 

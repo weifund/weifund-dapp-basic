@@ -77,8 +77,14 @@ export default function drawAllInputSliders() {
         // if element exists
         if (dataInputElement !== null && dataInputElement.length !== 0) {
           const percentage = parseFloat(barLeftPositionPercentage).toFixed(fixedDecimalAmount);
+          const tokenPrice = 0.125;
           const valueMax = inputSliderElement.dataset.valueMax;
-          dataInputElement.value = new BigNumber((new BigNumber(percentage).dividedBy(100))).times(new BigNumber(valueMax)).toString(10);
+          dataInputElement.value = String(new BigNumber(new BigNumber((new BigNumber(percentage)
+                  .dividedBy(100)))
+                  .times(new BigNumber(valueMax))
+                  .dividedBy(tokenPrice)
+                  .toFixed(0))
+                  .times(tokenPrice));
         }
 
         // dispatch change event
@@ -87,7 +93,6 @@ export default function drawAllInputSliders() {
         dataInputElement.dispatchEvent(e);
       }
 
-      // set input slider bar left position
       inputSliderBar.style.left = `${barLeftPositionPercentage}%`;
       inputSliderRailHighlight.style.width = `${barLeftPositionPercentage}%`;
     };
@@ -101,7 +106,9 @@ export default function drawAllInputSliders() {
         // const percentage = parseFloat(inputSliderBar.style.left).toFixed(2);
         const valueMax = inputSliderElement.dataset.valueMax || 0;
         const etherInput = new BigNumber(dataInputElement.value);
-        var inputElementValue = new BigNumber(etherInput).dividedBy(valueMax).times(100);
+        // const unitEther = new BigNumber(etherInput.dividedBy(0.125).toFixed(0)).times(0.125);
+        var inputElementValue = new BigNumber(etherInput)
+            .dividedBy(valueMax).times(100);
 
         if (inputElementValue.gt(inputSliderMax)) {
           inputElementValue = new BigNumber(100);

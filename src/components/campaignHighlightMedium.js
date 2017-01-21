@@ -35,11 +35,11 @@ text-overflow: ellipsis;">
                 || t('campaignHighlightMedium.defaultDescription'))}
             </p>
 
-            <div class="hidden-xs show-md">
-              <br /><br />
+            <div class="hidden-xs show-sm hidden-md show-lg">
+              <br />
             </div>
 
-            <div class="hidden-xs hidden-sm show-md">
+            <div class="hidden-xs show-sm hidden-md show-lg">
               <br />
             </div>
 
@@ -52,24 +52,24 @@ text-overflow: ellipsis;">
             </div>
 
             <div class="row">
-              <div class="col-xs-4">
+              <div class="col-xs-3 col-sm-4">
                 <h4>${campaignObject.progress}%</h4>
               </div>
-              <div class="col-xs-4">
+              <div class="col-xs-5 col-sm-4">
                 <h4>${web3.fromWei(campaignObject.amountRaised, 'ether').round(4).toString(10)} ETH</h4>
               </div>
-              <div class="col-xs-4">
+              <div class="col-xs-4 col-sm-4">
                 <h4>${campaignObject.approximateDaysToGo.toString(10)}</h4>
               </div>
             </div>
             <div class="row">
-              <div class="col-xs-4">
+              <div class="col-xs-3 col-sm-4">
                 <h6 style="margin-top: 0px;">${t('campaignHighlightMedium.progress')}</h6>
               </div>
-              <div class="col-xs-4">
+              <div class="col-xs-5 col-sm-4">
                 <h6 style="margin-top: 0px;">${t('campaignHighlightMedium.raised')}</h6>
               </div>
-              <div class="col-xs-4">
+              <div class="col-xs-4 col-sm-4">
                 <h6 style="margin-top: 0px;">days left</h6>
               </div>
             </div>

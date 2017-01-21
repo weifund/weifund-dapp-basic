@@ -91,7 +91,7 @@ export default function campaignContributeReview(options) {
           Back
         </a>
 
-        <button id="campaign-review-contribute-button" class="btn btn-primary btn-lg">
+        <button id="campaign-review-contribute-button" class="btn btn-success btn-lg">
           Make Contribution
         </button>
 

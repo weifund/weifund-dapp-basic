@@ -104,7 +104,7 @@ export default function loadAndDrawCampaignContribute(campaignID, callback) {
       if(handleCampaignContributeReview(campaignData)) {
         getRouter()(`/campaign/${campaignID}/contribute/review`);
         history.pushState({}, null, `/campaign/${campaignID}/contribute/review`);
-        el('#campaign-review-contribute-button').focus();
+        // el('#campaign-review-contribute-button').focus();
       }
     });
 

@@ -13,6 +13,33 @@ export default function handleCampaignContributeReview(campaignData) {
   const actualGasCost = (new BigNumber(txObject().gas)).times(gasPrice);
   const contributionAmountWei = new BigNumber(web3.toWei(contributeAmount, 'ether'));
   const contributeTotal = contirbuteAmountBN.add(web3.fromWei(actualGasCost, 'ether'));
+  const units = new BigNumber(contirbuteAmountBN.dividedBy(0.125).toFixed(0)).times(0.125);
+
+  // parse float
+  if (!units.eq(contirbuteAmountBN)) {
+    el('#campaign-contribute-review-button').href = ``;
+    el('#campaign_contributeAmountGroup').style.border = `red solid 1px`;
+    el('#campaign_contributeAmount').focus();
+    el('#campaign_contributeAmount').blur();
+
+    // promt error
+    el('#campaign-contribute-form-response').innerHTML = '';
+    el('#campaign-contribute-form-response').style.display = 'block';
+    el('#campaign-contribute-form-response').appendChild(yo`<span>
+      <h2>Invalid Contribution Amount</h2>
+      <p>
+        You are attempting to contribute an invalid amount.
+        You may only contribute in increments of 0.125 ether.
+        <br />
+        <br />
+        <small>Note, this is to avoid unnecessary ether from being contributed.</small>
+      </p>
+    </span>`);
+
+    return;
+  } else {
+    el('#campaign_contributeAmountGroup').style.border = `none`;
+  }
 
   // parse float
   if (contributionAmountWei.add(campaignData.amountRaised).gt(campaignData.fundingCap)) {
