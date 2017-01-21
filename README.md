@@ -30,4 +30,4 @@ npm run build
 
 ## LICENSE
 
-Please visit our documentation at http://weifund.readthedocs.io/en/latest/policy/policies/
+Please visit our [documentation](http://weifund.readthedocs.io/en/latest/policy/license/) to review the license for WeiFund code.
