@@ -27,3 +27,7 @@ npm test
 ```
 npm run build
 ```
+
+## LICENSE
+
+Please visit our documentation at http://weifund.readthedocs.io/en/latest/policy/policies/
