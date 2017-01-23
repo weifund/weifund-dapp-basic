@@ -1,4 +1,5 @@
 import { getCampaigns } from 'weifund-lib';
+import yo from 'yo-yo';
 import Contracts from 'weifund-contracts';
 
 import { log, etherScanAddressUrl, parseSolidityMethodName,
@@ -6,8 +7,8 @@ import { log, etherScanAddressUrl, parseSolidityMethodName,
 import { el } from '../document';
 import { campaignContributeView, viewLoader } from '../components';
 import { setDefaultAccount, getDefaultAccount, getCampaign, setCampaign, getAccountBalance,
-  getNetwork, getLocale, getContractEnvironment, txObject } from '../environment';
-import { web3 } from '../web3';
+  getNetwork, getLocale, getContractEnvironment, txObject, setAccountBalance } from '../environment';
+import { web3, setMetamaskProvider } from '../web3';
 import { ipfs } from '../ipfs';
 import { getRouter, refreshPageButtons } from '../router';
 import { t } from '../i18n';
@@ -22,6 +23,7 @@ import handleVerifySeed from './handleVerifySeed';
 import buildAllInputSliders from './drawAllInputSliders';
 import handleConfirmOnPageExit from './handleConfirmOnPageExit';
 import handleCampaignContributeReview from './handleCampaignContributeReview';
+let attemptingContribution = false;
 
 
 const contracts = new Contracts(getContractEnvironment(), web3.currentProvider);
@@ -101,6 +103,7 @@ export default function loadAndDrawCampaignContribute(campaignID, callback) {
 
     // handleCampaignContribution
     el('#campaign-contribute-review-button').addEventListener('click', () => {
+      attemptingContribution = false;
       if(handleCampaignContributeReview(campaignData)) {
         getRouter()(`/campaign/${campaignID}/contribute/review`);
         history.pushState({}, null, `/campaign/${campaignID}/contribute/review`);
@@ -110,6 +113,44 @@ export default function loadAndDrawCampaignContribute(campaignID, callback) {
 
     // set itnerval steps
     setInterval(() => {
+      // adding balance polling here
+      const balanceEl = el('#view-campaign-contribute-wallet-balance .account-balance');
+      const formBalanceEl = el('#defaultAccountBalance');
+      const reviewBalanceEl = el('#campaign_reviewAccountBalance');
+      const contributeAmountEl = el('#campaign_contributeAmount');
+      const contributeSliderEl = el('#campaign_contributeSlider');
+      const balance = getAccountBalance();
+      const availableBalance = balance.minus(txObject().gas);
+      const availableBalanceEther = web3.fromWei(availableBalance, 'ether');
+      const balanceEther = web3.fromWei(balance, 'ether');
+
+      // set the acocunt balance
+      setAccountBalance(balance);
+
+      const addressEl = el('#view-campaign-contribute-wallet-balance .user-address');
+      const reviewAddressEl = el('#campaign_reviewAccountAddress');
+      const defaultAddressEl = el('#defaultAccountAddress');
+
+      addressEl.innerHTML = '';
+      addressEl.appendChild(yo`<span>${getDefaultAccount()}</span>`);
+
+      defaultAddressEl.innerHTML = '';
+      defaultAddressEl.appendChild(yo`<span>${getDefaultAccount()}</span>`);
+
+      reviewAddressEl.innerHTML = '';
+      reviewAddressEl.appendChild(yo`<span>${getDefaultAccount()}</span>`);
+
+      balanceEl.innerHTML = '';
+      balanceEl.appendChild(yo`<span>${balanceEther.toString(10) || '0'}</span>`);
+      // slider max
+      contributeSliderEl.dataset.valueMax = availableBalanceEther.toString(10);
+      formBalanceEl.innerHTML = '';
+
+      formBalanceEl.appendChild(yo`<span>${balanceEther.toString(10) || '0'}</span>`);
+
+      reviewBalanceEl.innerHTML = '';
+      reviewBalanceEl.appendChild(yo`<span>${balanceEther.toString(10) || '0'}</span>`);
+
       let currentStep = 0;
       const currentPath = window.location.pathname;
 
@@ -142,7 +183,28 @@ export default function loadAndDrawCampaignContribute(campaignID, callback) {
     }, 300);
 
     // final contribution button
-    el('#campaign-review-contribute-button').addEventListener('click', handleCampaignContribution);
+    el('#campaign-review-contribute-button').addEventListener('click', (e) => {
+      if (attemptingContribution === false) {
+        attemptingContribution = true;
+        handleCampaignContribution(e);
+      }
+    });
+
+    el('#campaign-wallet-metamask').addEventListener('click', (e) => {
+      setMetamaskProvider()
+      .then(result => {
+        getRouter()(`/campaign/${campaignID}/contribute/form`);
+        history.pushState({}, null, `/campaign/${campaignID}/contribute/form`);
+      })
+      .catch(err => {
+        el('#campaign-contribute-wallet-error').style.display = 'block';
+        el('#campaign-contribute-wallet-error').innerHTML = '';
+        el('#campaign-contribute-wallet-error').appendChild(yo`<span>
+          <h3 style="margin-top: 0px">Provider Error<h3>
+          <p>No provider found injected into the browser. Make sure MetaMask is enabled.</p>
+        </span>`);
+      });
+    });
 
     // wallet and password generation
     el('#view-campaign-contribute-wallet-restore a.open-file').addEventListener('click', handleOpenWalletFile);

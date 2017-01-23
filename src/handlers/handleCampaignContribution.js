@@ -224,6 +224,27 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
             ${contributeResultTxHash}.
             Your contribution either did not process or is taking a very long time to mine..
             Receipt interval polling has stopped.
+
+            <hr />
+
+            This could mean several things:
+
+            <br />
+
+            (1) The token cap is being exceeded<br />
+            (2) The camaign funding cap is being exceeded<br />
+            (3) The campaign has expired<br />
+            (4) The campaign has failed<br />
+            (5) The campaign has succeeded<br />
+            (6) You did not contribute enough to equate to one token<br />
+            (7) Your contribution was not a factor of the token price (0.125 ether)<br />
+
+            <hr />
+
+            <button class="btn btn-primary"
+              href=${`/campaign/${selectedCampaignIdInput}/contribute/`}>
+              Try Again
+            </button>
           </span>`);
 
           // clear receipt interval

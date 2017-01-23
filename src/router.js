@@ -5,6 +5,7 @@ const history = require('sheet-router/history'); // eslint-disable-line
 
 // view handling
 import { closeAllViews, openView, openSubView } from './views';
+import { validCampaigns } from './environment';
 
 // router instance
 // campaign is loaded
@@ -18,7 +19,7 @@ function getRouter() {
 }
 
 // the only allowed campaigns on WeiFund
-const allowedCampaigns = [0, 1];
+const allowedCampaigns = validCampaigns();
 
 // open campaign helper
 function openCampaign(options, params, callback) {

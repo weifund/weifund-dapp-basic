@@ -10,7 +10,7 @@ import { el } from '../document';
 import { setDefaultAccount, getDefaultAccount, getCampaign, setCampaign,
   getNetwork, getLocale, getContractEnvironment, txObject } from '../environment';
 import { viewLoader, accountView } from '../components';
-import { web3, getTransactionSuccess } from '../web3';
+import { web3, getTransactionSuccess, setMetamaskProvider } from '../web3';
 import { ipfs } from '../ipfs';
 import { refreshPageButtons, getRouter } from '../router';
 import { t } from '../i18n';
@@ -278,12 +278,14 @@ function loadAccount() {
 
   // get accounts
   web3.eth.getAccounts((err, accounts) => {
+    setDefaultAccount(accounts[0]);
+
     // set accont address on the page
     el('#accountAddress').innerHTML = '';
     el('#accountAddress').href = etherScanAddressUrl(accounts[0], getNetwork());
     el('#accountAddress').appendChild(yo`<span>${accounts[0]}</span>`);
 
-    web3.eth.getBalance(accounts[0], (err, accountBalance) => {
+    web3.eth.getBalance(getDefaultAccount(), (err, accountBalance) => {
       const balance = accountBalance || '0';
       el('#accountBalanceEther').innerHTML = '';
       el('#accountBalanceWei').innerHTML = '';
@@ -292,21 +294,18 @@ function loadAccount() {
     });
 
     el('#refundCampaignAddress').addEventListener('keyup', () => {
-      const campaignAddress = el('#refundCampaignAddress').value;
+      const campaignAddress = String(el('#refundCampaignAddress').value).trim().toLowerCase();
 
       if (!web3.isAddress(campaignAddress)) {
         return;
       }
 
+      el('#refundCID').innerHTML = '';
+
       const refundCampaign = StandardCampaign.at(campaignAddress);
       refundCampaign.totalContributionsBySender(getDefaultAccount(), (err, totalContributions) => {
         if (!err && totalContributions.gt(0)) {
           const totalCont = totalContributions.toNumber(10);
-          el('#refundTry').innerHTML = '';
-          el('#refundTry').appendChild(yo`<div>
-            Your contribution IDs are:
-            <span id="refundTryIDs"></span>
-          </div>`);
           el('#refundCID_label').style.display = 'inline-block';
           el('#refundCID').style.display = 'inline-block';
           el('#refundCID').innerHTML = '';
@@ -317,7 +316,6 @@ function loadAccount() {
                 el('#refundCID').appendChild(yo`<option value=${cid.toString(10)}>
                   #${cid.toString(10)}
                 </option>`);
-                el('#refundTryIDs').appendChild(yo`<b>${cid.toString(10)}</b> `);
               }
             });
           }
@@ -336,8 +334,8 @@ function loadAccount() {
     });
 
     el('#claimBalance').addEventListener('click', () => {
-      const campaignAddress = el('#refundCampaignAddress').value;
-      const contributionID = el('#refundCID').value;
+      const campaignAddress = String(el('#refundCampaignAddress').value).trim().toLowerCase();
+      const contributionID = parseInt(el('#refundCID').value, 10);
       const campaignInstance = StandardCampaign.at(campaignAddress);
 
       el('#account-claim-refund-response').style.display = 'block';
@@ -366,7 +364,7 @@ function loadAccount() {
           const balanceClaim = BalanceClaim.at(balanceClaimAddress);
 
           balanceClaim.claimBalance(Object.assign({}, txObject(), {
-            from: accounts[0],
+            from: getDefaultAccount(),
           }), (claimBalanceError, txHash) => {
             if (claimBalanceError) {
               el('#account-claim-refund-response').style.display = 'block';
@@ -404,9 +402,13 @@ function loadAccount() {
 
     // refund campaign
     el('#claimRefundOwed').addEventListener('click', () => {
-      const campaignAddress = el('#refundCampaignAddress').value;
-      const contributionID = el('#refundCID').value;
+      const campaignAddress = String(el('#refundCampaignAddress').value).trim().toLowerCase();
+      const contributionID = parseInt(el('#refundCID').value, 10);
       const campaignInstance = StandardCampaign.at(campaignAddress);
+
+      console.log(campaignAddress, contributionID, campaignInstance.address, Object.assign({}, txObject(), {
+        from: getDefaultAccount(),
+      }));
 
       el('#account-claim-refund-response').style.display = 'block';
       el('#account-claim-refund-response').innerHTML = '';
@@ -416,7 +418,7 @@ function loadAccount() {
       </span>`);
 
       campaignInstance.claimRefundOwed(contributionID, Object.assign({}, txObject(), {
-        from: accounts[0],
+        from: getDefaultAccount(),
       }), (txError, txHash) => {
         if (txError) {
           el('#account-claim-refund-response').style.display = 'block';
@@ -523,7 +525,7 @@ function loadAccount() {
       }
 
       web3.eth.sendTransaction(Object.assign({}, txObject(), {
-        from: accounts[0],
+        from: getDefaultAccount(),
         to: destination,
         value: etherAmount,
       }), (txError, txHash) => {
@@ -600,6 +602,9 @@ function loadAccount() {
     el('#tokens').innerHTML = '';
     loadTokenFromEnhancer('0x656c47c003c8bad491cc470ba018276160877e8f', contracts);
     loadTokenFromEnhancer('0xcc628f03877374221743f5b37c5791799fc3370d', contracts);
+
+    loadTokenFromEnhancer('0x741d29f6a8ce8367dd6df47a2247a49dfaaa1a7a', contracts);
+    loadTokenFromEnhancer('0x34d4239e416a7bd1f3c55ce8286d083bae1b67bd', contracts);
 
     // 0x467ef6ac8f3689d35b0fcfcbfa09a9ab498d7020
 
@@ -688,6 +693,23 @@ export default function loadAndDrawAccount(callback) {
   el('#view-account').innerHTML = '';
   el('#view-account').appendChild(accountView({}));
 
+  el('#account-wallet-metamask').addEventListener('click', () => {
+    setMetamaskProvider()
+    .then(() => {
+      loadAccount();
+    })
+    .catch((err) => {
+      el('#account-wallet-alert').style.display = 'block';
+      el('#account-wallet-alert').innerHTML = '';
+      el('#account-wallet-alert').appendChild(yo`<p>
+        <h3 style="margin-top: 0px;">MetaMask Error</h3>
+        There was an error while using attempting to use MetaMask:
+        <hr />
+        ${err}
+      </p>`);
+    });
+  });
+
   el('#account-wallet-file').addEventListener('change', () => {
     el('#view-focus').style.display = 'block';
     el('#view-account').style.display = 'none';
@@ -731,6 +753,11 @@ export default function loadAndDrawAccount(callback) {
 
   // if hooked web3 provider just login
   if (web3.currentProvider.currentBlock) {
+    loadAccount();
+  }
+
+  // if provider is metamask
+  if (web3.currentProvider.isMetaMask) {
     loadAccount();
   }
 }

@@ -73,7 +73,7 @@ export default function handleCampaignContributeReview(campaignData) {
     el('#campaign-contribute-form-response').style.display = 'block';
     el('#campaign-contribute-form-response').appendChild(yo`<span>
       <h2>Invalid Contribution Amount</h2>
-      <p>You are attempting to contribute more Ether than you have in your balance you can spend (with gas costs included).</p>
+      <p>You are attempting to contribute more Ether than you have in your balance (with gas costs included).</p>
     </span>`);
 
     return;

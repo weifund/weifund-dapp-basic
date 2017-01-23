@@ -34,7 +34,7 @@ export default function campaignContributeWallet(options) {
 
           <h4>This is the QR code for your wallet address. Mobile Ethereum apps can scan this code to send ether to your address.</h4>
 
-          <h4><b class="text-warning">Please fill your account with Ether</b>, so you can contribute to the campaign.</h4>
+          <h4><b class="text-warning">Please fill your account with Ether</b>, so you can contribute to the campaign. Minimum <b>0.125 ether</b> balance required.</h4>
 
           <br />
 
@@ -114,19 +114,15 @@ export default function campaignContributeWallet(options) {
           user-select: none;
           cursor: default;
           margin-top: 0px;
-          margin-bottom: 0px;">Loading...</h3>
+          margin-bottom: 0px;">
+          Loading...
+        </h3>
       </div>
 
       <h4>
         <b>WRITE DOWN YOUR SEED PHRASE.</b>
         WeiFund does not store your wallet. Your seed phrase is required to
         access your assets.
-      </h4>
-
-      <br />
-
-      <h4>
-        This lightwallet is still in beta and is presently not recommended for the storage of large amounts of ETH.
       </h4>
 
       <br /><br />
@@ -251,6 +247,7 @@ export default function campaignContributeWallet(options) {
 
       <br />
 
+      <a id="campaign-wallet-metamask" class=" btn btn-primary">METAMASK</a>
       <a class="restore btn btn-primary">RESTORE FROM SEED</a>
       <a class="open-file btn btn-primary">OPEN WALLET FILE</a>
 
@@ -282,7 +279,7 @@ export default function campaignContributeWallet(options) {
       <br />
 
       <h4>
-        You can create a new Ethereum wallet to contribute to a campaign or use
+        You can create a new Ethereum <i>Lightwallet</i> wallet to contribute to a campaign or use
         an existing wallet if you already have one.
       </h4>
 

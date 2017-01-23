@@ -12,6 +12,7 @@ import { refreshPageButtons } from '../router';
 import { download } from '../keystore';
 import { t } from '../i18n';
 import { web3 } from '../web3';
+import { validCampaigns } from '../environment';
 
 // require contracts
 const contracts = new Contracts(getContractEnvironment(), web3.currentProvider);
@@ -73,7 +74,7 @@ function drawCampaigns(campaignsToDraw) {
   el('#campaigns_list').innerHTML = ``;
 
   // draw campaigns in list
-  for(var campaignID = campaignsToDraw.length - 1; campaignID >= campaignsToDraw.length - 2; campaignID--){
+  for(var campaignID = campaignsToDraw.length - 1; campaignID >= 0; campaignID--){
     var campaignToDraw = campaignsToDraw[campaignID];
     var campaignDrawTarget = 'campaigns_list';
 
@@ -144,7 +145,7 @@ export default function loadAndDrawCampaignsList() {
 
       // set campaign selector
       // array (i.e. array of campaignIDs)
-      selector: [0, 1],
+      selector: validCampaigns(),
     }, (loadCampaignsError, loadCampaignsResult) => {
 
       // download snapshot

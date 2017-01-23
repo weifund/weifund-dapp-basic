@@ -49,7 +49,7 @@ export default function campaignContributeForm(options) {
       <br />
 
       <h3>Terms of Use</h3>
-      <p>You must read and agree to this Terms of Use before contributing to this campaign.</p>
+      <p>In order to contribute using WeiFund, you must agree to the terms of use.</p>
       <div style="padding: 20px; background: #FFF; overflow: auto; border: 1px solid #aaa; height: 250px;">
         <h1 id='cUQACACWcq3'>WeiFund Terms of Use</h1>
 

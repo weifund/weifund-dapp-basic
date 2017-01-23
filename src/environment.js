@@ -62,6 +62,10 @@ export function nameOf(address) {
   return names[address.toLowerCase()] || address;
 }
 
+export function validCampaigns() {
+  return [0, 1, 2, 3];
+}
+
 // get current locale
 export function getLocale() {
   return store.get('locale') || 'en';

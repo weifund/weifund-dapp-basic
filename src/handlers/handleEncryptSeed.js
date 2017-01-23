@@ -41,18 +41,12 @@ export function contributionBalanceUpdater(address) {
         // set the acocunt balance
         setAccountBalance(balance);
 
-        balanceEl.innerHTML = '';
-        balanceEl.appendChild(yo`<span>${balanceEther.toString(10) || '0'}</span>`);
+        // doing draws elswhere in campaignContribute.js
 
         // slider max
         contributeSliderEl.dataset.valueMax = availableBalanceEther.toString(10);
         contributeAmountEl.value = String(0.125);
 
-        formBalanceEl.innerHTML = '';
-        formBalanceEl.appendChild(yo`<span>${balanceEther.toString(10) || '0'}</span>`);
-
-        reviewBalanceEl.innerHTML = '';
-        reviewBalanceEl.appendChild(yo`<span>${balanceEther.toString(10) || '0'}</span>`);
         const contributeEl = el('#campaign-contribute-to-campaign');
 
         if (balance.gte(web3.toWei(1, 'finney'))) {
@@ -98,18 +92,6 @@ export function updateWalletUI() {
   getAccounts()
     .then(accounts => {
       const address = accounts[0];
-      const addressEl = el('#view-campaign-contribute-wallet-balance .user-address');
-      const reviewAddressEl = el('#campaign_reviewAccountAddress');
-      const defaultAddressEl = el('#defaultAccountAddress');
-
-      addressEl.innerHTML = '';
-      addressEl.appendChild(yo`<span>${address}</span>`);
-
-      defaultAddressEl.innerHTML = '';
-      defaultAddressEl.appendChild(yo`<span>${address}</span>`);
-
-      reviewAddressEl.innerHTML = '';
-      reviewAddressEl.appendChild(yo`<span>${address}</span>`);
 
       setDefaultAccount(address);
 

@@ -1,6 +1,6 @@
 // require web3
 import Web3 from 'web3';
-import { getContractEnvironment } from './environment';
+import { getContractEnvironment, setDefaultAccount, setAccountBalance } from './environment';
 
 // new web3 object
 export const web3 = new Web3(new Web3.providers.HttpProvider(`https://${getContractEnvironment()}.infura.io/`));
@@ -12,6 +12,34 @@ export function setProviderToDefault() {
 
 // setup web3 provider
 export function setupWeb3Provider() {
+}
+
+export function setMetamaskProvider(cb) {
+  return new Promise((resolve, reject) => {
+    if (typeof window.web3 !== 'undefined' &&
+      typeof window.web3.currentProvider !== 'undefined') {
+      web3.setProvider(window.web3.currentProvider);
+
+      web3.eth.getAccounts((accountError, accounts) => {
+        if (accountError) {
+          return reject(accountError, null);
+        }
+
+        web3.eth.getBalance(accounts[0], (balanceError, balance) => {
+          if (balanceError) {
+            return reject(balanceError, null);
+          }
+
+          setDefaultAccount(accounts[0]);
+          setAccountBalance(balance);
+
+          resolve({ account: accounts[0], balance });
+        });
+      });
+    } else {
+      reject('No injected web3 provider found.', null);
+    }
+  });
 }
 
 export function getTransactionSuccess(txHash, callback) {

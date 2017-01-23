@@ -4,8 +4,6 @@ import { saveWalletFile, logout } from '../keystore';
 import { getRouter } from '../router';
 import { etherScanAddressUrl } from 'weifund-util';
 
-console.log(etherScanAddressUrl);
-
 // main export
 export default function accountView(options) {
   return yo`<div>
@@ -61,10 +59,12 @@ export default function accountView(options) {
         </div>
 
         <div id="account-wallet-buttons">
+          <button type="button" id="account-wallet-metamask" class="btn btn-primary">
+            METAMASK
+          </button>
           <button type="button" id="account-wallet-restore" class="btn btn-primary">
             RESTORE FROM SEED
           </button>
-            or
           <button type="button" id="account-wallet-upload" class="btn btn-primary">
             UPLOAD WALLET FILE
           </button>
@@ -201,25 +201,30 @@ export default function accountView(options) {
             <br />
 
             <div class="row">
-              <div class="col-xs-5 col-sm-4 col-md-3 col-lg-4">
+              <div class="col-xs-5">
                 <label>Campaign Address</label>
                 <input class="form-control" id="refundCampaignAddress" placeholder="0x..." />
               </div>
-              <div class="col-xs-2 col-sm-2 col-md-1 col-lg-2">
+              <div class="col-xs-3">
                 <label style="display: none;" id="refundCID_label">Contribution ID</label>
                 <select style="display: none;" id="refundCID" class="form-control"></select>
               </div>
-              <div class="col-xs-5 col-sm-6 col-md-8 col-lg-6 text-right">
-                <label><br /></label><br />
+              <div class="col-xs-4 text-right">
+                <label><br /></label>
+                <br />
                 <button id="claimRefundOwed" class="btn btn-primary">
                   Claim Refund
                 </button>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-xs-12">
                 <button id="claimBalance" class="btn btn-primary">
                   Claim Balance
                 </button>
               </div>
             </div>
-
           </div>
         </div>
 
