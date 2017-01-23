@@ -46,6 +46,9 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
 
   // contribute to campaign instance
   if (confirm(confirmationMessage)) {
+    // Hide the contribution button so the user can't trigger another transaction.
+    el('#campaign-review-contribute-button').style.display = 'none';
+
     // awaiting tx approval message
     resetReviewResponses();
 
