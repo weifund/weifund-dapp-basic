@@ -108,6 +108,7 @@ export function logout() {
   setKeystore(null);
   setSeed(null);
   setProviderToDefault();
+  setDefaultAccount('');
 }
 
 export function download(filename, data) {

@@ -220,9 +220,6 @@ export default function loadAndDrawCampaignContribute(campaignID, callback) {
     el('#view-campaign-contribute-wallet-password input[name=password-2]').addEventListener('keyup', handleVerifyPassword);
     el('#view-campaign-contribute-wallet-password form').addEventListener('submit', handleEncryptSeed);
     el('#view-campaign-contribute-wallet-download a.download').addEventListener('click', handleSaveWalletFile);
-    el('#view-campaign-contribute-wallet-confirm a.btn-back').addEventListener('click', () => {
-      el('#view-campaign-contribute-wallet-confirm input[type=text]').value = '';
-    });
     el('#view-campaign-contribute-wallet-confirm a.confirm').addEventListener('click', e => {
       if (!el('#wallet-seed-confirm').hasAttribute('disabled')) {
         el('#view-campaign-contribute-wallet-confirm input[type=text]').value = '';
