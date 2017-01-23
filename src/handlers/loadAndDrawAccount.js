@@ -49,7 +49,6 @@ function TokenUI(options) {
         <h4>
           Tokens Owed ${options.tokensOwed.toString(10)}
           | Total Issued ${options.tokensIssued.toString(10)}
-          | Version ${options.version}
         </h4>
       </div>
       <div class="col-xs-3 text-right">
@@ -69,8 +68,7 @@ function TokenUI(options) {
         </h4>
       </div>
       <div class="col-sm-6 text-right">
-        <button class="btn btn-success
-          ${!options.canClaim && 'disabled' || ''}"
+        <button class="btn btn-success ${options.canClaim && '' || 'disabled'}"
           style=${options.claimed && 'display: none;' || 'display: inline-block;'}
           onclick=${() => {
             if (options.canClaim) {
@@ -222,6 +220,14 @@ function loadTokenFromEnhancer(enhancerAddress, contracts) {
                       hasTokensOwed = true;
                     }
 
+                    const endBlock = startBlock.add(freezePeriod);
+                    const blockDiff = new BigNumber(blockNumber).sub(endBlock);
+                    const secondsDiff = blockDiff.times(25).toFixed(0);
+                    const currentTimestamp = new BigNumber((new Date()).getTime() / 1000).round();
+                    const thawTimestamp = currentTimestamp.add(secondsDiff);
+                    const thawMinutes = new BigNumber(secondsDiff).dividedBy(60).toFixed(0);
+                    const thawDate = new Date(thawTimestamp * 1000).toUTCString();
+
                     token.name((err, name) => {
                       token.balanceOf(getDefaultAccount(), (err, accountTokenBalance) => {
                         token.decimals((err, decimals) => {
@@ -275,6 +281,12 @@ function loadAccount() {
   el('#view-account').style.display = 'block';
 
   openSubView('view-account-panel');
+
+  if (web3.currentProvider.isMetaMask) {
+    el('#account-download-wallet').style.display = 'none';
+  } else {
+    el('#account-download-wallet').style.display = 'inline-block';
+  }
 
   // get accounts
   web3.eth.getAccounts((err, accounts) => {
@@ -693,13 +705,17 @@ export default function loadAndDrawAccount(callback) {
   el('#view-account').innerHTML = '';
   el('#view-account').appendChild(accountView({}));
 
+  el('#account-wallet-metamask').innerHTML = 'METAMASK';
+
   el('#account-wallet-metamask').addEventListener('click', () => {
+    el('#account-wallet-metamask').innerHTML = 'LOADING METAMASK...';
     setMetamaskProvider()
     .then(() => {
+      el('#account-wallet-metamask').innerHTML = 'METAMASK';
       loadAccount();
     })
     .catch((err) => {
-      el('#account-wallet-alert').style.display = 'block';
+      el('#account-wallet-metamask').innerHTML = 'METAMASK';
       el('#account-wallet-alert').innerHTML = '';
       el('#account-wallet-alert').appendChild(yo`<p>
         <h3 style="margin-top: 0px;">MetaMask Error</h3>

@@ -88,10 +88,6 @@ export default function campaignFocusDetailsView(options) {
       <div class="row">
         <div class="col-xs-12 col-sm-6">
           ${objectView({web3, object: campaignObject, layout: {
-              active: {
-                name: 'Active',
-                description: 'Is the campaign active (i.e. can you contribute to it)',
-              },
               hasName:  {
                 name: 'Has Name',
                 description: 'Is the campaign named.',

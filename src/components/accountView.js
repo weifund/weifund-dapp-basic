@@ -140,7 +140,10 @@ export default function accountView(options) {
           </div>
           <div class="row">
             <div class="col-xs-12">
-              <button class="btn btn-primary" onclick=${saveWalletFile}>
+              <button
+                id="account-download-wallet"
+                class="btn btn-primary"
+                onclick=${saveWalletFile}>
                 Download Encrypted Wallet
               </button>
 
@@ -195,8 +198,7 @@ export default function accountView(options) {
             <p>First claim your refund ('Claim Refund'),
               then claim your balance ('Claim Balance') from the BalanceClaim contract.</p>
 
-            <div id="refundTry">
-            </div>
+            <div id="refundTry"></div>
 
             <br />
 
@@ -219,7 +221,7 @@ export default function accountView(options) {
             </div>
             <hr />
             <div class="row">
-              <div class="col-xs-12">
+              <div class="col-xs-12 text-right">
                 <button id="claimBalance" class="btn btn-primary">
                   Claim Balance
                 </button>
