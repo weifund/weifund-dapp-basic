@@ -42,7 +42,7 @@ export default function handleCampaignContributeReview(campaignData) {
   }
 
   // parse float
-  if (contributionAmountWei.add(campaignData.amountRaised).gt(campaignData.fundingCap)) {
+  if ((contributionAmountWei.add(campaignData.amountRaised)).gt(campaignData.fundingCap)) {
     el('#campaign-contribute-review-button').href = ``;
     el('#campaign_contributeAmountGroup').style.border = `red solid 1px`;
     el('#campaign_contributeAmount').focus();

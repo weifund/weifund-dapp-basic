@@ -2,7 +2,7 @@ import { footer, navBar, modal } from '../components';
 import { el } from '../document';
 import { t } from '../i18n';
 import { setDefaultAccount, getDefaultAccount, getCampaign, setCampaign,
-  getNetwork, getLocale, getContractEnvironment, txObject } from '../environment';
+  getLocale, getContractEnvironment, txObject } from '../environment';
 import buildAllNavToggles from './drawAllNavToggles';
 import buildAllInputSliders from './drawAllInputSliders';
 
@@ -63,12 +63,10 @@ module.exports = {
   drawModal,
 
   loadAndDrawCampaign: require('./loadAndDrawCampaign').default,
-  loadAndDrawCampaignRefund: require('./loadAndDrawCampaignRefund').default,
   loadAndDrawCampaignContribute: require('./loadAndDrawCampaignContribute').default,
   loadAndDrawCampaignsList: require('./loadAndDrawCampaignsList').default,
   loadAndDrawAccount: require('./loadAndDrawAccount').default,
   handleConfirmOnPageExit: require('./handleConfirmOnPageExit').default,
 
   handleCampaignContribution: require('./handleCampaignContribution').default,
-  handleCampaignRefund: require('./handleCampaignRefund').default,
 };

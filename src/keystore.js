@@ -5,7 +5,7 @@ import ProviderEngine from 'web3-provider-engine';
 import HookedWalletSubprovider from 'web3-provider-engine/subproviders/hooked-wallet';
 import Web3Subprovider from 'web3-provider-engine/subproviders/web3';
 
-import { setDefaultAccount } from './environment';
+import { setDefaultAccount, getContractEnvironment } from './environment';
 import { web3, setProviderToDefault } from './web3';
 import handlePassword from './handlers/handlePassword';
 
@@ -65,7 +65,7 @@ export function setWalletProvider(keystore) {
     },
     signTransaction: keystore.signTransaction.bind(keystore),
   }));
-  const web3Provider = new Web3.providers.HttpProvider('https://ropsten.infura.io/');
+  const web3Provider = new Web3.providers.HttpProvider(`https://${getContractEnvironment()}.infura.io/`);
   provider.addProvider(new Web3Subprovider(web3Provider));
 
   // Activate the provider, but stop polling for blocks since we don't use

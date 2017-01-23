@@ -5,13 +5,13 @@ import BigNumber from 'bignumber.js';
 
 import { el } from '../document';
 import { campaignContributeReceipt } from '../components';
-import { setDefaultAccount, getCampaign, getNetwork, getLocale, txObject } from '../environment';
+import { setDefaultAccount, getContractEnvironment, getCampaign, getNetwork, getLocale, txObject } from '../environment';
 import { web3 } from '../web3';
 import { t } from '../i18n';
 import { getRouter } from '../router';
 
 // require contracts
-const contracts = new Contracts('ropsten', web3.currentProvider);
+const contracts = new Contracts(getContractEnvironment(), web3.currentProvider);
 const campaignRegistry = contracts.CampaignRegistry.instance();
 const campaign = contracts.StandardCampaign.factory;
 
@@ -143,13 +143,23 @@ Are you sure you want to contribute ${web3.fromWei(contributeValueWei, 'ether')}
                 <h3 style="margin-top: 0px;">Transaction Error</h3>
                 <p>
                 There was an error while getting your transaction receipt,
-                no logs were found in receipt, indicating an invalid transaction,
+                no logs were found in receipt, indicating an invalid transaction
                 with transaction hash: ${contributeResultTxHash}.
 
                 <hr />
 
-                This could mean you did not contribute enough to amount to a single token.
-                Please try your contribution again.
+                This could mean several things:
+                <br />
+                (1) The token cap is being exceeded<br />
+                (2) The camaign funding cap is being exceeded<br />
+                (3) The campaign has expired<br />
+                (4) The campaign has failed<br />
+                (5) The campaign has succeeded<br />
+                (6) You did not contribute enough to equate to one token<br />
+                (7) Your contribution was not a factor of the token price (0.125 ether)
+                <br /><br /><br />
+
+                Please try your contribution again.<br /><br /><br />
 
                 -- checkout on
                   <a target="_blank"

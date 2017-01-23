@@ -107,7 +107,14 @@ export default function campaignContributeWallet(options) {
       </h4>
 
       <div class="alert alert-warning text-center">
-        <h3 class="seed" style="user-select: none; cursor: default; margin-top: 0px; margin-bottom: 0px;">Loading...</h3>
+        <h3 class="seed" style="-webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          -o-user-select: none;
+          user-select: none;
+          cursor: default;
+          margin-top: 0px;
+          margin-bottom: 0px;">Loading...</h3>
       </div>
 
       <h4>

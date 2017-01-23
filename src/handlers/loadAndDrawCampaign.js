@@ -2,7 +2,7 @@ import QRious from 'qrious';
 import { getCampaigns } from 'weifund-lib';
 
 import { setDefaultAccount, getDefaultAccount, getCampaign, setCampaign,
-  getNetwork, getLocale, getContractEnvironment, txObject } from '../environment';
+   getLocale, getContractEnvironment, txObject } from '../environment';
 import { campaignFocusView, viewLoader } from '../components';
 import { el } from '../document';
 import { web3 } from '../web3';
@@ -59,7 +59,7 @@ export default function loadAndDrawCampaign(campaignID, callback) {
 
   // load campaign fresh to draw
   getCampaigns({
-    network: 'ropsten',
+    network: getContractEnvironment(),
 
     selector: [campaignID],
   }, (err, result) => drawCampaign(err, result, campaignID));

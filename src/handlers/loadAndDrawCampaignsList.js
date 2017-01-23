@@ -7,15 +7,14 @@ import yo from 'yo-yo';
 
 import { el } from '../document';
 import { campaignHighlightMedium, viewLoader, campaignsView } from '../components';
-import { setDefaultAccount, getDefaultAccount, getStoredCampaigns, setCampaign,
-  getNetwork, getLocale, getContractEnvironment, txObject } from '../environment';
+import { setDefaultAccount, getDefaultAccount, getStoredCampaigns, setCampaign, getLocale, getContractEnvironment, txObject } from '../environment';
 import { refreshPageButtons } from '../router';
 import { download } from '../keystore';
 import { t } from '../i18n';
 import { web3 } from '../web3';
 
 // require contracts
-const contracts = new Contracts('ropsten', web3.currentProvider);
+const contracts = new Contracts(getContractEnvironment(), web3.currentProvider);
 const campaignRegistry = contracts.CampaignRegistry.instance();
 const curationRegistry = contracts.CurationRegistry.instance();
 
@@ -145,8 +144,9 @@ export default function loadAndDrawCampaignsList() {
 
       // set campaign selector
       // array (i.e. array of campaignIDs)
-      selector: [6, 7],
+      selector: [0, 1],
     }, (loadCampaignsError, loadCampaignsResult) => {
+
       // download snapshot
       // download('getCampaignsState.json', JSON.stringify(bignumberToSafeObject(loadCampaignsResult)));
 

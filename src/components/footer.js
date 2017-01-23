@@ -10,10 +10,10 @@ export default function footer(options) {
       <div class="row">
         <div class="col-xs-12 col-sm-3">
           <h4 class="text-light-gray">Documentation</h4>
-          <a href="https://weifund.readthedocs.io/en/latest/#welcome-to-weifund" target="_blank" class="text-light-gray">Welcome</a> <br />
-          <a href="https://weifund.readthedocs.io/en/latest/getting_started/campaigns/" target="_blank" class="text-light-gray">Getting Started</a>  <br />
-          <a href="https://weifund.readthedocs.io/en/latest/security/overview/" target="_blank" class="text-light-gray">Security</a> <br />
-          <a href="https://weifund.readthedocs.io/en/latest/specifications/overview/" target="_blank" class="text-light-gray">Specifications</a> <br />
+          <a href="https://weifund.readthedocs.io/en/latest/" target="_blank" class="text-light-gray">Welcome</a> <br />
+          <a href="https://weifund.readthedocs.io/en/latest/campaigns/contributing/" target="_blank" class="text-light-gray">Getting Started</a>  <br />
+          <a href="https://weifund.readthedocs.io/en/latest/contracts/" target="_blank" class="text-light-gray">Contracts</a> <br />
+          <a href="https://weifund.readthedocs.io/en/latest/policy/policies/" target="_blank" class="text-light-gray">Policies</a> <br />
         </div>
         <div class="col-xs-12 col-sm-3">
           <h4 target="_blank" class="text-light-gray">${t("footer.headers.community")}</h4>

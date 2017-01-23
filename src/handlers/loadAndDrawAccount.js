@@ -45,14 +45,14 @@ function TokenUI(options) {
       </div>
     </h3>
     <div class="row">
-      <div class="col-xs-6">
+      <div class="col-xs-9">
         <h4>
           Tokens Owed ${options.tokensOwed.toString(10)}
           | Total Issued ${options.tokensIssued.toString(10)}
           | Version ${options.version}
         </h4>
       </div>
-      <div class="col-xs-6 text-right">
+      <div class="col-xs-3 text-right">
         <h4>
           Status <i>${options.claimed && 'claimed' || 'unclaimed'}</i>
         </h4>
@@ -69,19 +69,9 @@ function TokenUI(options) {
         </h4>
       </div>
       <div class="col-sm-6 text-right">
-        <button class="btn btn-primary"
-          style=${options.claimed && 'display: inline-block' || 'display: none;'}
-          onclick=${() => {
-            if(el(`#tokenTransferWindow_${options.tokenAddress}`).style.display === 'block') {
-              el(`#tokenTransferWindow_${options.tokenAddress}`).style.display = 'none';
-            } else {
-              el(`#tokenTransferWindow_${options.tokenAddress}`).style.display = 'block';
-            }
-          }}>
-          Transfer
-        </button>
         <button class="btn btn-success
           ${!options.canClaim && 'disabled' || ''}"
+          style=${options.claimed && 'display: none;' || 'display: inline-block;'}
           onclick=${() => {
             if (options.canClaim) {
               const claimWindowEl = el(`#tokenClaimWindow_${options.tokenAddress}`);
@@ -186,8 +176,8 @@ function TokenUI(options) {
       <br />
       (3) The token thaw period has not ended yet
       <hr />
-      Note, campaign is at stage '${options.stage.toString(10)}'
-      and must be at stage '2' (Success) to claim.
+      ${options.stage.eq(2) === false && `Note, campaign is at stage '${options.stage.toString(10)}'
+      and must be at stage '2' (Success) to claim.` || ''}
     </div>
   </div>
   <div class="row" style=${options.canClaim
@@ -243,6 +233,7 @@ function loadTokenFromEnhancer(enhancerAddress, contracts) {
                                   enhancerAddress,
                                   name,
                                   decimals,
+                                  claimed,
                                   canClaim,
                                   stage,
                                   hasTokensOwed,
@@ -278,6 +269,7 @@ function loadTokenFromEnhancer(enhancerAddress, contracts) {
 function loadAccount() {
   const contracts = new Contracts(getContractEnvironment(), web3.currentProvider);
   const StandardCampaign = contracts.StandardCampaign.factory;
+  const BalanceClaim = contracts.BalanceClaim.factory;
   el('#view-focus').style.display = 'none';
   el('#view-account-restore').style.display = 'none';
   el('#view-account').style.display = 'block';
@@ -297,6 +289,117 @@ function loadAccount() {
       el('#accountBalanceWei').innerHTML = '';
       el('#accountBalanceEther').appendChild(yo`<span>${web3.fromWei(balance, 'ether').toString(10)}</span>`);
       el('#accountBalanceWei').appendChild(yo`<span>${web3.fromWei(balance, 'wei').toString(10)}</span>`);
+    });
+
+    el('#refundCampaignAddress').addEventListener('keyup', () => {
+      const campaignAddress = el('#refundCampaignAddress').value;
+
+      if (!web3.isAddress(campaignAddress)) {
+        return;
+      }
+
+      const refundCampaign = StandardCampaign.at(campaignAddress);
+      refundCampaign.totalContributionsBySender(getDefaultAccount(), (err, totalContributions) => {
+        if (!err && totalContributions.gt(0)) {
+          const totalCont = totalContributions.toNumber(10);
+          el('#refundTry').innerHTML = '';
+          el('#refundTry').appendChild(yo`<div>
+            Your contribution IDs are:
+            <span id="refundTryIDs"></span>
+          </div>`);
+          el('#refundCID_label').style.display = 'inline-block';
+          el('#refundCID').style.display = 'inline-block';
+          el('#refundCID').innerHTML = '';
+
+          function contributionBySender(i) {
+            refundCampaign.contributionsBySender(getDefaultAccount(), i, (cidErr, cid) => {
+              if (!cidErr && cid) {
+                el('#refundCID').appendChild(yo`<option value=${cid.toString(10)}>
+                  #${cid.toString(10)}
+                </option>`);
+                el('#refundTryIDs').appendChild(yo`<b>${cid.toString(10)}</b> `);
+              }
+            });
+          }
+
+          for (var i = 0; i < totalCont; i++) {
+            contributionBySender(i);
+          }
+        } else {
+          el('#refundTry').innerHTML = '';
+          el('#refundTry').appendChild(yo`<div>
+            It looks like you didn't contribute to this campaign.
+            No contribution ID's have been found.
+          </div>`);
+        }
+      });
+    });
+
+    el('#claimBalance').addEventListener('click', () => {
+      const campaignAddress = el('#refundCampaignAddress').value;
+      const contributionID = el('#refundCID').value;
+      const campaignInstance = StandardCampaign.at(campaignAddress);
+
+      el('#account-claim-refund-response').style.display = 'block';
+      el('#account-claim-refund-response').innerHTML = '';
+      el('#account-claim-refund-response').appendChild(yo`<span>
+        <h3 style="margin-top: 0px;">Refund Processing</h3>
+        <p>Awaiting transaction approval...</p>
+      </span>`);
+
+      campaignInstance.refundsClaimed(contributionID, (refundsClaimedError, refundsClaimed) => {
+        campaignInstance.refundClaimAddress(contributionID, (claimAddressError, balanceClaimAddress) => {
+          if (balanceClaimAddress === '0x'
+              || balanceClaimAddress === '0x0000000000000000000000000000000000000000'
+              || refundsClaimed !== true) {
+            el('#account-claim-refund-response').style.display = 'block';
+            el('#account-claim-refund-response').innerHTML = '';
+            el('#account-claim-refund-response').appendChild(yo`<span>
+              <h3 style="margin-top: 0px;">No Balance Claim Available</h3>
+              <p>There is no balance claim available for this contribution ID.
+              Please try claiming your refund first.
+              </p>
+            </span>`);
+            return;
+          }
+
+          const balanceClaim = BalanceClaim.at(balanceClaimAddress);
+
+          balanceClaim.claimBalance(Object.assign({}, txObject(), {
+            from: accounts[0],
+          }), (claimBalanceError, txHash) => {
+            if (claimBalanceError) {
+              el('#account-claim-refund-response').style.display = 'block';
+              el('#account-claim-refund-response').innerHTML = '';
+              el('#account-claim-refund-response').appendChild(yo`<span>
+                <h3 style="margin-top: 0px;">Balance Claim Transaction Error</h3>
+                <p>There was an error while sending your transaction..</p>
+                <hr />
+                <p>${String(claimBalanceError)}</p>
+              </span>`);
+              return;
+            }
+
+            getTransactionSuccess(txHash, (txSuccessError, txReceipt) => {
+              if (!txSuccessError && txReceipt) {
+                el('#account-claim-refund-response').style.display = 'block';
+                el('#account-claim-refund-response').innerHTML = '';
+                el('#account-claim-refund-response').appendChild(yo`<span>
+                  <h3 style="margin-top: 0px;">Balance Claim Transaction Success!</h3>
+                  <p>Your transaction was successfully sent.</p>
+                  <hr />
+                  view it on etherscan:
+                  <a href=${etherScanTxHashUrl(txHash, getNetwork())}
+                    target="_blank"
+                    style="color: #FFF;">
+                    ${txHash}
+                  </a>
+                </span>`);
+              }
+            });
+          });
+        });
+      });
     });
 
     // refund campaign
@@ -495,8 +598,10 @@ function loadAccount() {
     // load token at this address
     el('#tokens-loading').innerHTML = '<h3>Loading token data...</h3>';
     el('#tokens').innerHTML = '';
-    loadTokenFromEnhancer('0x2f5a915de49c5d851b49ec36d14752034fe1bd9b', contracts);
-    loadTokenFromEnhancer('0x73837f63b29b21f35c8d4fd0f9f6651e17966814', contracts);
+    loadTokenFromEnhancer('0x656c47c003c8bad491cc470ba018276160877e8f', contracts);
+    loadTokenFromEnhancer('0xcc628f03877374221743f5b37c5791799fc3370d', contracts);
+
+    // 0x467ef6ac8f3689d35b0fcfcbfa09a9ab498d7020
 
     // refresh page buttons
     refreshPageButtons();

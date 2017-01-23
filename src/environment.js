@@ -51,7 +51,7 @@ export function txObject() {
 // this and locale will be localstore
 // environment
 export function getNetwork(){
-  return 'testnet'; // or livenet
+  return 'mainnet'; // or 'ropsten' or ''
 }
 
 // name for
@@ -74,7 +74,7 @@ export function setLocale(locale) {
 
 // get contract environment
 export function getContractEnvironment() {
-  return 'ropsten';
+  return 'mainnet';
 }
 
 // get all campaigns

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./node_modules/budo/bin/cmd.js src/app.js:bundle.js -P --cors --open -- -t [ babelify --presets [ es2015 ] ]",
     "browserify": "browserify src/app.js -o bundle.js -t [ babelify --presets [ es2015 ] ]",
-    "surge": "npm run browserify && cp index.html 200.html && surge --domain https://weifund-design.surge.sh && rm 200.html && rm bundle.js",
+    "surge": "npm run browserify && cp index.html 200.html && surge --domain https://weifund.surge.sh && rm 200.html && rm bundle.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -35,9 +35,9 @@
     "web3": "0.15.3",
     "web3-network-detective": "0.1.1",
     "web3-provider-engine": "8.2.0",
-    "weifund-contracts": "2.0.4",
-    "weifund-lib": "0.1.6",
-    "weifund-util": "git+https://github.com/weifund/weifund-util",
+    "weifund-contracts": "2.0.5",
+    "weifund-lib": "0.1.7",
+    "weifund-util": "0.1.1",
     "yo-yo": "1.3.2"
   },
   "devDependencies": {

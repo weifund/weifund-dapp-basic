@@ -92,7 +92,7 @@ export default function campaignFocusOverviewView(options) {
           <br /><br />
 
           <h4>Expires</h4>
-          <span>${campaignObject.approximateExpiryDate.toISOString()}</span>
+          <span>${campaignObject.approximateExpiryDate.toUTCString()}</span>
 
           <br /><br />
 

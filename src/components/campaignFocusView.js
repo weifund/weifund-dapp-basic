@@ -72,15 +72,11 @@ export default function campaignFocusView(options) {
         ${(function(){
 
           if (campaignObject.hasFailed) {
-            return yo`<a id="campaign_refundButton" href="/campaign/${campaignObject.id}/refund">
+            return yo`<a id="campaign_refundButton" href="/account">
               <button class="btn btn-lg btn-warning">${t('campaignFocusView.buttons.refund')}</button>
             </a>`;
           } else {
-            if (campaignObject.hasSucceeded) {
-              return yo`<a id="campaign_payoutButton" href="/campaign/${campaignObject.id}/payout">
-                <button class="btn btn-lg btn-success">${t('campaignFocusView.buttons.payout')}</button>
-              </a>`;
-            } else {
+            if (!campaignObject.hasSucceeded) {
               return yo`<a id="campaign_contributeButton" href=${campaignObject.active && `/campaign/${campaignObject.id}/contribute` || ``}>
                 ${campaignObject.active
                   && yo`<button class="btn btn-lg btn-primary">
@@ -115,7 +111,7 @@ export default function campaignFocusView(options) {
         <br />
 
         <small>${t('campaignFocusView.expiryNotice', {
-          expiryDate: campaignObject.approximateExpiryDate.toISOString(),
+          expiryDate: campaignObject.approximateExpiryDate.toUTCString(),
         })}</small>
       </div>
     </div>

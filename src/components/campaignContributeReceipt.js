@@ -36,7 +36,7 @@ export default function campaignContributeReceipt(options){
       <br />
 
       <div class="row">
-        <div class="col-xs-6">
+        <div class="col-xs-8" style="word-break: break-all;">
           <h4>Transaction Hash</h4>
           ${options.receipt.transactionHash}
 
@@ -50,7 +50,7 @@ export default function campaignContributeReceipt(options){
           <h4>From (Your Selected Account)</h4>
           ${from}
         </div>
-        <div class="col-xs-6">
+        <div class="col-xs-4">
           <h4>Block Number</h4>
           ${options.receipt.blockNumber !== null
             && options.receipt.blockNumber.toString(10) || 'pending'}

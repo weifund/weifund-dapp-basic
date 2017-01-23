@@ -24,7 +24,7 @@ import handleConfirmOnPageExit from './handleConfirmOnPageExit';
 import handleCampaignContributeReview from './handleCampaignContributeReview';
 
 
-const contracts = new Contracts('ropsten', web3.currentProvider);
+const contracts = new Contracts(getContractEnvironment(), web3.currentProvider);
 const campaignRegistry = contracts.CampaignRegistry.instance();
 
 // load and draw campaign contribute page/flow

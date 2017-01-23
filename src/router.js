@@ -18,7 +18,7 @@ function getRouter() {
 }
 
 // the only allowed campaigns on WeiFund
-const allowedCampaigns = [6, 7];
+const allowedCampaigns = [0, 1];
 
 // open campaign helper
 function openCampaign(options, params, callback) {
@@ -64,21 +64,6 @@ function openCampaignContribute(options, params, callback) {
   // load and draw campaign
   // something WRONG HERE..
   options.loadAndDrawCampaignContribute(cid, callback);
-}
-
-// open campaign contribute
-function openCampaignRefund(options, params, callback) {
-  // draw campaign
-  openView('view-campaign-refund');
-
-  if (campaignContributeIdOfLoadedFocus === parseInt(params.campaignID, 10)) {
-    callback(null, true);
-    return;
-  }
-
-  options.loadAndDrawCampaignRefund(parseInt(params.campaignID, 10), callback);
-  campaignIdOfLoadedFocus = false;
-  campaignContributeIdOfLoadedFocus = parseInt(params.campaignID, 10);
 }
 
 // returns a setup router
@@ -199,22 +184,6 @@ function setupRouter(options) {
           });
         }]
       ]],
-      ['/refund', function(params) {
-        openCampaignRefund(options, params, function(err, result){
-          openSubView('view-campaign-refund-form');
-        });
-      }, [
-        ['/review', function(params) {
-          openCampaignRefund(options, params, function(err, result){
-            openSubView('view-campaign-refund-review');
-          });
-        }],
-        ['/receipt', function(params) {
-          openCampaignRefund(options, params, function(err, result){
-            openSubView('view-campaign-refund-receipt');
-          });
-        }]
-      ]]
     ]],
     ['/404', function(params) {
       openView('view-404');

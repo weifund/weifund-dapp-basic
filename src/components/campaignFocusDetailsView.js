@@ -72,7 +72,7 @@ export default function campaignFocusDetailsView(options) {
           <br />
 
           <h4>Expiry</h4>
-          approx. ${campaignObject.approximateExpiryDate.toISOString()}
+          approx. ${campaignObject.approximateExpiryDate.toUTCString()}
           <br />
           <small>current. block ${campaignObject.blockNumber.toString(10)} exp. block ${campaignObject.expiry.toString(10)}</small>
         </div>
@@ -88,11 +88,6 @@ export default function campaignFocusDetailsView(options) {
       <div class="row">
         <div class="col-xs-12 col-sm-6">
           ${objectView({web3, object: campaignObject, layout: {
-              totalContributions: {
-                name: 'Total Contributions',
-                type: 'percentage',
-                description: 'The total number of contributions made to this campaign.',
-              },
               active: {
                 name: 'Active',
                 description: 'Is the campaign active (i.e. can you contribute to it)',
