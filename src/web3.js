@@ -20,20 +20,30 @@ export function setMetamaskProvider(cb) {
       typeof window.web3.currentProvider !== 'undefined') {
       web3.setProvider(window.web3.currentProvider);
 
-      web3.eth.getAccounts((accountError, accounts) => {
-        if (accountError) {
-          return reject(accountError, null);
+      web3.version.getNetwork((networkError, network) => {
+        if (networkError) {
+          return reject(networkError, null);
         }
 
-        web3.eth.getBalance(accounts[0], (balanceError, balance) => {
-          if (balanceError) {
-            return reject(balanceError, null);
+        if (network !== '1') {
+          return reject('Invalid network selected, must be on Ethereum mainnet.', null);
+        }
+
+        web3.eth.getAccounts((accountError, accounts) => {
+          if (accountError) {
+            return reject(accountError, null);
           }
 
-          setDefaultAccount(accounts[0]);
-          setAccountBalance(balance);
+          web3.eth.getBalance(accounts[0], (balanceError, balance) => {
+            if (balanceError) {
+              return reject(balanceError, null);
+            }
 
-          resolve({ account: accounts[0], balance });
+            setDefaultAccount(accounts[0]);
+            setAccountBalance(balance);
+
+            resolve({ account: accounts[0], balance });
+          });
         });
       });
     } else {

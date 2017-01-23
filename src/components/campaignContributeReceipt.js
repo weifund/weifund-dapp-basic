@@ -14,8 +14,7 @@ export default function campaignContributeReceipt(options){
 
   const contributeAmount = el('#campaign_contributeAmount').value;
   const accountBalance = getAccountBalance();
-  const contributeTotal = new BigNumber(contributeAmount)
-        .add(web3.fromWei(txObject().gas, 'ether'));
+  const contributeTotal = new BigNumber(contributeAmount);
 
   return yo`<div>
   <div class="row center-block container" style="margin-top: 40px; margin-bottom: 150px;">
