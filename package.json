@@ -35,7 +35,7 @@
     "web3": "0.15.3",
     "web3-network-detective": "0.1.1",
     "web3-provider-engine": "8.2.0",
-    "weifund-contracts": "2.0.3",
+    "weifund-contracts": "2.0.4",
     "weifund-lib": "0.1.6",
     "weifund-util": "git+https://github.com/weifund/weifund-util",
     "yo-yo": "1.3.2"
