@@ -3,6 +3,7 @@ import Contracts from 'weifund-contracts';
 import { getCampaigns } from 'weifund-lib';
 import BigNumber from 'bignumber.js';
 import stateSnapshot from '../getCampaignsState.json';
+import yo from 'yo-yo';
 
 import { el } from '../document';
 import { campaignHighlightMedium, viewLoader, campaignsView } from '../components';
@@ -73,7 +74,7 @@ function drawCampaigns(campaignsToDraw) {
   el('#campaigns_list').innerHTML = ``;
 
   // draw campaigns in list
-  for(var campaignID = campaignsToDraw.length - 1; campaignID >= 0; campaignID--){
+  for(var campaignID = campaignsToDraw.length - 1; campaignID >= campaignsToDraw.length - 2; campaignID--){
     var campaignToDraw = campaignsToDraw[campaignID];
     var campaignDrawTarget = 'campaigns_list';
 
@@ -144,18 +145,17 @@ export default function loadAndDrawCampaignsList() {
 
       // set campaign selector
       // array (i.e. array of campaignIDs)
-      selector: [0],
+      selector: [6, 7],
     }, (loadCampaignsError, loadCampaignsResult) => {
-
       // download snapshot
       // download('getCampaignsState.json', JSON.stringify(bignumberToSafeObject(loadCampaignsResult)));
 
       // handle errors
       if (loadCampaignsError) {
-        el('#campaigns_list').innerHTML =
-        el('#campaigns_list').appendChild(yo`
+        el('#campaigns_list').innerHTML = '';
+        el('#campaigns_list').appendChild(yo`<span>
           Error while loading campaigns ${JSON.stringify(loadCampaignsError)}
-        `);
+        </span>`);
         return;
       }
 
@@ -167,10 +167,12 @@ export default function loadAndDrawCampaignsList() {
       if (typeof loadCampaignsResult === 'object') {
         Object.keys(loadCampaignsResult).forEach((campaignID) => {
           setCampaign(campaignID, loadCampaignsResult[campaignID]);
-
-          // draw campaigns everytime
-          drawCampaigns(getStoredCampaigns());
         });
+
+        el('#campaigns_list').innerHTML = ``;
+
+        // draw campaigns everytime
+        drawCampaigns(getStoredCampaigns());
       }
     });
   });

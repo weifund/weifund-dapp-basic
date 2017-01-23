@@ -495,7 +495,8 @@ function loadAccount() {
     // load token at this address
     el('#tokens-loading').innerHTML = '<h3>Loading token data...</h3>';
     el('#tokens').innerHTML = '';
-    loadTokenFromEnhancer('0x2ac0f0eb919e28c9d33518f48f9565796c84d69e', contracts);
+    loadTokenFromEnhancer('0x2f5a915de49c5d851b49ec36d14752034fe1bd9b', contracts);
+    loadTokenFromEnhancer('0x73837f63b29b21f35c8d4fd0f9f6651e17966814', contracts);
 
     // refresh page buttons
     refreshPageButtons();

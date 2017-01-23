@@ -19,7 +19,8 @@ export default function campaignMedium(options) {
     <div class="list-campaign-medium">
       <a href="/campaign/${campaignObject.id}">
         <div class="list-campaign-image-wrapper">
-          <div class="list-campaign-image" style="background: url(${campaignObject.imageUrl}); background-size: cover;"></div>
+          <div class="list-campaign-image"
+            style="background: url(${campaignObject.data.campaignSchema.image}); background-size: cover;"></div>
         </div>
       </a>
       <div class="list-campaign-medium-description">

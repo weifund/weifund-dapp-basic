@@ -1,5 +1,6 @@
 import networkDetective from 'web3-network-detective';
 
+import { el } from './document';
 import { setDefaultAccount } from './environment';
 import  { web3, setupWeb3Provider } from './web3';
 import  { setupIPFSProvider } from './ipfs';
@@ -17,6 +18,9 @@ window.addEventListener('load', loadApp);
 
 // load application
 function loadApp(loadAppEvent) {
+  // clear initial loader
+  el('#initialLoader').remove();
+
   // window warnign message
   window.onunload = window.onbeforeunload = handleConfirmOnPageExit;
 

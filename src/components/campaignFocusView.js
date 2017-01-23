@@ -27,6 +27,11 @@ export default function campaignFocusView(options) {
     return;
   }
 
+  /* ${yo`<iframe style="width: 100%; height: 410px;"
+  src="${campaignObject.mainEntityIsVideo && campaignObject.mainEntityVideo.embedUrl
+      || `https://www.youtube.com/embed/kn-1D5z3-Cs?showinfo=0`}"
+  frameborder="0" allowfullscreen></iframe>`} */
+
   return yo`<div><div class="campaign-focus" style="margin-top: 40px;">
 
     <div class="row center-block container text-center" style="margin-bottom: 60px;">
@@ -43,10 +48,13 @@ export default function campaignFocusView(options) {
 
     <div class="container row center-block">
       <div class="col-xs-12 col-sm-8">
-        ${yo`<iframe style="width: 100%; height: 410px;"
-        src="${campaignObject.mainEntityIsVideo && campaignObject.mainEntityVideo.embedUrl
-            || `https://www.youtube.com/embed/kn-1D5z3-Cs?showinfo=0`}"
-        frameborder="0" allowfullscreen></iframe>`}
+
+        ${yo`<div
+          style="width: 100%;
+            height: 430px;
+            background: url(${campaignObject.data.campaignSchema.image});
+            background-position: center;
+            background-size: cover;"></div>`}
       </div>
       <div class="col-xs-12 col-sm-4">
         <h1><b>${campaignObject.progress}%</b></h1>

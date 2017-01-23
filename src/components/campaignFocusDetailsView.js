@@ -5,6 +5,7 @@ import objectView from './objectView';
 import { getNetwork } from '../environment';
 import { etherScanAddressUrl, etherScanTxHashUrl, oneDay, emptyWeb3Address } from 'weifund-util';
 
+
 // main export
 export default function campaignFocusDetailsView(options) {
   const t = options.t;
@@ -89,6 +90,7 @@ export default function campaignFocusDetailsView(options) {
           ${objectView({web3, object: campaignObject, layout: {
               totalContributions: {
                 name: 'Total Contributions',
+                type: 'percentage',
                 description: 'The total number of contributions made to this campaign.',
               },
               active: {

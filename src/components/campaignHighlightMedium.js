@@ -18,7 +18,10 @@ export default function campaignHighlightMedium(options) {
   <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 list-feature-column">
     <div class="list-campaign-feature">
       <div class="row">
-        <div class="col-xs-5" style="height: 100%; background: url(${campaignObject.imageUrl}); background-size: cover;">
+        <div class="col-xs-5" style="height: 100%;
+          background: url(${campaignObject.data.campaignSchema.image});
+          background-position: center;
+          background-size: cover;">
         </div>
         <div class="col-xs-7">
             <a href="/campaign/${campaignObject.id}">

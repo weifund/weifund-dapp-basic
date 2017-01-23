@@ -61,10 +61,10 @@ export default function objectView(options) {
       // handle bignumber
       if (isBigNumber(valueInput)) {
         valueOutput = valueInput.toString(10);
+      } else {
+        // handle just standard type
+        valueOutput = yo`<pre style="overflow: scroll;">${JSON.stringify(valueInput, null, 2)}</pre>`
       }
-
-      // handle just standard type
-      valueOutput = yo`<pre style="overflow: scroll;">${JSON.stringify(valueInput, null, 2)}</pre>`
     }
 
     // handle special type ether

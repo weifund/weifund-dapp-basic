@@ -17,37 +17,53 @@ function getRouter() {
   return router;
 }
 
+// the only allowed campaigns on WeiFund
+const allowedCampaigns = [6, 7];
+
 // open campaign helper
 function openCampaign(options, params, callback) {
-  if (campaignIdOfLoadedFocus === parseInt(params.campaignID, 10)) {
+  const cid = parseInt(params.campaignID, 10);
+
+  if (allowedCampaigns.indexOf(cid) === -1) {
+    console.log('campaign not allowed!!');
+    return;
+  }
+
+  if (campaignIdOfLoadedFocus === cid) {
     callback(null, true);
     return;
   }
 
   openView('view-focus');
-  options.loadAndDrawCampaign(parseInt(params.campaignID, 10), callback);
-  campaignIdOfLoadedFocus = parseInt(params.campaignID, 10);
+  options.loadAndDrawCampaign(cid, callback);
+  campaignIdOfLoadedFocus = cid;
   campaignContributeIdOfLoadedFocus = false;
 }
 
 // open campaign contribute
 function openCampaignContribute(options, params, callback) {
+  const cid = parseInt(params.campaignID, 10);
+  if (allowedCampaigns.indexOf(cid) === -1) {
+    console.log('campaign not allowed!!');
+    return;
+  }
+
   // draw campaign
   openView('view-campaign-contribute');
 
   // if we are already focused on campaign
-  if (campaignContributeIdOfLoadedFocus === parseInt(params.campaignID, 10)) {
+  if (campaignContributeIdOfLoadedFocus === cid) {
     callback(null, true);
     return;
   }
 
   // set campaign id
   campaignIdOfLoadedFocus = false;
-  campaignContributeIdOfLoadedFocus = parseInt(params.campaignID, 10);
+  campaignContributeIdOfLoadedFocus = cid;
 
   // load and draw campaign
   // something WRONG HERE..
-  options.loadAndDrawCampaignContribute(parseInt(params.campaignID, 10), callback);
+  options.loadAndDrawCampaignContribute(cid, callback);
 }
 
 // open campaign contribute
