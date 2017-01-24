@@ -87,6 +87,12 @@ export default function campaignFocusView(options) {
                   </button>`}
                 </a>`;
             }
+
+            if (campaignObject.hasSucceeded) {
+              return yo`<a href="/account" class="btn btn-lg btn-success">
+                Campaign Success!
+              </a>`;
+            }
           }
 
         })()}

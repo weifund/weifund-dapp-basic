@@ -48,6 +48,12 @@ export default function footer(options) {
           <small>© ${t("footer.copyright")}</small>
         </div>
         <div class="col-xs-6 col-md-3 text-right">
+          <a href="https://consensys.net/"
+            class="text-light-gray"
+            target="_blank"
+            style="margin-top: 10px;">
+            A ConsenSys Formation
+          </a>
         </div>
     </div>
   </div>

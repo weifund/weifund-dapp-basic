@@ -195,35 +195,36 @@ export default function accountView(options) {
             <p>If a campaign you contributed to has failed, and a refund is owed,
               you may claim your refund with this utility.</p>
 
-            <p>First claim your refund ('Claim Refund'),
-              then claim your balance ('Claim Balance') from the BalanceClaim contract.</p>
+            <br />
 
             <div id="refundTry"></div>
 
-            <br />
-
             <div class="row">
-              <div class="col-xs-5">
+              <div class="col-xs-4">
                 <label>Campaign Address</label>
-                <input class="form-control" id="refundCampaignAddress" placeholder="0x..." />
+                <select id="refundCampaignAddress" class="form-control">
+                </select>
               </div>
               <div class="col-xs-3">
                 <label style="display: none;" id="refundCID_label">Contribution ID</label>
                 <select style="display: none;" id="refundCID" class="form-control"></select>
               </div>
-              <div class="col-xs-4 text-right">
+              <div class="col-xs-5 text-right">
                 <label><br /></label>
                 <br />
-                <button id="claimRefundOwed" class="btn btn-primary">
-                  Claim Refund
+                <button id="claimRefundOwed" disabled class="btn btn-primary">
+                  Start Refund Claim
                 </button>
               </div>
             </div>
             <hr />
             <div class="row">
-              <div class="col-xs-12 text-right">
-                <button id="claimBalance" class="btn btn-primary">
-                  Claim Balance
+              <div class="col-xs-8">
+                <p>Use this to payout your refund balance after you have made your claim.</p>
+              </div>
+              <div class="col-xs-4 text-right">
+                <button id="claimBalance" disabled class="btn btn-primary">
+                  Payout Balance
                 </button>
               </div>
             </div>

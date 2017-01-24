@@ -8,7 +8,7 @@ import lightwallet from 'eth-lightwallet';
 
 import { el } from '../document';
 import { setDefaultAccount, getDefaultAccount, getCampaign, setCampaign,
-  getNetwork, getLocale, getContractEnvironment, txObject } from '../environment';
+  getNetwork, getLocale, validCampaigns, getContractEnvironment, txObject } from '../environment';
 import { viewLoader, accountView } from '../components';
 import { web3, getTransactionSuccess, setMetamaskProvider } from '../web3';
 import { ipfs } from '../ipfs';
@@ -274,6 +274,7 @@ function loadTokenFromEnhancer(enhancerAddress, contracts) {
 
 function loadAccount() {
   const contracts = new Contracts(getContractEnvironment(), web3.currentProvider);
+  const campaignRegistry = contracts.CampaignRegistry.instance();
   const StandardCampaign = contracts.StandardCampaign.factory;
   const BalanceClaim = contracts.BalanceClaim.factory;
   el('#view-focus').style.display = 'none';
@@ -287,6 +288,22 @@ function loadAccount() {
   } else {
     el('#account-download-wallet').style.display = 'inline-block';
   }
+
+  function loadCampaignAddress(campaignID) {
+    campaignRegistry.addressOf(campaignID, (err, campaignAddress) => {
+      if (!err) {
+        el('#refundCampaignAddress').appendChild(yo`<option value=${campaignAddress}>
+          ${campaignAddress}
+        </option>`);
+      }
+    });
+  }
+
+  // load campaign addresses for refund selector
+  el('#refundCampaignAddress').appendChild(yo`<option>
+    Select
+  </option>`);
+  validCampaigns().forEach(loadCampaignAddress);
 
   // get accounts
   web3.eth.getAccounts((err, accounts) => {
@@ -305,10 +322,20 @@ function loadAccount() {
       el('#accountBalanceWei').appendChild(yo`<span>${web3.fromWei(balance, 'wei').toString(10)}</span>`);
     });
 
-    el('#refundCampaignAddress').addEventListener('keyup', () => {
+    el('#refundCampaignAddress').addEventListener('change', refundAddressChange);
+
+    function refundAddressChange() {
       const campaignAddress = String(el('#refundCampaignAddress').value).trim().toLowerCase();
 
+      el('#claimBalance').setAttribute('disabled', 'disabled');
+      el('#claimRefundOwed').setAttribute('disabled', 'disabled');
+
       if (!web3.isAddress(campaignAddress)) {
+        el('#refundTry').innerHTML = '';
+        el('#refundCID_label').style.display = 'none';
+        el('#refundCID').style.display = 'none';
+        el('#refundCID').innerHTML = '';
+        el('#refundTry').innerHTML = '';
         return;
       }
 
@@ -317,10 +344,13 @@ function loadAccount() {
       const refundCampaign = StandardCampaign.at(campaignAddress);
       refundCampaign.totalContributionsBySender(getDefaultAccount(), (err, totalContributions) => {
         if (!err && totalContributions.gt(0)) {
+          el('#claimBalance').removeAttribute('disabled');
+          el('#claimRefundOwed').removeAttribute('disabled');
           const totalCont = totalContributions.toNumber(10);
           el('#refundCID_label').style.display = 'inline-block';
           el('#refundCID').style.display = 'inline-block';
           el('#refundCID').innerHTML = '';
+          el('#refundTry').innerHTML = '';
 
           function contributionBySender(i) {
             refundCampaign.contributionsBySender(getDefaultAccount(), i, (cidErr, cid) => {
@@ -336,14 +366,19 @@ function loadAccount() {
             contributionBySender(i);
           }
         } else {
+          el('#claimBalance').setAttribute('disabled', 'disabled');
+          el('#claimRefundOwed').setAttribute('disabled', 'disabled');
+          el('#refundCID_label').style.display = 'none';
+          el('#refundCID').style.display = 'none';
+          el('#refundCID').innerHTML = '';
           el('#refundTry').innerHTML = '';
-          el('#refundTry').appendChild(yo`<div>
+          el('#refundTry').appendChild(yo`<div class="alert alert-info">
             It looks like you didn't contribute to this campaign.
             No contribution ID's have been found.
           </div>`);
         }
       });
-    });
+    };
 
     el('#claimBalance').addEventListener('click', () => {
       const campaignAddress = String(el('#refundCampaignAddress').value).trim().toLowerCase();
@@ -353,7 +388,7 @@ function loadAccount() {
       el('#account-claim-refund-response').style.display = 'block';
       el('#account-claim-refund-response').innerHTML = '';
       el('#account-claim-refund-response').appendChild(yo`<span>
-        <h3 style="margin-top: 0px;">Refund Processing</h3>
+        <h3 style="margin-top: 0px;">Balance Payout Processing</h3>
         <p>Awaiting transaction approval...</p>
       </span>`);
 
@@ -390,6 +425,22 @@ function loadAccount() {
               return;
             }
 
+            if (txHash) {
+              el('#account-claim-refund-response').style.display = 'block';
+              el('#account-claim-refund-response').innerHTML = '';
+              el('#account-claim-refund-response').appendChild(yo`<span>
+                <h3 style="margin-top: 0px;">Balance Payout Processing</h3>
+                <p>Your transaction is being processed..</p>
+                <hr />
+                view it on etherscan:
+                <a href=${etherScanTxHashUrl(txHash, getNetwork())}
+                  target="_blank"
+                  style="color: #FFF;">
+                  ${txHash}
+                </a>
+              </span>`);
+            }
+
             getTransactionSuccess(txHash, (txSuccessError, txReceipt) => {
               if (!txSuccessError && txReceipt) {
                 el('#account-claim-refund-response').style.display = 'block';
@@ -418,9 +469,13 @@ function loadAccount() {
       const contributionID = parseInt(el('#refundCID').value, 10);
       const campaignInstance = StandardCampaign.at(campaignAddress);
 
-      console.log(campaignAddress, contributionID, campaignInstance.address, Object.assign({}, txObject(), {
-        from: getDefaultAccount(),
-      }));
+      if (!el('#refundCID').value) {
+        el('#refundTry').appendChild(yo`<div class="alert alert-info">
+          It looks like you didn't contribute to this campaign.
+          No contribution ID's have been found.
+        </div>`);
+        return;
+      }
 
       el('#account-claim-refund-response').style.display = 'block';
       el('#account-claim-refund-response').innerHTML = '';
@@ -485,7 +540,8 @@ function loadAccount() {
               el('#account-claim-refund-response').innerHTML = '';
               el('#account-claim-refund-response').appendChild(yo`<span>
                 <h3 style="margin-top: 0px;">Refund Transaction Success!</h3>
-                <p>Your transaction was successfully sent.</p>
+                <p>Your transaction was successfully sent.
+                Continue to payout your balance now by clicking 'Payout Balance'.</p>
                 <hr />
                 view it on etherscan:
                 <a href=${etherScanTxHashUrl(txHash, getNetwork())}
@@ -612,11 +668,8 @@ function loadAccount() {
     // load token at this address
     el('#tokens-loading').innerHTML = '<h3>Loading token data...</h3>';
     el('#tokens').innerHTML = '';
-    loadTokenFromEnhancer('0x656c47c003c8bad491cc470ba018276160877e8f', contracts);
-    loadTokenFromEnhancer('0xcc628f03877374221743f5b37c5791799fc3370d', contracts);
-
-    loadTokenFromEnhancer('0x741d29f6a8ce8367dd6df47a2247a49dfaaa1a7a', contracts);
-    loadTokenFromEnhancer('0x34d4239e416a7bd1f3c55ce8286d083bae1b67bd', contracts);
+    loadTokenFromEnhancer('0x5b03a1fe9b1beabbcf846b0563715750711850aa', contracts);
+    loadTokenFromEnhancer('0xba209ba032390d4794d912745743e0475014178b', contracts);
 
     // 0x467ef6ac8f3689d35b0fcfcbfa09a9ab498d7020
 
