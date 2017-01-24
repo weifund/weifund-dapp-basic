@@ -33,7 +33,7 @@ export default function handleCampaignContribution(){
   const contributeMethodName = selectedCampaign.contributeMethodABIObject.name;
   const contributeMethodInputParams = selectedCampaign.contributeMethodABIObject.inputs || [];
   const numContributeMethodInputParams = contributeMethodInputParams.length;
-  const contributionIntervalTimeout = 90 * 1000; // 60 seconds
+  const contributionIntervalTimeout = 180 * 1000;
   const contributionReceiptIntervalLength = 1000;
   var contributionIntervalTimer = 0;
   var contributionParams = []; // for the first arg
