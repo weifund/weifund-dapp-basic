@@ -668,8 +668,8 @@ function loadAccount() {
     // load token at this address
     el('#tokens-loading').innerHTML = '<h3>Loading token data...</h3>';
     el('#tokens').innerHTML = '';
-    loadTokenFromEnhancer('0x5b03a1fe9b1beabbcf846b0563715750711850aa', contracts);
-    loadTokenFromEnhancer('0xba209ba032390d4794d912745743e0475014178b', contracts);
+    loadTokenFromEnhancer('0x725cfbffab60e77b8ea38c870c75b78efed50a51', contracts);
+    loadTokenFromEnhancer('0xb1d393bbf102e60b62f53de35a9a107d9cb06b74', contracts);
 
     // 0x467ef6ac8f3689d35b0fcfcbfa09a9ab498d7020
 

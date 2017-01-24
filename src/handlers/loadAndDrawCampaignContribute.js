@@ -131,17 +131,26 @@ export default function loadAndDrawCampaignContribute(campaignID, callback) {
       const reviewAddressEl = el('#campaign_reviewAccountAddress');
       const defaultAddressEl = el('#defaultAccountAddress');
 
-      addressEl.innerHTML = '';
-      addressEl.appendChild(yo`<span>${getDefaultAccount()}</span>`);
+      if (addressEl) {
+        addressEl.innerHTML = '';
+        addressEl.appendChild(yo`<span>${getDefaultAccount()}</span>`);
+      }
 
-      defaultAddressEl.innerHTML = '';
-      defaultAddressEl.appendChild(yo`<span>${getDefaultAccount()}</span>`);
+      if (defaultAddressEl) {
+        defaultAddressEl.innerHTML = '';
+        defaultAddressEl.appendChild(yo`<span>${getDefaultAccount()}</span>`);
+      }
 
-      reviewAddressEl.innerHTML = '';
-      reviewAddressEl.appendChild(yo`<span>${getDefaultAccount()}</span>`);
+      if (reviewAddressEl) {
+        reviewAddressEl.innerHTML = '';
+        reviewAddressEl.appendChild(yo`<span>${getDefaultAccount()}</span>`);
+      }
 
-      balanceEl.innerHTML = '';
-      balanceEl.appendChild(yo`<span>${balanceEther.toString(10) || '0'}</span>`);
+      if (balanceEl) {
+        balanceEl.innerHTML = '';
+        balanceEl.appendChild(yo`<span>${balanceEther.toString(10) || '0'}</span>`);
+      }
+
       // slider max
       contributeSliderEl.dataset.valueMax = availableBalanceEther.toString(10);
       formBalanceEl.innerHTML = '';

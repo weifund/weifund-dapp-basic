@@ -63,7 +63,7 @@ export function nameOf(address) {
 }
 
 export function validCampaigns() {
-  return [5, 6];
+  return [0, 1];
 }
 
 // get current locale
