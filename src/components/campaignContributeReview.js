@@ -87,7 +87,7 @@ export default function campaignContributeReview(options) {
         <br />
         <br />
 
-        <a href=${`/campaign/${options.campaignObject.id}/contribute/form`} class="btn btn-primary btn-lg">
+        <a href=${`/campaign/${options.campaignObject.id}/contribute/form`} class="btn btn-back btn-primary btn-lg">
           Back
         </a>
 
