@@ -6,12 +6,10 @@ import { getLocale } from './environment';
 
 // english translation
 import enLocaleTranslation from './translations/en.json';
-import zhLocaleTranslation from './translations/zh.json';
 
 // all translations
 const localeTranslations = {
   en: enLocaleTranslation,
-  zh: zhLocaleTranslation,
 };
 
 // polyglot instance

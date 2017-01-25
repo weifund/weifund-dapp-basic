@@ -1,5 +1,3 @@
-import networkDetective from 'web3-network-detective';
-
 import { el } from './document';
 import { setDefaultAccount } from './environment';
 import  { web3, setupWeb3Provider } from './web3';
