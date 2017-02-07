@@ -247,7 +247,6 @@ export default function campaignContributeWallet(options) {
 
       <br />
 
-      <a id="campaign-wallet-metamask" class=" btn btn-primary">METAMASK</a>
       <a class="restore btn btn-primary">RESTORE FROM SEED</a>
       <a class="open-file btn btn-primary">OPEN WALLET FILE</a>
 
@@ -292,6 +291,7 @@ export default function campaignContributeWallet(options) {
       <br /><br />
 
       <div>
+        <a id="campaign-wallet-metamask" class="btn btn-primary">METAMASK</a>
         <a href="/campaign/${campaignObject.id}/contribute/wallet/entropy"
           onclick=${logout}
           class="generate btn btn-primary">
