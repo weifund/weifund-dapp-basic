@@ -25,8 +25,6 @@ export function setMetamaskProvider(cb) {
           return reject(networkError, null);
         }
 
-        console.log(network);
-
         if (network !== '1') {
           return reject(new Error('Invalid network selected, must be on Ethereum mainnet.'), null);
         }

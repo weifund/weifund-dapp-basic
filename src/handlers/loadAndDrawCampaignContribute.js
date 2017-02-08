@@ -116,7 +116,7 @@ export default function loadAndDrawCampaignContribute(campaignID, callback) {
     const pollTokenPrice = () => {
       enhancer.price((err, result) => {
         if (!err && result) {
-          const etherValue = new BigNumber('0.2'); // web3.fromWei(result, 'ether');
+          const etherValue = new BigNumber(web3.fromWei(result, 'ether'));
 
           el('#contribute-token-price').innerHTML = '';
           el('#contribute-token-price').appendChild(yo`<span>${etherValue.toString(10)}</span>`);
