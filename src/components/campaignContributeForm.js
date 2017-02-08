@@ -41,6 +41,8 @@ export default function campaignContributeForm(options) {
         </div>
       </div>
 
+
+
       <input type="hidden" id="campaignFormID" value="${campaignObject.id}" />
 
       <div id="campaignContribution_inputs">
@@ -330,7 +332,7 @@ Users with questions, complaints or claims with respect to the Service may conta
       <h5><span id="defaultAccountBalance">0</span> Ether (ETH)</h5>
       <br />
       <h4>Token Price</h4>
-      <h5><span>0.125</span> Ether (ETH)</h5>
+      <h5><span id="contribute-token-price">0.125</span> Ether (ETH)</h5>
       <br />
       <h4>Approx. Gas Cost</h4>
       <h5><span>${web3.fromWei(actualGasCost, 'ether').toString(10)}</span> Ether (ETH)</h5>

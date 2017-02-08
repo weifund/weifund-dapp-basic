@@ -1,13 +1,14 @@
 import { getCampaigns } from 'weifund-lib';
 import yo from 'yo-yo';
 import Contracts from 'weifund-contracts';
+import BigNumber from 'bignumber.js';
 
 import { log, etherScanAddressUrl, parseSolidityMethodName,
   parseSolidityMethodInterface, etherScanTxHashUrl, oneDay, emptyWeb3Address } from 'weifund-util';
 import { el } from '../document';
 import { campaignContributeView, viewLoader } from '../components';
 import { setDefaultAccount, getDefaultAccount, getCampaign, setCampaign, getAccountBalance,
-  getNetwork, getLocale, getContractEnvironment, txObject, setAccountBalance } from '../environment';
+  getNetwork, getLocale, getContractEnvironment, txObject, setAccountBalance, setTokenPrice } from '../environment';
 import { web3, setMetamaskProvider } from '../web3';
 import { ipfs } from '../ipfs';
 import { getRouter, refreshPageButtons } from '../router';
@@ -111,6 +112,24 @@ export default function loadAndDrawCampaignContribute(campaignID, callback) {
       }
     });
 
+    const enhancer = contracts.Model1Enhancer.factory.at(campaignData.enhancer);
+    const pollTokenPrice = () => {
+      enhancer.price((err, result) => {
+        if (!err && result) {
+          const etherValue = new BigNumber('0.2'); // web3.fromWei(result, 'ether');
+
+          el('#contribute-token-price').innerHTML = '';
+          el('#contribute-token-price').appendChild(yo`<span>${etherValue.toString(10)}</span>`);
+          el('#campaign_contributeAmount').value = etherValue.toString(10);
+
+          setTokenPrice(etherValue);
+        }
+      });
+    };
+
+    setInterval(pollTokenPrice, 5000);
+    pollTokenPrice();
+
     // set itnerval steps
     setInterval(() => {
       // adding balance polling here
@@ -206,11 +225,14 @@ export default function loadAndDrawCampaignContribute(campaignID, callback) {
         history.pushState({}, null, `/campaign/${campaignID}/contribute/form`);
       })
       .catch(err => {
-        el('#campaign-contribute-wallet-error').style.display = 'block';
-        el('#campaign-contribute-wallet-error').innerHTML = '';
-        el('#campaign-contribute-wallet-error').appendChild(yo`<span>
-          <h3 style="margin-top: 0px">Provider Error<h3>
-          <p>No provider found injected into the browser. Make sure MetaMask is enabled.</p>
+        el('#campaign-contribute-wallet-response').style.display = 'block';
+        el('#campaign-contribute-wallet-response').innerHTML = '';
+        el('#campaign-contribute-wallet-response').appendChild(yo`<span>
+          <h3 style="margin-top: 0px">MetaMask Provider Error</h3>
+          <p>There was an error while using metamask:</p>
+          <p>${String(err)}</p>
+          <hr />
+          <p>Please make sure you have MetaMask enabled, and set to "Main Etheruem Network"</p>
         </span>`);
       });
     });

@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js';
 
 // document helper
 import { el } from '../document';
+import { getTokenPrice } from '../environment';
 
 // get outeriwdth of element
 function outerElWidth(el) {
@@ -77,7 +78,7 @@ export default function drawAllInputSliders() {
         // if element exists
         if (dataInputElement !== null && dataInputElement.length !== 0) {
           const percentage = parseFloat(barLeftPositionPercentage).toFixed(fixedDecimalAmount);
-          const tokenPrice = 0.125;
+          const tokenPrice = getTokenPrice().toNumber(10);
           const valueMax = inputSliderElement.dataset.valueMax;
           dataInputElement.value = String(new BigNumber(new BigNumber((new BigNumber(percentage)
                   .dividedBy(100)))
@@ -106,7 +107,6 @@ export default function drawAllInputSliders() {
         // const percentage = parseFloat(inputSliderBar.style.left).toFixed(2);
         const valueMax = inputSliderElement.dataset.valueMax || 0;
         const etherInput = new BigNumber(dataInputElement.value);
-        // const unitEther = new BigNumber(etherInput.dividedBy(0.125).toFixed(0)).times(0.125);
         var inputElementValue = new BigNumber(etherInput)
             .dividedBy(valueMax).times(100);
 

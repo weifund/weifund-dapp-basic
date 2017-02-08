@@ -16,6 +16,9 @@ let transactions = [];
 // default account
 let defaultAccount = '';
 
+// token price for selected crowdsale
+let tokenPrice = new BigNumber(0);
+
 // default account balance
 let accountBalance = new BigNumber(0);
 
@@ -32,6 +35,14 @@ export function setTransaction(transactionId, transactionHash) {
 // set default account
 export function setDefaultAccount(account) {
   defaultAccount = account;
+}
+
+export function getTokenPrice() {
+  return tokenPrice;
+}
+
+export function setTokenPrice(price) {
+  tokenPrice = price;
 }
 
 // get default account

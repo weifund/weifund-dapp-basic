@@ -304,6 +304,11 @@ export default function campaignContributeWallet(options) {
         </a>
       </div>
 
+      <div class="alert alert-warning row center-block container"
+        id="campaign-contribute-wallet-response"
+        style="display: none; margin-top: 20px; margin-bottom: 0px;">
+      </div>
+
       ${campaignContributeNav({
         backURL: `/campaign/${campaignObject.id}`,
         showNextButton: false,

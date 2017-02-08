@@ -2,7 +2,7 @@ import yo from 'yo-yo';
 import { el } from '../document';
 import { web3 } from '../web3';
 import BigNumber from 'bignumber.js';
-import { getAccountBalance, txObject } from '../environment';
+import { getAccountBalance, txObject, getTokenPrice } from '../environment';
 
 export default function handleCampaignContributeReview(campaignData) {
   const campaignContributeID = el('#campaignFormID').value;
@@ -13,7 +13,7 @@ export default function handleCampaignContributeReview(campaignData) {
   const actualGasCost = (new BigNumber(txObject().gas)).times(gasPrice);
   const contributionAmountWei = new BigNumber(web3.toWei(contributeAmount, 'ether'));
   const contributeTotal = contirbuteAmountBN.add(web3.fromWei(actualGasCost, 'ether'));
-  const units = new BigNumber(contirbuteAmountBN.dividedBy(0.125).toFixed(0)).times(0.125);
+  const units = new BigNumber(contirbuteAmountBN.dividedBy(getTokenPrice()).toFixed(0)).times(getTokenPrice());
 
   // parse float
   if (!units.eq(contirbuteAmountBN)) {
@@ -29,7 +29,7 @@ export default function handleCampaignContributeReview(campaignData) {
       <h2>Invalid Contribution Amount</h2>
       <p>
         You are attempting to contribute an invalid amount.
-        You may only contribute in increments of 0.125 ether.
+        You may only contribute in increments of ${getTokenPrice().toString(10)} ether.
         <br />
         <br />
         <small>Note, this is to avoid unnecessary ether from being contributed.</small>
@@ -82,7 +82,7 @@ export default function handleCampaignContributeReview(campaignData) {
   }
 
   // parse float
-  if (contirbuteAmountBN.lt(new BigNumber('0.125'))) {
+  if (contirbuteAmountBN.lt(getTokenPrice())) {
     el('#campaign-contribute-review-button').href = ``;
     el('#campaign_contributeAmountGroup').style.border = `red solid 1px`;
     el('#campaign_contributeAmount').focus();
@@ -93,7 +93,7 @@ export default function handleCampaignContributeReview(campaignData) {
     el('#campaign-contribute-form-response').style.display = 'block';
     el('#campaign-contribute-form-response').appendChild(yo`<span>
       <h2>Invalid Contribution Amount</h2>
-      <p>You must select a contribution amount greater than 0.125 Ether (ETH).</p>
+      <p>You must select a contribution amount greater than ${getTokenPrice().toString(10)} Ether (ETH).</p>
     </span>`);
 
     return;
